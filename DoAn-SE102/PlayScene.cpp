@@ -10,7 +10,7 @@
 //#include "Coin.h"
 //#include "Platform.h"
 
-#include "SampleKeyEventHandler.h"
+#include "MarioKeyEventHandler.h"
 #include "debug.h"
 
 using namespace std;
@@ -19,7 +19,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	player = NULL;
-	key_handler = new CSampleKeyHandler(this);
+	key_handler = new CMarioKeyEventHandler(this);
 }
 
 
@@ -237,15 +237,15 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
-	{
-		coObjects.push_back(objects[i]);
-	}
+	//vector<LPGAMEOBJECT> coObjects;
+	//for (size_t i = 1; i < objects.size(); i++)
+	//{
+	//	coObjects.push_back(objects[i]);
+	//}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		objects[i]->Update(dt);
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -263,6 +263,7 @@ void CPlayScene::Update(DWORD dt)
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 
+	//Remove objects that are deleted
 	PurgeDeletedObjects();
 }
 
@@ -275,15 +276,15 @@ void CPlayScene::Render()
 /*
 *	Clear all objects from this scene
 */
-void CPlayScene::Clear()
-{
-	vector<LPGAMEOBJECT>::iterator it;
-	for (it = objects.begin(); it != objects.end(); it++)
-	{
-		delete (*it);
-	}
-	objects.clear();
-}
+//void CPlayScene::Clear()
+//{
+//	vector<LPGAMEOBJECT>::iterator it;
+//	for (it = objects.begin(); it != objects.end(); it++)
+//	{
+//		delete (*it);
+//	}
+//	objects.clear();
+//}
 
 /*
 	Unload scene

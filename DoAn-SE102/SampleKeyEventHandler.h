@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-
+/*
 class CSampleKeyHandler: public CSceneKeyHandler
 {
 public:
@@ -10,3 +10,4 @@ public:
 	virtual void OnKeyUp(int KeyCode);
 	CSampleKeyHandler(LPSCENE s) :CSceneKeyHandler(s) {};
 };
+*/

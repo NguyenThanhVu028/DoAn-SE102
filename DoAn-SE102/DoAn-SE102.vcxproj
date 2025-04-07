@@ -139,7 +139,11 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectsManager.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Mario.h" />
+    <ClInclude Include="MarioKeyEventHandler.h" />
+    <ClInclude Include="MovableGameObject.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />
@@ -156,7 +160,11 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectsManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioKeyEventHandler.cpp" />
+    <ClCompile Include="MovableGameObject.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="Sprite.cpp" />

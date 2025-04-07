@@ -5,7 +5,7 @@
 
 //#include "Mario.h"
 #include "PlayScene.h"
-
+/*
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
@@ -73,3 +73,4 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	//else
 	//	mario->SetState(MARIO_STATE_IDLE);
 }
+*/

@@ -31,6 +31,24 @@
     <Filter Include="Source Files\KeyEventHandlers">
       <UniqueIdentifier>{f1faa3d9-a18a-4a8e-a3e7-764ae743288c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{ef6970a3-f56c-42c0-88a9-92471fe35b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{9a189535-456a-4245-ba19-963f511a1735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{a628a00c-dcdd-4c11-9e79-9446ecd5fd9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{28ab7446-13af-4c7f-93af-e3fbb6c0b0d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Mario">
+      <UniqueIdentifier>{9f56af85-a23f-4abc-8dc1-e0d8fd7510b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Mario">
+      <UniqueIdentifier>{51b937db-df8c-4780-9fe7-a1025a4f1565}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -87,6 +105,18 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjectsManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="MovableGameObject.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioKeyEventHandler.h">
+      <Filter>Header Files\KeyEventHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Header Files\Entities\Mario</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -127,6 +157,18 @@
     </ClCompile>
     <ClCompile Include="SampleKeyEventHandler.cpp">
       <Filter>Source Files\KeyEventHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectsManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioKeyEventHandler.cpp">
+      <Filter>Source Files\KeyEventHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="MovableGameObject.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Source Files\Entities\Mario</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
