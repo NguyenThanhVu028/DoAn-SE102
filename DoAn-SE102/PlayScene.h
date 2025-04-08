@@ -3,6 +3,8 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "GameObjectsManager.h"
+#include "SolidPlatform.h"
 //#include "Brick.h"
 //#include "Mario.h"
 //#include "Goomba.h"
@@ -13,9 +15,9 @@ class CPlayScene: public CScene
 {
 protected: 
 	// A play scene has to have a player, right? 
-	LPGAMEOBJECT player;					
+	//LPGAMEOBJECT player;					
 
-	vector<LPGAMEOBJECT> objects;
+	//vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -33,7 +35,7 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	LPGAMEOBJECT GetPlayer() { return player; }
+	//LPGAMEOBJECT GetPlayer() { return player; }
 
 	//void Clear();
 	void PurgeDeletedObjects();

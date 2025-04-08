@@ -1,0 +1,72 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#####  BIG ###############
+#IDLE
+
+#WALKING RIGHT
+
+#WALKING LEFT
+
+#RUNNING RIGHT
+
+#RUNNING LEFT
+
+#JUMP WALK RIGHT
+
+#JUMP RUN RIGHT & LEFT
+
+#SIT RIGHT & LEFT 
+
+#BRACE RIGHT & LEFT 
+
+#DIE
+
+############ SMALL ################
+#IDLE
+10001	217	89	228	103	0
+
+#WALK RIGHT
+
+#WALK LEFT
+
+#RUN RIGHT
+
+#RUN LEFT
+
+#BRACE RIGHT & LEFT
+
+#JUMP WALK RIGHT & LEFT 
+
+#JUMP RUN RIGHT & LEFT 
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#IDLE
+10001	10001	100
+
+#WALKING RIGHT & LEFT 
+#500	11121	100	11222	100	11223	100
+
+#RUNNING RIGHT & LEFT
+
+#JUMP WALK
+
+#JUMP RUN
+
+#SIT RIGHT & LEFT 
+
+#BRACE RIGHT & LEFT 
+
+#DIE
+
+################### SMALL #################
+
+#WALK LEFT & RIGHT 
+
+#RUN LEFT & RIGHT
+
+#BRACE LEFT & RIGHT
+
+#JUMP WALK
+
+#JUMP RUN 

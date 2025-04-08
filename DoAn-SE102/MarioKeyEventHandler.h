@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+#include "Mario.h"
+#include "GameObjectsManager.h"
 class CMarioKeyEventHandler : public CSceneKeyHandler
 {
 public:

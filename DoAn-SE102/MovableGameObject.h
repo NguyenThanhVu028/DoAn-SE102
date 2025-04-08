@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-class MovableGameObject : public CGameObject
+class CMovableGameObject : public CGameObject
 {
 protected:
 
@@ -12,14 +12,14 @@ protected:
 	int nx;
 
 public:
-	MovableGameObject();
-	MovableGameObject(float x, float y) : CGameObject(x, y) {
+	CMovableGameObject();
+	CMovableGameObject(float x, float y) : CGameObject(x, y) {
 		vx = vy = 0;
 		ax = ay = 0;
 		nx = 1;
 	}
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
-	void GetSpeed(float& vx, float& vy) override { vx = this->vx; vy = this->vy; }
+	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }
 	void SetAcceleration(float ax, float ay) { this->ax = ax; this->ay = ay; }
 	void GetAcceleration(float& ax, float& ay) { ax = this->ax; ay = this->ay; }
 

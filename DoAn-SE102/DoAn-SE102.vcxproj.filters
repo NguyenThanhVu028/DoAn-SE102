@@ -49,6 +49,18 @@
     <Filter Include="Source Files\Entities\Mario">
       <UniqueIdentifier>{51b937db-df8c-4780-9fe7-a1025a4f1565}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Entities\Background">
+      <UniqueIdentifier>{221c77b6-5699-4c25-ad09-ad76526e53b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Background">
+      <UniqueIdentifier>{3779d8cd-6f7e-40ad-ae9e-2262faccf169}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Blocks">
+      <UniqueIdentifier>{76139cd1-b0d1-4ab6-8cc7-81f8e50d46fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Blocks">
+      <UniqueIdentifier>{3cbd7295-ee4b-4f9a-a4e7-2509fd16fcbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -117,6 +129,12 @@
     <ClInclude Include="Mario.h">
       <Filter>Header Files\Entities\Mario</Filter>
     </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Header Files\Entities\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidPlatform.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -169,6 +187,12 @@
     </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Entities\Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Source Files\Entities\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidPlatform.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

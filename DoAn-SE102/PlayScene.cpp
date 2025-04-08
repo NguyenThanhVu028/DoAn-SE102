@@ -18,7 +18,8 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
-	player = NULL;
+	//player = NULL;
+	CGameObjectsManager::GetInstance()->Clear();
 	key_handler = new CMarioKeyEventHandler(this);
 }
 
@@ -93,39 +94,60 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
-	//vector<string> tokens = split(line);
+	vector<string> tokens = split(line);
 
 	//// skip invalid lines - an object set must have at least id, x, y
-	//if (tokens.size() < 2) return;
+	if (tokens.size() < 2) return;
 
-	//int object_type = atoi(tokens[0].c_str());
-	//float x = (float)atof(tokens[1].c_str());
-	//float y = (float)atof(tokens[2].c_str());
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
 
-	//CGameObject *obj = NULL;
+	CGameObject *obj = NULL;
 
-	//switch (object_type)
-	//{
-	//case OBJECT_TYPE_MARIO:
-	//	if (player!=NULL) 
-	//	{
-	//		DebugOut(L"[ERROR] MARIO object was created before!\n");
-	//		return;
-	//	}
-	//	obj = new CMario(x,y); 
+	switch (object_type)
+	{
+	case OBJECT_TYPE_MARIO:
+		if (CGameObjectsManager::GetInstance()->GetPlayer()!=NULL) 
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			return;
+		}
+		obj = new CMario(x,y);
+		CGameObjectsManager::GetInstance()->SetPlayer(obj);
 	//	player = (CMario*)obj;  
 
-	//	DebugOut(L"[INFO] Player object has been created!\n");
-	//	break;
+		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
 	//case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	//case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	//case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
-	//case OBJECT_TYPE_PLATFORM:
-	//{
+	case OBJECT_TYPE_SOLID_PLATFORM:
+	{
+		if (tokens.size() < 16) break;
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int width = (int)atoi(tokens[5].c_str());
+		int height = (int)atoi(tokens[6].c_str());
+		int spriteIdTL = (int)atoi(tokens[7].c_str());
+		int spriteIdT = (int)atoi(tokens[8].c_str());
+		int spriteIdTR = (int)atoi(tokens[9].c_str());
+		int spriteIdML = (int)atoi(tokens[10].c_str());
+		int spriteIdM = (int)atoi(tokens[11].c_str());
+		int spriteIdMR = (int)atoi(tokens[12].c_str());
+		int spriteIdBL = (int)atoi(tokens[13].c_str());
+		int spriteIdB = (int)atoi(tokens[14].c_str());
+		int spriteIdBR = (int)atoi(tokens[15].c_str());
 
-	//	float cell_width = (float)atof(tokens[3].c_str());
-	//	float cell_height = (float)atof(tokens[4].c_str());
+		obj = new CSolidPlatform(x, y,
+			cell_width, cell_height,
+			width, height,
+			spriteIdTL, spriteIdT, spriteIdTR,
+			spriteIdML, spriteIdM, spriteIdMR,
+			spriteIdBL, spriteIdB, spriteIdBR);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+
 	//	int length = atoi(tokens[5].c_str());
 	//	int sprite_begin = atoi(tokens[6].c_str());
 	//	int sprite_middle = atoi(tokens[7].c_str());
@@ -137,8 +159,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//		sprite_begin, sprite_middle, sprite_end
 	//	);
 
-	//	break;
-	//}
+		break;
+	}
 
 	//case OBJECT_TYPE_PORTAL:
 	//{
@@ -153,7 +175,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//default:
 	//	DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 	//	return;
-	//}
+	}
 
 	//// General object setup
 	//obj->SetPosition(x, y);
@@ -243,17 +265,18 @@ void CPlayScene::Update(DWORD dt)
 	//	coObjects.push_back(objects[i]);
 	//}
 
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt);
-	}
+	//for (size_t i = 0; i < objects.size(); i++)
+	//{
+	//	objects[i]->Update(dt);
+	//}
+	CGameObjectsManager::GetInstance()->Update(dt);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
+	if (CGameObjectsManager::GetInstance()->GetPlayer() == NULL) return;
 
 	// Update camera to follow mario
 	float cx, cy;
-	player->GetPosition(cx, cy);
+	CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
@@ -269,8 +292,10 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	//for (int i = 0; i < objects.size(); i++)
+	//	objects[i]->Render();
+	CGameObjectsManager::GetInstance()->Render();
+	background->Render();
 }
 
 /*
@@ -294,33 +319,35 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	//for (int i = 0; i < objects.size(); i++)
+	//	delete objects[i];
 
-	objects.clear();
-	player = NULL;
+	//objects.clear();
+	//player = NULL;
+	CGameObjectsManager::GetInstance()->Clear();
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
-bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+
 
 void CPlayScene::PurgeDeletedObjects()
 {
-	vector<LPGAMEOBJECT>::iterator it;
-	for (it = objects.begin(); it != objects.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
+	//vector<LPGAMEOBJECT>::iterator it;
+	//for (it = objects.begin(); it != objects.end(); it++)
+	//{
+	//	LPGAMEOBJECT o = *it;
+	//	if (o->IsDeleted())
+	//	{
+	//		delete o;
+	//		*it = NULL;
+	//	}
+	//}
 
-	// NOTE: remove_if will swap all deleted items to the end of the vector
-	// then simply trim the vector, this is much more efficient than deleting individual items
-	objects.erase(
-		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
-		objects.end());
+	//// NOTE: remove_if will swap all deleted items to the end of the vector
+	//// then simply trim the vector, this is much more efficient than deleting individual items
+	//objects.erase(
+	//	std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
+	//	objects.end());
+	CGameObjectsManager::GetInstance()->PurgeDeletedObjects();
 }

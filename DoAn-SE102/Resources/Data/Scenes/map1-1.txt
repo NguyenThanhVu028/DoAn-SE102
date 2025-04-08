@@ -1,6 +1,7 @@
 # list of object assets to load in this scene
 [ASSETS]
-#mario.txt
+Resources\Data\Entities\mario.txt
+Resources\Data\Entities\solid_platform.txt
 #coin.txt
 #cloud.txt
 #brick.txt
@@ -8,10 +9,14 @@
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+#new type: 0 = Mario, 1 = Solid Platform
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-#0	120	10
+0	120	10
+
+#SOLID PLATFORM
+1	100	150	16	16	15	3	20001	20002	20003	20004	20005	20006	20007	20008	20009
 
 #COIN
 #4	100	120

@@ -21,16 +21,14 @@ protected:
 	float x; 
 	float y;
 
-	int state;
-
 	bool isDeleted; 
 
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
-	virtual void GetSpeed(float& vx, float& vy) { vx = vy = 0; }
+	virtual void GetSpeed(float& vx, float& vy) { vx = 0; vy = 0; }
 
-	int GetState() { return this->state; }
+	//int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
 
@@ -43,7 +41,7 @@ public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update(DWORD dt) {};
 	virtual void Render() = 0;
-	virtual void SetState(int state) { this->state = state; }
+	//virtual void SetState(int state) { this->state = state; }
 
 	// Collision ON or OFF ? This can change depending on object's state. For example: die
 	virtual int IsCollidable() { return 0; };

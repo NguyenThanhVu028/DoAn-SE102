@@ -1,6 +1,7 @@
 #pragma once
 
 #include "KeyEventHandler.h"
+#include "Background.h"
 
 /*
 *  Abstract class for a game scene
@@ -11,6 +12,7 @@ protected:
 	LPKEYEVENTHANDLER key_handler;
 	int id;
 	LPCWSTR sceneFilePath;
+	CBackground* background;
 
 public: 
 	CScene(int id, LPCWSTR filePath)
@@ -24,7 +26,7 @@ public:
 	virtual void Load() = 0;
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
-	virtual void Render() = 0; 
+	virtual void Render() = 0;
 };
 typedef CScene * LPSCENE;
 
