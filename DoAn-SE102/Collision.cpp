@@ -9,7 +9,7 @@ CCollision* CCollision::__instance = NULL;
 
 int CCollisionEvent::WasCollided() {
 	return
-		t >= 0.0f && t <= 1.0f && obj->IsDirectionColliable(nx, ny) == 1;
+		(t >= 0.0f && t <= 1.0f && obj->IsDirectionColliable(nx, ny) == 1) || isOverlap;
 }
 
 CCollision* CCollision::GetInstance()
@@ -146,6 +146,11 @@ LPCOLLISIONEVENT CCollision::SweptAABB(LPGAMEOBJECT objSrc, DWORD dt, LPGAMEOBJE
 
 	objSrc->GetBoundingBox(ml, mt, mr, mb);
 	objDest->GetBoundingBox(sl, st, sr, sb);
+
+	if (!(mt > sb || mb < st || mr < sl || ml > sr)) {
+		CCollisionEvent* e = new CCollisionEvent(0, 0, 0, 0, 0, objDest, objSrc, true);
+		return e;
+	}
 
 	SweptAABB(
 		ml, mt, mr, mb,

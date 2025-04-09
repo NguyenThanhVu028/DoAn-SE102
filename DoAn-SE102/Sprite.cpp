@@ -51,5 +51,8 @@ void CSprite::Draw(float x, float y)
 	this->sprite.matWorld = (this->matScaling * matTranslation);
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
+
+	D3DXMATRIX oldMatrix, newMatrix;
+	g->GetSpriteHandler()->GetViewTransform(&oldMatrix);
 }
 

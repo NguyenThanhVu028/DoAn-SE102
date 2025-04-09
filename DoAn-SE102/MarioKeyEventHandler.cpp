@@ -33,6 +33,9 @@ void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
 {
 	CMario* mario = (CMario*)(CGameObjectsManager::GetInstance()->GetPlayer());
 	switch (KeyCode) {
+	case DIK_1:
+		mario->SetState(MarioState::DIE);
+		break;
 	case DIK_S:
 		//float vx, vy;
 		//mario->GetSpeed(vx, vy);

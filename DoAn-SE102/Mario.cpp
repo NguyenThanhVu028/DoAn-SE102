@@ -10,7 +10,7 @@ void CMario::Update(DWORD dt) {
 	vx += ax * dt;
 	vy += ay * dt;
 
-	DebugOutTitle(L"Velocity: %f %f %f", prevVx, vx, maxVx);
+	//DebugOutTitle(L"Velocity: %f %f %f", prevVx, vx, maxVx);
 
 	if (maxVx != 0) {
 		if (maxVx * vx > 0) {
@@ -35,39 +35,98 @@ void CMario::Update(DWORD dt) {
 
 	//Check collision
 	CGameObjectsManager::GetInstance()->CheckCollision(this, dt);
-	//OnNoCollision(dt);
+
 }
 void CMario::Render() {
-	CAnimations::GetInstance()->Get(10001)->Render(x, y);
+	//CAnimations::GetInstance()->Get(10001)->Render(x, y);
 	if (state == MarioState::DIE) {
-
+		CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_DIE)->Render(x, y);
 	}
-	else if (isGrounded == false) {
-		if (vy < 0) {
-
+	else {
+		int aniId;
+		switch (level) {
+		case MarioLevel::SMALL:
+			aniId = GetAnimationSMALL();
+			break;
+		case MarioLevel::BIG:
+			aniId = GetAnimationBIG();
+			break;
+		case MarioLevel::FOX:
+			aniId = GetAnimationFOX();
+			break;
 		}
-		else {
+		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	}
+	//else if (isGrounded == false) {
+	//	if (vy < 0) {
 
+	//	}
+	//	else {
+
+	//	}
+	//}
+	//else {
+	//	if (level == MarioLevel::SMALL) {
+
+	//	}
+	//	else if (level == MarioLevel::BIG) {
+
+	//	}
+	//	else if (level == MarioLevel::FOX) {
+
+	//	}
+	//}
+}
+
+int CMario::GetAnimationSMALL() {
+	if (isGrounded == false) {
+		if (nx == 1) {
+			if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_JUMP_RIGHT;
+			else return MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_RIGHT;
+		}
+		else if (nx == -1) {
+			if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_JUMP_LEFT;
+			else return MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_LEFT;
+		}
+	//	//if (nx == 1 && abs(vx) < abs(MARIO_RUNNING_SPEED)) 
+	//	//else if(nx == 1)
+	}
+	if (vx == 0) {
+		if (nx == 1) return MARIO_SMALL_ANIMATION_IDLE_RIGHT;
+		return MARIO_SMALL_ANIMATION_IDLE_LEFT;
+	}
+	if (nx == 1) {
+		if(vx < 0) return MARIO_SMALL_ANIMATION_BRAKE_RIGHT;	
+		else {
+			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) return MARIO_SMALL_ANIMATION_WALK_RIGHT;
+			else if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_RUN_RIGHT;
+			else return MARIO_SMALL_ANIMATION_RUN_MAXSPEED_RIGHT;
 		}
 	}
 	else {
-		if (level == MarioLevel::SMALL) {
-
-		}
-		else if (level == MarioLevel::BIG) {
-
-		}
-		else if (level == MarioLevel::FOX) {
-
+		if (vx > 0) return MARIO_SMALL_ANIMATION_BRAKE_LEFT;	
+		else {
+			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) return MARIO_SMALL_ANIMATION_WALK_LEFT;
+			else if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_RUN_LEFT;
+			else return MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT;
 		}
 	}
+	return MARIO_SMALL_ANIMATION_IDLE_RIGHT;	//Default animation
+}
+
+int CMario::GetAnimationBIG() {
+	return MARIO_SMALL_ANIMATION_IDLE_RIGHT;
+}
+
+int CMario::GetAnimationFOX() {
+	return MARIO_SMALL_ANIMATION_IDLE_RIGHT;
 }
 
 void CMario::SetState(MarioState state) {
 	if (this->state == MarioState::DIE) return;
 	switch (state) {
 	case MarioState::DIE:
-		SetState(MarioState::DIE);
+		this->state = state;
 		break;
 	case MarioState::JUMP:
 		if (isGrounded == true) {
@@ -131,10 +190,9 @@ void CMario::SetState(MarioState state) {
 		ax = MARIO_RUNNING_ACCEL_X;
 		break;
 	case MarioState::SIT:
+		if (level == MarioLevel::SMALL) return;
 		break;
 	}
-
-
 }
 
 void CMario::OnNoCollision(DWORD dt) {
@@ -143,7 +201,7 @@ void CMario::OnNoCollision(DWORD dt) {
 	isGrounded = false;
 }
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
-	
+	DebugOutTitle(L"Collided %d", GetTickCount64());
 	if (e->ny != 0 && e->obj->IsBlocking()) {
 		vy = 0; ay = MARIO_GRAVITY;
 		if (e->ny < 0) isGrounded = true;

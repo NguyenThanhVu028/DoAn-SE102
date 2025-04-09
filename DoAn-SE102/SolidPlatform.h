@@ -31,5 +31,7 @@ public:
 	int IsDirectionColliable(float nx, float ny);
 
 	void RenderBoundingBox();
+
+	//int IsBlocking() { return 0; }
 };
 

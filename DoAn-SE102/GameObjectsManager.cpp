@@ -7,14 +7,15 @@ CGameObjectsManager* CGameObjectsManager::GetInstance() {
 }
 
 void CGameObjectsManager::Update(DWORD dt) {
-	player->Update(dt);
 	for (auto i : staticObjects) i->Update(dt);
 	for (auto i : movableObjects) i->Update(dt);
+	player->Update(dt);
 }
 void CGameObjectsManager::Render() {
-	player->Render();
+	
 	for (auto i : staticObjects) i->Render();
 	for (auto i : movableObjects) i->Render();
+	player->Render();
 }
 void CGameObjectsManager::Clear() {
 	for (auto i : staticObjects) delete i;
