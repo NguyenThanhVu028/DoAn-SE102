@@ -6,6 +6,7 @@
 
 #define MARIO_WALKING_SPEED 0.1f
 #define MARIO_RUNNING_SPEED 0.2f
+#define MARIO_RUNNING_MAXSPEED 0.25f
 
 #define MARIO_WALKING_ACCEL_X 0.0001f
 #define MARIO_RUNNING_ACCEL_X 0.0001f
@@ -21,6 +22,8 @@
 #define MARIO_GRAVITY 0.0006f
 
 #define MARIO_JUMP_DEFLECT_SPEED 0.4f
+
+#define MARIO_PMETER_MAX 1500
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
@@ -47,7 +50,7 @@
 #define MARIO_SMALL_ANIMATION_RUN_MAXSPEED_RIGHT 10101
 #define MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT	10111
 
-enum MarioState { DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, JUMP_WALK_RIGHT, JUMP_WALK_LEFT };
+enum MarioState { DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT };
 enum MarioLevel { SMALL, BIG, FOX };
 
 class CMario : public CMovableGameObject
@@ -58,7 +61,10 @@ class CMario : public CMovableGameObject
 	float maxVy;
 	bool isGrounded;
 
-	int lastJumpTime;
+	ULONGLONG lastJumpTime;
+
+	LONGLONG pMeter;
+	LONGLONG pMeterCheckpoint;
 
 public:
 
@@ -69,6 +75,8 @@ public:
 		maxVy = -MARIO_JUMP_SPEED;
 		isGrounded = false;
 		lastJumpTime = -1;
+		pMeter = 0;
+		pMeterCheckpoint = GetTickCount64();
 		//vy = -0.1f;
 	}
 

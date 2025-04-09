@@ -10,8 +10,6 @@ void CMario::Update(DWORD dt) {
 	vx += ax * dt;
 	vy += ay * dt;
 
-	//DebugOutTitle(L"Velocity: %f %f %f", prevVx, vx, maxVx);
-
 	if (maxVx != 0) {
 		if (maxVx * vx > 0) {
 			if (abs(vx) > abs(maxVx)) {
@@ -29,6 +27,7 @@ void CMario::Update(DWORD dt) {
 	else {
 		if (prevVx == 0 || prevVx * vx < 0) vx = 0;
 	}
+	DebugOutTitle(L"PMeter: %d %f", pMeter, vx);
 	if (vy < maxVy) vy = maxVy;
 	
 	//Some timers
@@ -81,11 +80,11 @@ void CMario::Render() {
 int CMario::GetAnimationSMALL() {
 	if (isGrounded == false) {
 		if (nx == 1) {
-			if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_JUMP_RIGHT;
+			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_JUMP_RIGHT;
 			else return MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_RIGHT;
 		}
 		else if (nx == -1) {
-			if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_JUMP_LEFT;
+			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_JUMP_LEFT;
 			else return MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_LEFT;
 		}
 	//	//if (nx == 1 && abs(vx) < abs(MARIO_RUNNING_SPEED)) 
@@ -99,7 +98,7 @@ int CMario::GetAnimationSMALL() {
 		if(vx < 0) return MARIO_SMALL_ANIMATION_BRAKE_RIGHT;	
 		else {
 			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) return MARIO_SMALL_ANIMATION_WALK_RIGHT;
-			else if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_RUN_RIGHT;
+			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_RUN_RIGHT;
 			else return MARIO_SMALL_ANIMATION_RUN_MAXSPEED_RIGHT;
 		}
 	}
@@ -107,7 +106,7 @@ int CMario::GetAnimationSMALL() {
 		if (vx > 0) return MARIO_SMALL_ANIMATION_BRAKE_LEFT;	
 		else {
 			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) return MARIO_SMALL_ANIMATION_WALK_LEFT;
-			else if (abs(vx) < abs(MARIO_RUNNING_SPEED)) return MARIO_SMALL_ANIMATION_RUN_LEFT;
+			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_RUN_LEFT;
 			else return MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT;
 		}
 	}
@@ -181,16 +180,53 @@ void CMario::SetState(MarioState state) {
 		break;
 	case MarioState::RUN_LEFT:
 		nx = -1;
-		maxVx = -MARIO_RUNNING_SPEED;
+		//if (!isGrounded) {
+		//	if(vx > 0) ax = -MARIO_RUNNING_ACCEL_X;
+		//}
+		//else 
 		ax = -MARIO_RUNNING_ACCEL_X;
+		if (isGrounded && vx < -MARIO_WALKING_SPEED) {
+			pMeter += GetTickCount64() - pMeterCheckpoint;
+			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
+		}
+		else {
+			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) * 0.5;
+			if (pMeter < 0) pMeter = 0;
+		}
+		pMeterCheckpoint = GetTickCount64();
+
+		if (pMeter >= MARIO_PMETER_MAX) maxVx = -MARIO_RUNNING_MAXSPEED;
+		else maxVx = -MARIO_RUNNING_SPEED;
+
 		break;
 	case MarioState::RUN_RIGHT:
 		nx = 1;
-		maxVx = MARIO_RUNNING_SPEED;
+		/*if (!isGrounded) {
+			if(vx < 0) ax = MARIO_RUNNING_ACCEL_X;
+		}
+		else*/ 
 		ax = MARIO_RUNNING_ACCEL_X;
+		if (isGrounded && vx > MARIO_WALKING_SPEED) {
+			pMeter += GetTickCount64() - pMeterCheckpoint;
+			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
+		}
+		else {
+			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) * 0.5;
+			if (pMeter < 0) pMeter = 0;
+		}
+		pMeterCheckpoint = GetTickCount64();
+
+		if (pMeter >= MARIO_PMETER_MAX) maxVx = MARIO_RUNNING_MAXSPEED;
+		else maxVx = MARIO_RUNNING_SPEED;
+
 		break;
 	case MarioState::SIT:
 		if (level == MarioLevel::SMALL) return;
+		break;
+	case MarioState::NOT_RUN:
+		pMeter -= (GetTickCount64() - pMeterCheckpoint) * 0.5;
+		if (pMeter < 0) pMeter = 0;
+		pMeterCheckpoint = GetTickCount64();
 		break;
 	}
 }
@@ -201,7 +237,7 @@ void CMario::OnNoCollision(DWORD dt) {
 	isGrounded = false;
 }
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
-	DebugOutTitle(L"Collided %d", GetTickCount64());
+	//DebugOutTitle(L"Collided %d", GetTickCount64());
 	if (e->ny != 0 && e->obj->IsBlocking()) {
 		vy = 0; ay = MARIO_GRAVITY;
 		if (e->ny < 0) isGrounded = true;

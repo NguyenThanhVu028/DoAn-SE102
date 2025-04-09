@@ -27,6 +27,8 @@ void CMarioKeyEventHandler::KeyState(BYTE* state)
 	}
 	else mario->SetState(MarioState::IDLE);
 
+	if (!(game->IsKeyDown(DIK_LEFTARROW) && game->IsKeyDown(DIK_A)) && !(game->IsKeyDown(DIK_RIGHTARROW) && game->IsKeyDown(DIK_A))) mario->SetState(MarioState::NOT_RUN);
+
 }
 
 void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
