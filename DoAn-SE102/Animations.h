@@ -12,6 +12,7 @@ class CAnimations
 public:
 	void Add(int id, LPANIMATION ani);
 	LPANIMATION Get(int id);
+	LPANIMATION GetAsInstance(int id);
 	void Clear();
 
 	static CAnimations* GetInstance();

@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Entities\Blocks">
       <UniqueIdentifier>{3cbd7295-ee4b-4f9a-a4e7-2509fd16fcbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Entities\Effects">
+      <UniqueIdentifier>{15364309-53e2-469f-9530-c78529fdf71b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Effects">
+      <UniqueIdentifier>{01e88260-2fac-4bca-8f1e-c0be1d1c8b41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -135,6 +141,21 @@
     <ClInclude Include="SolidPlatform.h">
       <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
+    <ClInclude Include="CoinQuestionBlock.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBlock.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinEffect.h">
+      <Filter>Header Files\Entities\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreEffect.h">
+      <Filter>Header Files\Entities\Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -193,6 +214,21 @@
     </ClCompile>
     <ClCompile Include="SolidPlatform.cpp">
       <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinQuestionBlock.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBlock.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinEffect.cpp">
+      <Filter>Source Files\Entities\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreEffect.cpp">
+      <Filter>Source Files\Entities\Effects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

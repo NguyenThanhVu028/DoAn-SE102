@@ -50,6 +50,7 @@ class CGame
 	float cam_y = 0.0f;
 
 	int coin = 0;
+	int score = 0;
 
 	HINSTANCE hInstance;
 
@@ -112,6 +113,10 @@ public:
 	void SetCoin(int x) { coin = x; }
 	void GetCoin(int& x) { x = coin; }
 	void IncreaseCoin(int x) { coin += x; }
+
+	void SetScore(int x) { score = x; }
+	void GetScore(int& x) { x = score; }
+	void IncreaseScore(int x) { score += x; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);

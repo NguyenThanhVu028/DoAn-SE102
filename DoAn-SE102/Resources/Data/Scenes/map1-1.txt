@@ -2,23 +2,31 @@
 [ASSETS]
 Resources\Data\Entities\mario.txt
 Resources\Data\Entities\solid_platform.txt
+Resources\Data\Entities\question_block.txt
+Resources\Data\Entities\effects.txt
 #coin.txt
 #cloud.txt
 #brick.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
-#new type: 0 = Mario, 1 = Solid Platform
+# type: 
+#new type: 
+#	0 = Mario
+#	10 = Solid Platform
+#	20 = Empty Question Block
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
 0	120	100
 
 #SOLID PLATFORM
-1	0	150	16	16	50	3	20011	20012	20013	20014	20015	20016	20017	20018	20019
-1	-10	125	16	16	4	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
-1	600	125	16	16	4	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
+10	0	150	16	16	50	3	20011	20012	20013	20014	20015	20016	20017	20018	20019
+10	-10	125	16	16	4	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
+10	600	125	16	16	4	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
+
+#QUESTION BLOCK
+21	120	100
 
 #COIN
 #4	100	120

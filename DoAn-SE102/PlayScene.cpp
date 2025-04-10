@@ -115,13 +115,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x,y);
 		CGameObjectsManager::GetInstance()->SetPlayer(obj);
-	//	player = (CMario*)obj;  
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	//case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
-	//case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	//case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
 	case OBJECT_TYPE_SOLID_PLATFORM:
 	{
@@ -158,10 +154,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//		cell_width, cell_height, length,
 	//		sprite_begin, sprite_middle, sprite_end
 	//	);
-
 		break;
 	}
-
+	case OBJECT_TYPE_EMPTY_QUESTIONBLOCK:
+		obj = new CQuestionBlock(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
+	case OBJECT_TYPE_COIN_QUESTIONBLOCK:
+		obj = new CCoinQuestionBlock(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
 	//case OBJECT_TYPE_PORTAL:
 	//{
 	//	float r = (float)atof(tokens[3].c_str());

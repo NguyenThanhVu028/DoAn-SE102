@@ -136,8 +136,11 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="CoinEffect.h" />
+    <ClInclude Include="CoinQuestionBlock.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectsManager.h" />
@@ -146,8 +149,10 @@
     <ClInclude Include="MarioKeyEventHandler.h" />
     <ClInclude Include="MovableGameObject.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ScoreEffect.h" />
     <ClInclude Include="SolidPlatform.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
@@ -159,8 +164,11 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="CoinEffect.cpp" />
+    <ClCompile Include="CoinQuestionBlock.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectsManager.cpp" />
@@ -169,7 +177,9 @@
     <ClCompile Include="MarioKeyEventHandler.cpp" />
     <ClCompile Include="MovableGameObject.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
+    <ClCompile Include="ScoreEffect.cpp" />
     <ClCompile Include="SolidPlatform.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />

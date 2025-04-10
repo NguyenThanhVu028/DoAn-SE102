@@ -1,4 +1,5 @@
 #include "GameObjectsManager.h"
+#include "debug.h"
 CGameObjectsManager* CGameObjectsManager::__instance = NULL;
 
 CGameObjectsManager* CGameObjectsManager::GetInstance() {
@@ -7,14 +8,20 @@ CGameObjectsManager* CGameObjectsManager::GetInstance() {
 }
 
 void CGameObjectsManager::Update(DWORD dt) {
+	int score; CGame::GetInstance()->GetScore(score);
+	DebugOutTitle(L"Coin: %d", score);
 	for (auto i : staticObjects) i->Update(dt);
 	for (auto i : movableObjects) i->Update(dt);
+	for (auto i : coinEffects) i->Update(dt);
+	for (auto i : scoreEffects) i->Update(dt);
 	player->Update(dt);
 }
 void CGameObjectsManager::Render() {
 	
 	for (auto i : staticObjects) i->Render();
 	for (auto i : movableObjects) i->Render();
+	for (auto i : coinEffects) i->Render();
+	for (auto i : scoreEffects) i->Render();
 	player->Render();
 }
 void CGameObjectsManager::Clear() {
@@ -23,6 +30,12 @@ void CGameObjectsManager::Clear() {
 
 	for (auto i : movableObjects) delete i;
 	movableObjects.clear();
+
+	for (auto i : coinEffects) delete i;
+	coinEffects.clear();
+
+	for (auto i : scoreEffects) delete i;
+	scoreEffects.clear();
 
 	delete player;
 	player = NULL;
@@ -74,3 +87,29 @@ void CGameObjectsManager::CheckCollision(LPGAMEOBJECT srcObj, DWORD dt) {
 }
 
 bool CGameObjectsManager::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+
+LPEFFECT CGameObjectsManager::GetCoinEffect(float x, float y, int value) {
+	for (CEffect* i : coinEffects) {
+		if (!i->IsEnabled()) {
+			i->SetPosition(x, y);
+			i->ReEnable(); return i;
+		}
+	}
+	CCoinEffect* newEffect = new CCoinEffect(x, y);
+	coinEffects.push_back(newEffect);
+	return newEffect;
+}
+
+LPEFFECT CGameObjectsManager::GetScoreEffect(float x, float y, int value) {
+	for (CEffect* i : scoreEffects) {
+		if (!i->IsEnabled()) {
+			i->SetPosition(x, y);
+			((CScoreEffect*)i)->SetValue(value);
+			i->ReEnable(); return i;
+		}
+	}
+	CScoreEffect* newEffect = new CScoreEffect(x, y);
+	newEffect->SetValue(value);
+	scoreEffects.push_back(newEffect);
+	return newEffect;
+}

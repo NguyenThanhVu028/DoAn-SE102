@@ -14,9 +14,17 @@ void CAnimation::Add(int spriteId, DWORD time)
 	frames.push_back(frame);
 }
 
-void CAnimation::Render(float x, float y)
+void CAnimation::Render(float x, float y, ULONGLONG flickering_time)
 {
 	ULONGLONG now = GetTickCount64();
+
+	//Flickering effect (used when Mario is untouchable)
+	if (flickering_time == 0) isFlickering = false;
+	else if (now - lastFlickeringTime > flickering_time) {
+		isFlickering = (isFlickering) ? false: true;
+		lastFlickeringTime = now;
+	}
+
 	if (currentFrame == -1)
 	{
 		currentFrame = 0;
@@ -27,6 +35,8 @@ void CAnimation::Render(float x, float y)
 		DWORD t = frames[currentFrame]->GetTime();
 		if (now - lastFrameTime > t)
 		{
+			//if (now - lastFrameTime < t + flickering_time) return;
+			if (isFlickering) return;
 			currentFrame++;
 			lastFrameTime = now;
 			if (currentFrame == frames.size()) currentFrame = 0;
@@ -35,5 +45,20 @@ void CAnimation::Render(float x, float y)
 	}
 
 	frames[currentFrame]->GetSprite()->Draw(x, y);
+}
+
+void CAnimation::Render1Frame(float x, float y) {
+	ULONGLONG now = GetTickCount64();
+	if (currentFrame == -1)
+	{
+		currentFrame = 0;
+	}
+	lastFrameTime = now;
+	frames[currentFrame]->GetSprite()->Draw(x, y);
+}
+
+void CAnimation::Reset() {
+	currentFrame = 0;
+	lastFrameTime = GetTickCount64();
 }
 

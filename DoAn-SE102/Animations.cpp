@@ -25,6 +25,16 @@ LPANIMATION CAnimations::Get(int id)
 	return ani;
 }
 
+LPANIMATION CAnimations::GetAsInstance(int id) {
+	if (animations[id] == NULL) {
+		DebugOut(L"[ERROR] Animation ID %d not found\n", id);
+		return NULL;
+	}
+	LPANIMATION newAni = new CAnimation();
+	*newAni = *animations[id];
+	return newAni;
+}
+
 void CAnimations::Clear()
 {
 	for (auto x : animations)
