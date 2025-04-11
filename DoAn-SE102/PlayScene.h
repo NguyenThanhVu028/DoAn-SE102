@@ -20,12 +20,15 @@ protected:
 	//LPGAMEOBJECT player;					
 
 	//vector<LPGAMEOBJECT> objects;
+	float mapLength, mapHeight;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
+
+	void _ParseSection_PROPERTIES(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
 	

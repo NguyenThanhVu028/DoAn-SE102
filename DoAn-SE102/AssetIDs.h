@@ -22,6 +22,11 @@
 
 #define OBJECT_TYPE_PORTAL	50
 
+#pragma region Scene properties
+#define SCENE_PROPERTY_LENGTH 1
+#define SCENE_PROPERTY_HEIGHT 2
+#pragma endregion
+
 
 #pragma region MARIO 
 

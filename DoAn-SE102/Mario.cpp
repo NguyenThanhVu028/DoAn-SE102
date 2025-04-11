@@ -128,6 +128,8 @@ void CMario::SetState(MarioState state) {
 	switch (state) {
 	case MarioState::DIE:
 		this->state = state;
+		vx = 0;
+		ax = 0;
 		break;
 	case MarioState::JUMP:
 		if (isGrounded == true) {

@@ -160,7 +160,11 @@ int WINAPI WinMain(
 	_In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow
 ) {
-	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	RECT desireClientRect{ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	AdjustWindowRectEx(&desireClientRect, WS_OVERLAPPEDWINDOW, false, 0);
+
+	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, desireClientRect.right - desireClientRect.left, desireClientRect.bottom - desireClientRect.top);
 
 	SetDebugWindow(hWnd);
 

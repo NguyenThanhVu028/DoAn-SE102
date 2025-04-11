@@ -18,7 +18,7 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
-	//player = NULL;
+	mapLength = mapHeight = 0;
 	background = new CBackground();
 	background->Clear();
 	CGameObjectsManager::GetInstance()->Clear();
@@ -29,6 +29,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
+#define SCENE_SECTION_PROPERTIES 3
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -192,6 +193,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//objects.push_back(obj);
 }
 
+void CPlayScene::_ParseSection_PROPERTIES(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+	int type = atoi(tokens[0].c_str());
+	
+	switch (type) {
+	case SCENE_PROPERTY_LENGTH:
+		mapLength = (float)atof(tokens[1].c_str());
+		break;
+	case SCENE_PROPERTY_HEIGHT:
+		mapHeight = (float)atof(tokens[1].c_str());
+		break;
+	}
+}
+
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -245,6 +266,7 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[PROPERTIES]") { section = SCENE_SECTION_PROPERTIES; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -254,6 +276,7 @@ void CPlayScene::Load()
 		{ 
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_SECTION_PROPERTIES: _ParseSection_PROPERTIES(line); break;
 		}
 	}
 
@@ -264,19 +287,6 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
-
-	//vector<LPGAMEOBJECT> coObjects;
-	//for (size_t i = 1; i < objects.size(); i++)
-	//{
-	//	coObjects.push_back(objects[i]);
-	//}
-
-	//for (size_t i = 0; i < objects.size(); i++)
-	//{
-	//	objects[i]->Update(dt);
-	//}
 	CGameObjectsManager::GetInstance()->Update(dt);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -291,6 +301,7 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
+	if (cx > mapLength - CGame::GetInstance()->GetBackBufferWidth()) cx = mapLength - CGame::GetInstance()->GetBackBufferWidth();
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 
