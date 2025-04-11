@@ -4,6 +4,7 @@ Resources\Data\Entities\mario.txt
 Resources\Data\Entities\solid_platform.txt
 Resources\Data\Entities\question_block.txt
 Resources\Data\Entities\effects.txt
+Resources\Data\Entities\background-1-1.txt
 #coin.txt
 #cloud.txt
 #brick.txt
@@ -15,6 +16,7 @@ Resources\Data\Entities\effects.txt
 #	0 = Mario
 #	10 = Solid Platform
 #	20 = Empty Question Block
+#	30 = Background
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
@@ -27,6 +29,10 @@ Resources\Data\Entities\effects.txt
 
 #QUESTION BLOCK
 21	120	100
+
+#BACKGROUND
+#type	x	y	Id	cWidth	cHeight	width	height
+30	16	100	40013	16	16	1	2	
 
 #COIN
 #4	100	120

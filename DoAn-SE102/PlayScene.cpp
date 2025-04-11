@@ -19,6 +19,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	//player = NULL;
+	background = new CBackground();
+	background->Clear();
 	CGameObjectsManager::GetInstance()->Clear();
 	key_handler = new CMarioKeyEventHandler(this);
 }
@@ -164,6 +166,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CCoinQuestionBlock(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
+	case OBJECT_TYPE_BACKGROUND:
+		if (tokens.size() < 8) break;
+		background->AddDetail((int)atoi(tokens[3].c_str()), x, y, (float)atof(tokens[4].c_str()), (float)atof(tokens[5].c_str()), (float)atof(tokens[6].c_str()), (float)atof(tokens[7].c_str()));
+		break;
 	//case OBJECT_TYPE_PORTAL:
 	//{
 	//	float r = (float)atof(tokens[3].c_str());
@@ -296,8 +302,8 @@ void CPlayScene::Render()
 {
 	//for (int i = 0; i < objects.size(); i++)
 	//	objects[i]->Render();
-	CGameObjectsManager::GetInstance()->Render();
 	background->Render();
+	CGameObjectsManager::GetInstance()->Render();
 }
 
 /*
@@ -327,6 +333,7 @@ void CPlayScene::Unload()
 	//objects.clear();
 	//player = NULL;
 	CGameObjectsManager::GetInstance()->Clear();
+	background->Clear();
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
