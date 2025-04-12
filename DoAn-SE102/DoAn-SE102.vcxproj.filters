@@ -156,6 +156,15 @@
     <ClInclude Include="ScoreEffect.h">
       <Filter>Header Files\Entities\Effects</Filter>
     </ClInclude>
+    <ClInclude Include="HardBlock.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiTilesBlock.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorBlock.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -229,6 +238,15 @@
     </ClCompile>
     <ClCompile Include="ScoreEffect.cpp">
       <Filter>Source Files\Entities\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="HardBlock.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiTilesBlock.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorBlock.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,8 @@ Resources\Data\Entities\solid_platform.txt
 Resources\Data\Entities\question_block.txt
 Resources\Data\Entities\effects.txt
 Resources\Data\Entities\background-1-1.txt
+Resources\Data\Entities\hard_block.txt
+Resources\Data\Entities\color_block.txt
 
 #coin.txt
 #cloud.txt
@@ -25,11 +27,34 @@ Resources\Data\Entities\background-1-1.txt
 #	0 = Mario
 #	10 = Solid Platform
 #	20 = Empty Question Block
+#	21 = Coin Question Block
 #	30 = Background
+#	40 = Hard block
+#	50 = Color block
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
 0	120	100
+
+#COLOR BLOCK
+#type	x	y	cWidth	cHeight	width	height	color
+#color: 0-RED 1-BLUE 2-GREEN 3-WHITE 4-ORANGE
+50	272	112	16	16	3 	5	1
+50	240	144	16	16	3	3	0
+
+50	512	80	16	16	4	7	3
+50	464	112	16	16	4	5	0
+50	400	144	16	16	5	3	2
+50	512	160	16	16	6	2	2
+
+50	1328	96	16	16	7	6	1
+50	1296	128	16	16	7	4	0
+50	1264	160	16	16	7	2	2
+
+50	2176	48	16	16	3	9	2
+50	2144	144	16	16	3	3	0
+
+50	1312	-80	16	16	3	2	0
 
 #SOLID PLATFORM
 10	0	192	16	16	39	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
@@ -45,7 +70,7 @@ Resources\Data\Entities\background-1-1.txt
 10	2256	192	16	16	35	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
 
 #QUESTION BLOCK
-21	120	100
+20	120	100
 
 #BACKGROUND
 #type	x	y	Id	cWidth	cHeight	width	height
@@ -229,6 +254,30 @@ Resources\Data\Entities\background-1-1.txt
 
 #CARD FRAME
 30	2683	107	40071	26	26	1	1
+
+#HARD BLOCK
+40	1504	112
+40	1520	112
+
+40	1568	176
+40	1584	176
+40	1600	176
+40	1584	160
+40	1600	160
+40	1600	144
+
+40	1664	144
+40	1664	160
+40	1664	176
+40	1680	160
+40	1680	176
+40	1696	176
+
+40	2256	80
+40	2272	80
+
+40	2256	144
+40	2272	144
 
 #COIN
 #4	100	120

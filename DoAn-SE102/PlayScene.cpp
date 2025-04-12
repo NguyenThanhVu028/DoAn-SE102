@@ -171,6 +171,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		if (tokens.size() < 8) break;
 		background->AddDetail((int)atoi(tokens[3].c_str()), x, y, (float)atof(tokens[4].c_str()), (float)atof(tokens[5].c_str()), (float)atof(tokens[6].c_str()), (float)atof(tokens[7].c_str()));
 		break;
+	case OBJECT_TYPE_HARD_BLOCK:
+		obj = new CHardBlock(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+	case OBJECT_TYPE_COLOR_BLOCK:
+		if (tokens.size() < 8) break;
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int width = (int)atoi(tokens[5].c_str());
+		int height = (int)atoi(tokens[6].c_str());
+		int color = (int)atoi(tokens[7].c_str());
+
+		obj = new CColorBlock(x, y,
+			cell_width, cell_height,
+			width, height,
+			color);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 	//case OBJECT_TYPE_PORTAL:
 	//{
 	//	float r = (float)atof(tokens[3].c_str());

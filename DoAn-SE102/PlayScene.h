@@ -7,6 +7,8 @@
 #include "SolidPlatform.h"
 #include "QuestionBlock.h"
 #include "CoinQuestionBlock.h"
+#include "HardBlock.h"
+#include "ColorBlock.h"
 //#include "Brick.h"
 //#include "Mario.h"
 //#include "Goomba.h"

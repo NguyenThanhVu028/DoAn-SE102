@@ -35,6 +35,7 @@ void CMario::Update(DWORD dt) {
 	//Some timers
 
 	//Check collision
+	isGrounded = false;
 	CGameObjectsManager::GetInstance()->CheckCollision(this, dt);
 
 }
@@ -238,13 +239,21 @@ void CMario::SetState(MarioState state) {
 void CMario::OnNoCollision(DWORD dt) {
 	x += vx * dt;
 	y += vy * dt;
-	isGrounded = false;
+	//isGrounded = false;
 }
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
-	//DebugOutTitle(L"Collided %d", GetTickCount64());
 	if (e->ny != 0 && e->obj->IsBlocking()) {
 		vy = 0; ay = MARIO_GRAVITY;
-		if (e->ny < 0) isGrounded = true;
+		if (e->ny < 0) {
+			isGrounded = true;
+			float ml, mt, mr, mb;
+			float objl, objt, objr , objb;
+			GetBoundingBox(ml, mt, mr, mb);
+			e->obj->GetBoundingBox(objl, objt, objr, objb);
+			if (!(mr < objl|| ml > objr)) {
+				isGrounded = true;
+			}
+		}
 	}
 	if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = 0;
