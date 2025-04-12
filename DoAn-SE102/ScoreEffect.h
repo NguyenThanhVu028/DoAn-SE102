@@ -3,7 +3,7 @@
 #include "Effect.h"
 #include "Animations.h"
 
-#define DEFAULT_DURATION 600
+#define SCORE_DEFAULT_DURATION 600
 
 #define SCORE_EFFECT_START_VY 0.075f
 //Animation Ids
@@ -21,7 +21,7 @@ class CScoreEffect : public CEffect
 	int value;
 	float vy;
 public:
-	CScoreEffect(float x, float y, int value = 100, ULONGLONG duration = DEFAULT_DURATION) : CEffect(x, y, duration) {
+	CScoreEffect(float x, float y, int value = 100, ULONGLONG duration = SCORE_DEFAULT_DURATION) : CEffect(x, y, duration) {
 		SetValue(value);
 		ReEnable();
 	}

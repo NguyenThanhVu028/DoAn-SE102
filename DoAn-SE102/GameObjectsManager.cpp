@@ -77,10 +77,15 @@ void CGameObjectsManager::PurgeDeletedObjects()
 	//	objects.end());
 }
 
-void CGameObjectsManager::CheckCollision(LPGAMEOBJECT srcObj, DWORD dt) {
+void CGameObjectsManager::CheckCollisionWith(bool player, bool movableObjects, bool staticObjects, LPGAMEOBJECT srcObj, DWORD dt) {
 	vector<LPGAMEOBJECT> temp;
-	for (auto i : staticObjects) temp.push_back(i);
-	for (auto i : movableObjects) temp.push_back(i);
+	if (player) temp.push_back(this->player);
+	if (movableObjects) {
+		for (auto i : this->movableObjects) temp.push_back(i);
+	}
+	if (staticObjects) {
+		for (auto i : this->staticObjects) temp.push_back(i);
+	}
 	CCollision::GetInstance()->Process(srcObj, dt, &temp);
 	//CCollision::GetInstance()->Process(srcObj, dt, &movableObjects);
 }

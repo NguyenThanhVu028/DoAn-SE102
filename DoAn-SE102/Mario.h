@@ -4,12 +4,12 @@
 #include "GameObjectsManager.h"
 #include "debug.h"
 
-#define MARIO_WALKING_SPEED 0.1f
+#define MARIO_WALKING_SPEED 0.07f
 #define MARIO_RUNNING_SPEED 0.2f
 #define MARIO_RUNNING_MAXSPEED 0.25f
 
-#define MARIO_WALKING_ACCEL_X 0.0001f
-#define MARIO_RUNNING_ACCEL_X 0.0001f
+#define MARIO_WALKING_ACCEL_X 0.000125f
+#define MARIO_RUNNING_ACCEL_X 0.000125f
 
 #define MARIO_DECEL_X 0.00015f
 #define MARIO_BRAKE_DECEL MARIO_DECEL_X * 2.5f
@@ -51,7 +51,7 @@
 #define MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT	10111
 
 enum MarioState { DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT };
-enum MarioLevel { SMALL, BIG, FOX };
+enum MarioLevel { SMALL, BIG, RACOON };
 
 class CMario : public CMovableGameObject
 {

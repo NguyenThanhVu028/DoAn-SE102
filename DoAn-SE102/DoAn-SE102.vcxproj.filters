@@ -67,6 +67,12 @@
     <Filter Include="Header Files\Entities\Effects">
       <UniqueIdentifier>{01e88260-2fac-4bca-8f1e-c0be1d1c8b41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\PiranhaPlant">
+      <UniqueIdentifier>{74f2add3-a14b-479c-9e9f-2a834be59d0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\PiranhaPlant">
+      <UniqueIdentifier>{f44157d1-5742-4de7-b8ab-a95120045896}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -165,6 +171,18 @@
     <ClInclude Include="ColorBlock.h">
       <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlant.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalPiranhaPlant.h">
+      <Filter>Header Files\Entities\PiranhaPlant</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalPiranhaPlantPipe.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -246,6 +264,18 @@
       <Filter>Source Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="ColorBlock.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalPiranhaPlant.cpp">
+      <Filter>Source Files\Entities\PiranhaPlant</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalPiranhaPlantPipe.cpp">
       <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
   </ItemGroup>

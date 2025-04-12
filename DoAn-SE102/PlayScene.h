@@ -9,6 +9,8 @@
 #include "CoinQuestionBlock.h"
 #include "HardBlock.h"
 #include "ColorBlock.h"
+#include "Pipe.h"
+#include "NormalPiranhaPlantPipe.h"
 //#include "Brick.h"
 //#include "Mario.h"
 //#include "Goomba.h"

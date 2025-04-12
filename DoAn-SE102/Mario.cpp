@@ -36,7 +36,7 @@ void CMario::Update(DWORD dt) {
 
 	//Check collision
 	isGrounded = false;
-	CGameObjectsManager::GetInstance()->CheckCollision(this, dt);
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(0, 1, 1, this, dt);
 
 }
 void CMario::Render() {
@@ -53,7 +53,7 @@ void CMario::Render() {
 		case MarioLevel::BIG:
 			aniId = GetAnimationBIG();
 			break;
-		case MarioLevel::FOX:
+		case MarioLevel::RACOON:
 			aniId = GetAnimationFOX();
 			break;
 		}
@@ -195,7 +195,7 @@ void CMario::SetState(MarioState state) {
 			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 		}
 		else {
-			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) * 0.5;
+			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
 			if (pMeter < 0) pMeter = 0;
 		}
 		pMeterCheckpoint = GetTickCount64();
@@ -216,7 +216,7 @@ void CMario::SetState(MarioState state) {
 			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 		}
 		else {
-			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) * 0.5;
+			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
 			if (pMeter < 0) pMeter = 0;
 		}
 		pMeterCheckpoint = GetTickCount64();

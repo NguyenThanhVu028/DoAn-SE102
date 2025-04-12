@@ -151,6 +151,10 @@
     <ClInclude Include="MarioKeyEventHandler.h" />
     <ClInclude Include="MovableGameObject.h" />
     <ClInclude Include="MultiTilesBlock.h" />
+    <ClInclude Include="NormalPiranhaPlant.h" />
+    <ClInclude Include="NormalPiranhaPlantPipe.h" />
+    <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
@@ -182,6 +186,10 @@
     <ClCompile Include="MarioKeyEventHandler.cpp" />
     <ClCompile Include="MovableGameObject.cpp" />
     <ClCompile Include="MultiTilesBlock.cpp" />
+    <ClCompile Include="NormalPiranhaPlant.cpp" />
+    <ClCompile Include="NormalPiranhaPlantPipe.cpp" />
+    <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
