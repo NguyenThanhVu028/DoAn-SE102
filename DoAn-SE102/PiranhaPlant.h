@@ -11,8 +11,6 @@ class CPiranhaPlant : public CGameObject
 protected:
 	float oriX, oriY;
 
-	//int direction;		//0: Top left	1: Bottom left	2: Top right	3: Bottom right
-
 	bool isActive;
 	bool hasRised;
 	float risingHeight;
@@ -29,5 +27,6 @@ public:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetActive(bool t) { isActive = t; }
+	bool IsRising();
 };
 

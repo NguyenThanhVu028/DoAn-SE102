@@ -217,7 +217,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
 	}
+	case OBJECT_TYPE_FIRE_PIRANHA_PLANT_PIPE:
+	{
+		if (tokens.size() < 9) break;
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = (int)atoi(tokens[5].c_str());
+		bool isVertical = (bool)atoi(tokens[6].c_str());
+		int endSide = (int)atoi(tokens[7].c_str());
+		int type = (int)atoi(tokens[8].c_str());
 
+		obj = new CFirePiranhaPlantPipe(x, y, cell_width, cell_height, length, isVertical, endSide, type);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
+	}
 	//case OBJECT_TYPE_PORTAL:
 	//{
 	//	float r = (float)atof(tokens[3].c_str());

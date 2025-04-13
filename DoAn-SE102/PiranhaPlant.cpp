@@ -10,17 +10,6 @@ void CPiranhaPlant::Update(DWORD dt) {
 		else return;
 	}
 	else {
-		//float pX, pY;
-		//CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(pX, pY);
-		//if (pX < x) {
-		//	if (pY < y) direction = 0;
-		//	else direction = 1;
-		//}
-		//else {
-		//	if (pY < y) direction = 2;
-		//	else direction = 3;
-		//}
-
 		if (timer <= risingTime) {
 			y = oriY - risingHeight * ((1.0f * timer / risingTime));
 		}
@@ -39,6 +28,14 @@ void CPiranhaPlant::Update(DWORD dt) {
 
 void CPiranhaPlant::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CMario*>(e->obj)) {
-		DebugOutTitle(L"Timer: %f", y);
+		//DebugOutTitle(L"Timer: %f", y);
 	}
 };
+
+bool CPiranhaPlant::IsRising() {
+	ULONGLONG timer = GetTickCount64() - checkPoint;
+	if (hasRised) {
+		if (timer <= risingTime || (timer > waitingTime + risingTime && timer < waitingTime + risingTime * 2.0f)) return true;
+	}
+	return false;
+}

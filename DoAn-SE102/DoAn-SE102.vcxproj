@@ -142,6 +142,8 @@
     <ClInclude Include="ColorBlock.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="FirePiranhaPlant.h" />
+    <ClInclude Include="FirePiranhaPlantPipe.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectsManager.h" />
@@ -177,6 +179,8 @@
     <ClCompile Include="ColorBlock.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="FirePiranhaPlant.cpp" />
+    <ClCompile Include="FirePiranhaPlantPipe.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectsManager.cpp" />

@@ -183,6 +183,12 @@
     <ClInclude Include="NormalPiranhaPlantPipe.h">
       <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
+    <ClInclude Include="FirePiranhaPlant.h">
+      <Filter>Header Files\Entities\PiranhaPlant</Filter>
+    </ClInclude>
+    <ClInclude Include="FirePiranhaPlantPipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -277,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="NormalPiranhaPlantPipe.cpp">
       <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="FirePiranhaPlant.cpp">
+      <Filter>Source Files\Entities\PiranhaPlant</Filter>
+    </ClCompile>
+    <ClCompile Include="FirePiranhaPlantPipe.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

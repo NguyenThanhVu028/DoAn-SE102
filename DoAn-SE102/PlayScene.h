@@ -11,6 +11,7 @@
 #include "ColorBlock.h"
 #include "Pipe.h"
 #include "NormalPiranhaPlantPipe.h"
+#include "FirePiranhaPlantPipe.h"
 //#include "Brick.h"
 //#include "Mario.h"
 //#include "Goomba.h"

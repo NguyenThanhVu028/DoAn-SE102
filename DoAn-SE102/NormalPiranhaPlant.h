@@ -8,7 +8,8 @@
 #define NORMAL_PIRANHA_PLANT_RED_RISING_HEIGHT 32
 
 #define NORMAL_PIRANHA_PLANT_RISING_TIME 500
-#define NORMAL_PIRANHA_PLANT_WAITING_TIME 700
+#define NORMAL_PIRANHA_PLANT_WAITING_TIME 1000
+
 //Animation Ids
 #define NORMAL_PIRANHA_GREEN_ANIMATION_RISING 50011
 #define NORMAL_PIRANHA_RED_ANIMATION_RISING 50021
@@ -32,5 +33,6 @@ public:
 	}
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void OnCollisionWith(LPCOLLISIONEVENT e){}
 };
 
