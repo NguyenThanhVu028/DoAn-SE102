@@ -3,6 +3,8 @@
 
 #include "debug.h"
 
+#include "LevelUpItem.h"
+
 #define BLOCK_PUSH_FACTOR 0.01f
 
 CCollision* CCollision::__instance = NULL;
@@ -174,7 +176,6 @@ void CCollision::Scan(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* objDe
 	for (UINT i = 0; i < objDests->size(); i++)
 	{
 		LPCOLLISIONEVENT e = SweptAABB(objSrc, dt, objDests->at(i));
-
 		if (e->WasCollided() == 1)
 			coEvents.push_back(e);
 		else
@@ -264,7 +265,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 				objSrc->SetPosition(x, y);
 
 				objSrc->OnCollisionWith(colY);
-
+				
 				//
 				// see if after correction on Y, is there still a collision on X ? 
 				//
@@ -344,7 +345,6 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 					x += dx;
 					y += dy;
 				}
-
 		objSrc->SetPosition(x, y);
 	}
 

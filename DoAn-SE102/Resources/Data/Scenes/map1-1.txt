@@ -10,6 +10,7 @@ Resources\Data\Entities\color_block.txt
 Resources\Data\Entities\pipe.txt
 Resources\Data\Entities\piranha_plant.txt
 Resources\Data\Entities\fireball.txt
+Resources\Data\Entities\items.txt
 
 #coin.txt
 #cloud.txt
@@ -76,12 +77,14 @@ Resources\Data\Entities\fireball.txt
 10	2256	192	16	16	35	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
 
 #QUESTION BLOCK
-20	120	128
+#20	120	128
 
 21	176	128
 21	192	128
 
 21	224	80
+
+22	240	80
 
 #BACKGROUND
 #type	x	y	Id	cWidth	cHeight	width	height

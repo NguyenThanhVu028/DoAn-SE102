@@ -23,6 +23,15 @@ public:
 	void SetAcceleration(float ax, float ay) { this->ax = ax; this->ay = ay; }
 	void GetAcceleration(float& ax, float& ay) { ax = this->ax; ay = this->ay; }
 
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Render() = 0;
+	virtual void Update(DWORD dt){}
+
+	virtual int IsCollidable() { return 0; };
+	virtual void OnNoCollision(DWORD dt) {};
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e) {};
+	virtual int IsBlocking() { return 1; }
+	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
+
 };
 

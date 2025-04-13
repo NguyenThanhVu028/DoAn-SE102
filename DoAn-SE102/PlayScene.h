@@ -7,6 +7,7 @@
 #include "SolidPlatform.h"
 #include "QuestionBlock.h"
 #include "CoinQuestionBlock.h"
+#include "LevelUpQuestionBlock.h"
 #include "HardBlock.h"
 #include "ColorBlock.h"
 #include "Pipe.h"

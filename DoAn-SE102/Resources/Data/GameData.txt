@@ -13,6 +13,7 @@ start	0
 -100	Resources\Textures\bbox.png
 0	Resources\Textures\mario.png
 10	Resources\Textures\tiles1.png
+11	Resources\Textures\tiles2.png
 20	Resources\Textures\misc-9.png
 21	Resources\Textures\misc-6.png
 30	Resources\Textures\enemies.png

@@ -79,6 +79,9 @@
     <Filter Include="Header Files\Entities\FireBall">
       <UniqueIdentifier>{e07cb37f-f58b-4888-af94-58d9349d405f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Entities\LevelUpItem">
+      <UniqueIdentifier>{e0cf2098-a03c-475f-807d-734bb1c45ef6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -196,6 +199,15 @@
       <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="FireBall.h">
+      <Filter>Header Files\Entities\FireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUpQuestionBlock.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUpItem.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -300,6 +312,15 @@
       <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
+      <Filter>Source Files\Entities\FireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelUpQuestionBlock.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelUpItem.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

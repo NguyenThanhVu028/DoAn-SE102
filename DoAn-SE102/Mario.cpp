@@ -2,6 +2,7 @@
 #include <string>
 #include "Utils.h"
 #include "QuestionBlock.h"
+#include "Mushroom.h"
 
 void CMario::Update(DWORD dt) {
 	int coin; CGame::GetInstance()->GetCoin(coin);
@@ -267,6 +268,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CQuestionBlock*>(e->obj)) {
 		dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
 	}
+	if (dynamic_cast<CLevelUpItem*>(e->src_obj)) {
+		OnCollisionWidthPowerUpItem(e);
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
@@ -274,6 +278,9 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 }
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e) {
 
+}
+void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
+	((CLevelUpItem*)e->src_obj)->Delete();
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {

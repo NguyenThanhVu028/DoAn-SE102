@@ -94,12 +94,13 @@ public:
 	MarioLevel GetLevel() { return level; }
 
 	int IsCollidable() { return state != MarioState::DIE; }
-	int IsBlocking() { return true; }
+	int IsBlocking() { return 0; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
+	void OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

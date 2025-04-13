@@ -24,7 +24,7 @@ protected:
 	bool isDeleted; 
 
 public: 
-	void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	virtual void GetSpeed(float& vx, float& vy) { vx = 0; vy = 0; }
 

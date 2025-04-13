@@ -146,17 +146,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			spriteIdML, spriteIdM, spriteIdMR,
 			spriteIdBL, spriteIdB, spriteIdBR);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
-
-	//	int length = atoi(tokens[5].c_str());
-	//	int sprite_begin = atoi(tokens[6].c_str());
-	//	int sprite_middle = atoi(tokens[7].c_str());
-	//	int sprite_end = atoi(tokens[8].c_str());
-
-	//	obj = new CPlatform(
-	//		x, y,
-	//		cell_width, cell_height, length,
-	//		sprite_begin, sprite_middle, sprite_end
-	//	);
 		break;
 	}
 	case OBJECT_TYPE_EMPTY_QUESTIONBLOCK:
@@ -165,6 +154,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_COIN_QUESTIONBLOCK:
 		obj = new CCoinQuestionBlock(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
+	case OBJECT_TYPE_LEVELUP_QUESTIONBLOCK:
+		obj = new CLevelUpQuestionBlock(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
 	case OBJECT_TYPE_BACKGROUND:
