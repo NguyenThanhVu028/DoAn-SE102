@@ -6,6 +6,7 @@
 #include "Effect.h"
 #include "CoinEffect.h"
 #include "ScoreEffect.h"
+#include "FireBall.h"
 class CGameObjectsManager
 {
 	static CGameObjectsManager* __instance;
@@ -24,6 +25,8 @@ class CGameObjectsManager
 
 	vector<LPEFFECT> scoreEffects;
 
+	vector<LPFIREBALL> fireBalls;
+
 public:
 	CGameObjectsManager() {
 		Clear();
@@ -35,6 +38,8 @@ public:
 
 	LPEFFECT GetCoinEffect(float x, float y, int value);
 	LPEFFECT GetScoreEffect(float x, float y, int value);
+	LPFIREBALL GetFireBall(float x, float y, float angle = 10);
+
 
 	void Update(DWORD dt);
 	void Render();
@@ -44,6 +49,6 @@ public:
 	vector<LPGAMEOBJECT> GetStaticObjects() { return staticObjects; }
 	void AddMovableObject(LPGAMEOBJECT p) { movableObjects.push_back(p); }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
-	void CheckCollisionWith(bool player, bool movableObjects, bool staticObjects, LPGAMEOBJECT srcObj, DWORD dt);
+	void CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool player, bool movableObjects, bool staticObjects);
 };
 

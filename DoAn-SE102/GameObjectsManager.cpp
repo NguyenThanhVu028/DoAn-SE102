@@ -13,6 +13,7 @@ void CGameObjectsManager::Update(DWORD dt) {
 	for (auto i : movableObjects) i->Update(dt);
 	for (auto i : coinEffects) i->Update(dt);
 	for (auto i : scoreEffects) i->Update(dt);
+	for (auto i : fireBalls) i->Update(dt);
 	player->Update(dt);
 }
 void CGameObjectsManager::Render() {
@@ -21,6 +22,7 @@ void CGameObjectsManager::Render() {
 	for (auto i : movableObjects) i->Render();
 	for (auto i : coinEffects) i->Render();
 	for (auto i : scoreEffects) i->Render();
+	for (auto i : fireBalls) i->Render();
 	player->Render();
 }
 void CGameObjectsManager::Clear() {
@@ -35,6 +37,9 @@ void CGameObjectsManager::Clear() {
 
 	for (auto i : scoreEffects) delete i;
 	scoreEffects.clear();
+
+	for (auto i : fireBalls) delete i;
+	fireBalls.clear();
 
 	delete player;
 	player = NULL;
@@ -77,7 +82,7 @@ void CGameObjectsManager::PurgeDeletedObjects()
 	//	objects.end());
 }
 
-void CGameObjectsManager::CheckCollisionWith(bool player, bool movableObjects, bool staticObjects, LPGAMEOBJECT srcObj, DWORD dt) {
+void CGameObjectsManager::CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool player = false, bool movableObjects = false, bool staticObjects = false) {
 	vector<LPGAMEOBJECT> temp;
 	if (player) temp.push_back(this->player);
 	if (movableObjects) {
@@ -116,4 +121,18 @@ LPEFFECT CGameObjectsManager::GetScoreEffect(float x, float y, int value) {
 	newEffect->SetValue(value);
 	scoreEffects.push_back(newEffect);
 	return newEffect;
+}
+
+LPFIREBALL CGameObjectsManager::GetFireBall(float x, float y, float angle) {
+	for (LPFIREBALL i : fireBalls) {
+		if (!i->IsEnabled()) {
+			i->SetPosition(x, y);
+			i->SetAngle(angle);
+			i->ReEnable(); return i;
+		}
+	}
+	LPFIREBALL newBall = new CFireBall(x, y);
+	newBall->SetAngle(angle);
+	newBall->ReEnable(); fireBalls.push_back(newBall);
+	return newBall;
 }

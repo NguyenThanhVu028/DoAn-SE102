@@ -73,6 +73,12 @@
     <Filter Include="Source Files\Entities\PiranhaPlant">
       <UniqueIdentifier>{f44157d1-5742-4de7-b8ab-a95120045896}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Entities\FireBall">
+      <UniqueIdentifier>{ff8080a5-ac1e-4257-a267-75f6f63a3d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\FireBall">
+      <UniqueIdentifier>{e07cb37f-f58b-4888-af94-58d9349d405f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -187,6 +193,9 @@
       <Filter>Header Files\Entities\PiranhaPlant</Filter>
     </ClInclude>
     <ClInclude Include="FirePiranhaPlantPipe.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -288,6 +297,9 @@
       <Filter>Source Files\Entities\PiranhaPlant</Filter>
     </ClCompile>
     <ClCompile Include="FirePiranhaPlantPipe.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

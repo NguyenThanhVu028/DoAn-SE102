@@ -373,7 +373,7 @@ void CPlayScene::Render()
 {
 	//for (int i = 0; i < objects.size(); i++)
 	//	objects[i]->Render();
-	background->Render();
+	//background->Render();
 	CGameObjectsManager::GetInstance()->Render();
 }
 

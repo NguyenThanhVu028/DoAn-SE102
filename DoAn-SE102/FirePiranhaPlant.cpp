@@ -1,4 +1,5 @@
 #include "FirePiranhaPlant.h"
+#include <algorithm>
 void CFirePiranhaPlant::Render() {
 	int aniToRender = FIRE_PIRANHA_PLANT_GREEN_ANIMATION_TL_IDLE;
 	switch (direction) {
@@ -51,14 +52,38 @@ void CFirePiranhaPlant::Render() {
 		}
 		break;
 	}
-	DebugOutTitle(L"Direction: %d %d %d", type, IsRising(), aniToRender);
+	//DebugOutTitle(L"Direction: %d %d %d", type, IsRising(), aniToRender);
 	CAnimations::GetInstance()->Get(aniToRender)->Render(x, y);
 }
 
 void CFirePiranhaPlant::Update(DWORD dt) {
-	CPiranhaPlant::Update(dt);
 	float pX, pY;
 	CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(pX, pY);
+	CPiranhaPlant::Update(dt);
+	if (!hasRised) hasShot = false;
+	else {
+		ULONGLONG timer = GetTickCount64() - checkPoint;
+		if (timer > risingTime + waitingTime * 0.5f) {
+			if (!hasShot) {
+				float tempAngle = (180 / 3.14f) * atanf(abs((pY - y) / (pX - x)));
+				if (pX - x < 0 && pY - y > 0) tempAngle = 180 - tempAngle;
+				if (pX - x < 0 && pY - y < 0) tempAngle = 180 + tempAngle;
+				if (pX - x > 0 && pY - y < 0) tempAngle = 360 - tempAngle;
+				float angle;
+				if (tempAngle > 0) angle = 17.5f;
+				if (tempAngle > 45) angle = 45;
+				if (tempAngle > 90) angle = 135;
+				if (tempAngle > 135) angle = 162.5f;
+				if (tempAngle > 180) angle = 197.5f;
+				if (tempAngle > 225) angle = 225;
+				if (tempAngle > 270) angle = 315;
+				if (tempAngle > 315) angle = 342.5f;
+				CGameObjectsManager::GetInstance()->GetFireBall(x, y - 8, angle);
+				hasShot = true;
+			}
+		}
+	}
+	
 	if (pX < x) {
 		if (pY < y) direction = 0;
 		else direction = 1;

@@ -9,6 +9,7 @@ Resources\Data\Entities\hard_block.txt
 Resources\Data\Entities\color_block.txt
 Resources\Data\Entities\pipe.txt
 Resources\Data\Entities\piranha_plant.txt
+Resources\Data\Entities\fireball.txt
 
 #coin.txt
 #cloud.txt
@@ -290,7 +291,7 @@ Resources\Data\Entities\piranha_plant.txt
 40	2272	144
 
 #PIPE
-62	352	144	16	16	3	1	0	0
+62	352	144	16	16	3	1	0	1
 
 #COIN
 #4	100	120

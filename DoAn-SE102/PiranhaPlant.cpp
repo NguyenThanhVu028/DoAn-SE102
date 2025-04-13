@@ -23,7 +23,7 @@ void CPiranhaPlant::Update(DWORD dt) {
 			y = oriY; hasRised = false; checkPoint = GetTickCount64();
 		}
 	}
-	CGameObjectsManager::GetInstance()->CheckCollisionWith(1, 1, 0, this, dt);
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 1, 0);
 }
 
 void CPiranhaPlant::OnCollisionWith(LPCOLLISIONEVENT e) {

@@ -38,8 +38,10 @@ class CFirePiranhaPlant : public CPiranhaPlant
 {
 	int type;
 	int direction;		//0: Top left	1: Bottom left	2: Top right	3: Bottom right
+	bool hasShot;
 public:
 	CFirePiranhaPlant(float x, float y, int type) : CPiranhaPlant(x, y) {
+		hasShot = false;
 		this->type = type;
 		switch (type) {
 		case FIRE_PIRANHA_PLANT_GREEN:

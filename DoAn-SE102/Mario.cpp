@@ -36,7 +36,7 @@ void CMario::Update(DWORD dt) {
 
 	//Check collision
 	isGrounded = false;
-	CGameObjectsManager::GetInstance()->CheckCollisionWith(0, 1, 1, this, dt);
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
 
 }
 void CMario::Render() {
@@ -136,7 +136,7 @@ void CMario::SetState(MarioState state) {
 		if (isGrounded == true) {
 			vy = -MARIO_JUMP_SPEED/2;
 			ay = -MARIO_JUMP_ACCEL;
-			ax = 0;
+			//ax = 0;
 			maxVy = -MARIO_JUMP_SPEED;
 			lastJumpTime = GetTickCount64();
 		}
@@ -171,6 +171,10 @@ void CMario::SetState(MarioState state) {
 			maxVx = 0;
 			if (vx > 0) ax = -MARIO_DECEL_X;
 			else ax = MARIO_DECEL_X;
+		}
+		else {
+			if (vx > 0) ax = -MARIO_DECEL_X * 0.2f;
+			else ax = MARIO_DECEL_X * 0.2f;
 		}
 		break;
 	case MarioState::WALK_LEFT:
