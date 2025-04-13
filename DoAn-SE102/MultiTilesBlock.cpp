@@ -1,12 +1,18 @@
 #include "MultiTilesBlock.h"
+#include "Game.h"
 void CMultiTilesBlock::Render() {
 	if (width <= 0 || height <= 0) return;
 	CSprites* sprites = CSprites::GetInstance();
 	int spriteIdToDraw;
 	for (int w = 0; w < width; w++) {
 		for (int h = 0; h < height; h++) {
+			float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
+			float screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
+			float tempX = x + cellWidth / 2.0f + w * cellWidth, tempY = y + cellHeight / 2.0f + h * cellHeight;
+			if (tempX < cX - cellWidth * 0.5f || tempX > cX + screenWidth + cellWidth * 0.5f) continue;
+			if (tempY < cY - cellHeight * 0.5f || tempY > cY + screenHeight + cellHeight * 0.5f) continue;
 			spriteIdToDraw = GetSpriteIdToDraw(w, h);
-			sprites->Get(spriteIdToDraw)->Draw(x + cellWidth / 2.0f + w * cellWidth, y + cellHeight / 2.0f + h * cellHeight);
+			sprites->Get(spriteIdToDraw)->Draw(tempX, tempY);
 		}
 	}
 }

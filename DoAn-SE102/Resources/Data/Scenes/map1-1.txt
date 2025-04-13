@@ -293,6 +293,9 @@ Resources\Data\Entities\fireball.txt
 #PIPE
 62	352	144	16	16	3	1	0	1
 
+61	1792	160	16	16	2	1	0	0
+62	1856	144	16	16	3	1	0	0
+
 #COIN
 #4	100	120
 #4	120	120

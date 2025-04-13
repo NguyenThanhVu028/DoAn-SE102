@@ -10,6 +10,9 @@ void CQuestionBlock::Update(DWORD dt) {
 }
 void CQuestionBlock::Render() {
 	if (!isVisible) return;
+	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
+	float screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
+	if (x < cX - 8 || x > cX + screenWidth + 8 || y < cY - 8 || y > cY + screenHeight + 8) return;
 	int aniId;
 	if (isAvailable) aniId = QUESTIONBLOCK_ANIMATION_AVAILABLE;
 	else aniId = QUESTIONBLOCK_ANIMATION_UNAVAILABLE;
