@@ -13,6 +13,7 @@
 #include "Pipe.h"
 #include "NormalPiranhaPlantPipe.h"
 #include "FirePiranhaPlantPipe.h"
+#include "GoombaSpawner.h"
 //#include "Brick.h"
 //#include "Mario.h"
 //#include "Goomba.h"

@@ -1,6 +1,7 @@
 #include "Goomba.h"
 #include "Game.h"
 #include "GameObjectsManager.h"
+#include "debug.h"
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - GOOMBA_WIDTH * 0.5f;
@@ -10,11 +11,12 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 }
 
 void CGoomba::Render() {
+	if (!isEnabled || isKilled) return;
 	//Check camera view
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
 	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
-	if (x < cX - GOOMBA_WIDTH * 0.5f || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f) return;
-	if (y < cY - GOOMBA_HEIGHT * 0.5f || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f) { isDeleted = true; return; }
+	if (x < cX - GOOMBA_WIDTH * 0.5f - ENEMY_DESPAWN_OFFSET || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f + ENEMY_DESPAWN_OFFSET) { isEnabled = false; return; }
+	if (y < cY - GOOMBA_HEIGHT * 0.5f - ENEMY_DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + ENEMY_DESPAWN_OFFSET) { isKilled = true; return; }
 
 	//Get animation Id
 	int aniToRender = GOOMBA_ANIMATION_WALKING;
@@ -33,9 +35,11 @@ void CGoomba::Render() {
 }
 
 void CGoomba::Update(DWORD dt) {
+	if (isKilled) return;
 	if (GetTickCount64() - dead_start > GOOMBA_DEAD_TIME && state == GoombaState::FLATTENED) {
-		this->isDeleted = true; return;
+		this->isKilled = true; return;
 	}
+	if (!isEnabled) return;
 	vy += ay * dt;
 	if (state != GoombaState::UPSIDE_DOWN) CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 1);
 	else CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 0);
@@ -73,4 +77,10 @@ void CGoomba::SetState(GoombaState state, int nx) {
 		vy = -GOOMBA_JUMP_DEFLECT_SPEED;
 		break;
 	}
+}
+
+void CGoomba::SetDirection(int nx) {
+	CMovableGameObject::SetDirection(nx);
+	if (nx == 1) vx = GOOMBA_MOVING_SPEED;
+	else vx = -GOOMBA_MOVING_SPEED;
 }

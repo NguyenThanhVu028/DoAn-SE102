@@ -224,6 +224,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
 	}
+	case OBJECT_TYPE_SPAWNER_GOOMBA:
+	{
+		if (tokens.size() < 7) return;
+		float lowTrespass = (float)atof(tokens[3].c_str());
+		float highTrespass = (float)atof(tokens[4].c_str());
+		bool isVertical = (bool)atoi(tokens[5].c_str());
+		bool sameDirection = (bool)atoi(tokens[6].c_str());
+
+		auto o = new CGoombaSpawner(lowTrespass, highTrespass, isVertical, x, y, sameDirection);
+		CGameObjectsManager::GetInstance()->AddSpawner(o);
+	}
+		break;
 	//case OBJECT_TYPE_PORTAL:
 	//{
 	//	float r = (float)atof(tokens[3].c_str());

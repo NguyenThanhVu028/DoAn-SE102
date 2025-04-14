@@ -14,6 +14,7 @@ void CGameObjectsManager::Update(DWORD dt) {
 	for (auto i : coinEffects) i->Update(dt);
 	for (auto i : scoreEffects) i->Update(dt);
 	for (auto i : fireBalls) i->Update(dt);
+	for (auto i : spawners) i->Update(dt);
 	player->Update(dt);
 }
 void CGameObjectsManager::Render() {
@@ -40,6 +41,9 @@ void CGameObjectsManager::Clear() {
 
 	for (auto i : fireBalls) delete i;
 	fireBalls.clear();
+
+	for (auto i : spawners) delete i;
+	spawners.clear();
 
 	delete player;
 	player = NULL;

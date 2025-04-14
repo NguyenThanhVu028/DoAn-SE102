@@ -150,6 +150,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectsManager.h" />
     <ClInclude Include="Goomba.h" />
+    <ClInclude Include="GoombaSpawner.h" />
     <ClInclude Include="HardBlock.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Leaf.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectsManager.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="GoombaSpawner.cpp" />
     <ClCompile Include="HardBlock.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LevelUpItem.cpp" />

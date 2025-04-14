@@ -7,6 +7,7 @@
 #include "CoinEffect.h"
 #include "ScoreEffect.h"
 #include "FireBall.h"
+#include "Spawner.h"
 class CGameObjectsManager
 {
 	static CGameObjectsManager* __instance;
@@ -27,6 +28,8 @@ class CGameObjectsManager
 
 	vector<LPFIREBALL> fireBalls;
 
+	vector<LPSPAWNER> spawners;
+
 public:
 	CGameObjectsManager() {
 		Clear();
@@ -46,6 +49,7 @@ public:
 	void Clear();
 	void PurgeDeletedObjects();
 	void AddStaticObject(LPGAMEOBJECT p) { staticObjects.push_back(p); }
+	void AddSpawner(LPSPAWNER e) { spawners.push_back(e); }
 	vector<LPGAMEOBJECT> GetStaticObjects() { return staticObjects; }
 	void AddMovableObject(LPGAMEOBJECT p) { movableObjects.push_back(p); }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);

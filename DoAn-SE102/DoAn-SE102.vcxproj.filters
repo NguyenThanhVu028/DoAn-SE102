@@ -79,17 +79,23 @@
     <Filter Include="Header Files\Entities\FireBall">
       <UniqueIdentifier>{e07cb37f-f58b-4888-af94-58d9349d405f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Entities\LevelUpItem">
-      <UniqueIdentifier>{e0cf2098-a03c-475f-807d-734bb1c45ef6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entities\LevelUpItem">
-      <UniqueIdentifier>{a1cccaaa-22d6-4c3f-9ad1-f23ad715d723}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Entities\Enemies">
       <UniqueIdentifier>{2713a757-bf2d-4a17-b0c8-c840801579ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Entities\Enemies">
       <UniqueIdentifier>{70e3af0d-364c-4bfd-ba90-57fa4830dece}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Spawners">
+      <UniqueIdentifier>{02973938-f6d9-4c96-858e-ba968cfebc6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\LevelUpItems">
+      <UniqueIdentifier>{e0cf2098-a03c-475f-807d-734bb1c45ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\LevelUpItems">
+      <UniqueIdentifier>{a1cccaaa-22d6-4c3f-9ad1-f23ad715d723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Spawners">
+      <UniqueIdentifier>{e99a5e7a-da6b-4e1c-911b-ae3d67c34e6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -217,18 +223,21 @@
       <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="Mushroom.h">
-      <Filter>Header Files\Entities\LevelUpItem</Filter>
+      <Filter>Header Files\Entities\LevelUpItems</Filter>
     </ClInclude>
     <ClInclude Include="Leaf.h">
-      <Filter>Header Files\Entities\LevelUpItem</Filter>
+      <Filter>Header Files\Entities\LevelUpItems</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="Goomba.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Spawner.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GoombaSpawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -342,18 +351,21 @@
       <Filter>Source Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="Mushroom.cpp">
-      <Filter>Source Files\Entities\LevelUpItem</Filter>
+      <Filter>Source Files\Entities\LevelUpItems</Filter>
     </ClCompile>
     <ClCompile Include="Leaf.cpp">
-      <Filter>Source Files\Entities\LevelUpItem</Filter>
+      <Filter>Source Files\Entities\LevelUpItems</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="Goomba.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Spawner.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="GoombaSpawner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

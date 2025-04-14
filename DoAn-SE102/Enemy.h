@@ -1,9 +1,15 @@
 #pragma once
 #include "MovableGameObject.h"
+
+#define ENEMY_DESPAWN_OFFSET 10
+
 class CEnemy : public CMovableGameObject
 {
+protected:
+	bool isKilled;		//When enemy is killed -> Spawner will delete it
+	bool isEnabled;		//When enemy is out of screen view -> Spawner can respawn it
 public:
-	CEnemy(float x, float y) : CMovableGameObject(x, y){}
+	CEnemy(float x, float y, int nx = 1) : CMovableGameObject(x, y) { isEnabled = true; isKilled = false; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Render() = 0;
@@ -16,5 +22,8 @@ public:
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 
 	virtual bool IsDead() = 0;
+	void SetEnable(bool t) { isEnabled = t; }
+	bool IsEnabled() { return isEnabled; }
+	bool IsKilled() { return isKilled; }
 };
 

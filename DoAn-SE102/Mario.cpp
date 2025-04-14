@@ -6,7 +6,7 @@
 #include "Goomba.h"
 
 void CMario::Update(DWORD dt) {
-	DebugOutTitle(L"jumpTime %d", jumpTime);
+	//DebugOutTitle(L"state %d", state);
 
 	if (GetTickCount64() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
 

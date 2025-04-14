@@ -23,9 +23,9 @@ class CGoomba : public CEnemy
 	GoombaState state;
 	ULONGLONG dead_start;
 public:
-	CGoomba(float x, float y) : CEnemy(x, y) {
+	CGoomba(float x, float y, int nx = 1) : CEnemy(x, y, nx) {
 		state = GoombaState::ALIVE;
-		vx = GOOMBA_MOVING_SPEED;
+		vx = (nx == 1) ? GOOMBA_MOVING_SPEED : -GOOMBA_MOVING_SPEED;
 		ay = GOOMBA_GRAVITY;
 	}
 
@@ -38,5 +38,7 @@ public:
 
 	bool IsDead();
 	void SetState(GoombaState state, int nx = 0);
+
+	void SetDirection(int nx);
 };
 
