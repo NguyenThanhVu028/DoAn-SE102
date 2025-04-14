@@ -82,6 +82,9 @@
     <Filter Include="Source Files\Entities\LevelUpItem">
       <UniqueIdentifier>{e0cf2098-a03c-475f-807d-734bb1c45ef6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\LevelUpItem">
+      <UniqueIdentifier>{a1cccaaa-22d6-4c3f-9ad1-f23ad715d723}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -208,6 +211,9 @@
       <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="Mushroom.h">
+      <Filter>Header Files\Entities\LevelUpItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -321,6 +327,9 @@
       <Filter>Source Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="Mushroom.cpp">
+      <Filter>Source Files\Entities\LevelUpItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Leaf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

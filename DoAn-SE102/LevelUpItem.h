@@ -11,7 +11,6 @@ public:
 	virtual void Update(DWORD dt) {};
 	virtual void OnNoCollision(DWORD dt) {};
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) {};
-
 	bool IsEnabled() { return isEnabled; }
 	virtual void ReEnable() { isEnabled = true; };
 

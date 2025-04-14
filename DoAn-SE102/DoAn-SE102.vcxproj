@@ -150,6 +150,7 @@
     <ClInclude Include="GameObjectsManager.h" />
     <ClInclude Include="HardBlock.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Leaf.h" />
     <ClInclude Include="LevelUpItem.h" />
     <ClInclude Include="LevelUpQuestionBlock.h" />
     <ClInclude Include="Mario.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectsManager.cpp" />
     <ClCompile Include="HardBlock.cpp" />
+    <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LevelUpItem.cpp" />
     <ClCompile Include="LevelUpQuestionBlock.cpp" />
     <ClCompile Include="main.cpp" />

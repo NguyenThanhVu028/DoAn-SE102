@@ -25,11 +25,6 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	bool IsRising();
-	void SetPosition(float x, float y) 
-	{ 
-		this->x = x; this->y = y; 
-	}
-
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
 };

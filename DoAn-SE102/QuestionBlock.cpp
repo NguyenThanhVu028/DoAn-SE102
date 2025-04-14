@@ -1,9 +1,9 @@
 #include "QuestionBlock.h"
 void CQuestionBlock::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-	left = x - 8;
-	top = y - 8;
-	right = x + 8;
-	bottom = y + 8;
+	left = x - QUESTIONBLOCK_WIDTH * 0.5f;
+	top = y - QUESTIONBLOCK_HEIGHT * 0.5f;
+	right = x + QUESTIONBLOCK_WIDTH * 0.5f;
+	bottom = y + QUESTIONBLOCK_HEIGHT * 0.5f;
 }
 void CQuestionBlock::Update(DWORD dt) {
 

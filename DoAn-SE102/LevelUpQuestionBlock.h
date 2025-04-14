@@ -2,6 +2,7 @@
 #include "QuestionBlock.h"
 #include "GameObject.h"
 #include "Mushroom.h"
+#include "Leaf.h"
 class CLevelUpQuestionBlock : public CQuestionBlock
 {
 	CLevelUpItem* item = NULL;
