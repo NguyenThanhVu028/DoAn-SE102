@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include "QuestionBlock.h"
 #include "Mushroom.h"
+#include "Goomba.h"
 
 void CMario::Update(DWORD dt) {
 	int coin; CGame::GetInstance()->GetCoin(coin);
@@ -250,7 +251,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (e->ny != 0 && e->obj->IsBlocking()) {
 		vy = 0; ay = MARIO_GRAVITY;
 		if (e->ny < 0) {
-			isGrounded = true;
+			//isGrounded = true;
 			float ml, mt, mr, mb;
 			float objl, objt, objr , objb;
 			GetBoundingBox(ml, mt, mr, mb);
@@ -271,10 +272,20 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CLevelUpItem*>(e->src_obj)) {
 		OnCollisionWidthPowerUpItem(e);
 	}
+	if (dynamic_cast<CGoomba*>(e->obj)) {
+		OnCollisionWithGoomba(e);
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
-
+	if((dynamic_cast<CGoomba*>(e->obj)->IsDead())) return;
+	if (e->ny < 0) {
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		dynamic_cast<CGoomba*>(e->obj)->SetState(GoombaState::FLATTENED);
+	}
+	else {
+		DebugOutTitle(L"Collided %f", x);
+	}
 }
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e) {
 

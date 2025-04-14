@@ -1,4 +1,5 @@
 #include "LevelUpQuestionBlock.h"
+#include "Goomba.h"
 
 void CLevelUpQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (!IsInteractable()) return;
@@ -31,6 +32,8 @@ void CLevelUpQuestionBlock::Update(DWORD dt) {
 			if (dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer())->GetLevel() == MarioLevel::SMALL) item = new CMushroom(x, y, nx);
 			else item = new CLeaf(x, y); 
 			item->ReEnable(); 
+			//auto i = new CGoomba(x, 16);
+			//CGameObjectsManager::GetInstance()->AddMovableObject(i);
 			hasSummonedItem = true; }
 	}
 	if (item != NULL) item->Update(dt);

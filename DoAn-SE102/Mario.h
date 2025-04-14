@@ -7,6 +7,7 @@
 #define MARIO_WALKING_SPEED 0.07f
 #define MARIO_RUNNING_SPEED 0.2f
 #define MARIO_RUNNING_MAXSPEED 0.25f
+#define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
 #define MARIO_WALKING_ACCEL_X 0.000125f
 #define MARIO_RUNNING_ACCEL_X 0.000125f
@@ -98,6 +99,7 @@ public:
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
+
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e);

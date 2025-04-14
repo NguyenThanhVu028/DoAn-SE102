@@ -22,6 +22,8 @@ public:
 	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }
 	void SetAcceleration(float ax, float ay) { this->ax = ax; this->ay = ay; }
 	void GetAcceleration(float& ax, float& ay) { ax = this->ax; ay = this->ay; }
+	void SetDirection(int nx) { this->nx = nx; }
+	int GetDirection() { return nx; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Render() = 0;

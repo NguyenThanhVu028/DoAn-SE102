@@ -85,6 +85,12 @@
     <Filter Include="Header Files\Entities\LevelUpItem">
       <UniqueIdentifier>{a1cccaaa-22d6-4c3f-9ad1-f23ad715d723}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\Enemies">
+      <UniqueIdentifier>{2713a757-bf2d-4a17-b0c8-c840801579ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Enemies">
+      <UniqueIdentifier>{70e3af0d-364c-4bfd-ba90-57fa4830dece}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -214,6 +220,12 @@
       <Filter>Header Files\Entities\LevelUpItem</Filter>
     </ClInclude>
     <ClInclude Include="Leaf.h">
+      <Filter>Header Files\Entities\LevelUpItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -330,6 +342,12 @@
       <Filter>Source Files\Entities\LevelUpItem</Filter>
     </ClCompile>
     <ClCompile Include="Leaf.cpp">
+      <Filter>Source Files\Entities\LevelUpItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

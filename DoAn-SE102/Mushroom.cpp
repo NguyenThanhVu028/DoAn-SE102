@@ -14,7 +14,7 @@ void CMushroom::Render() {
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
 	float screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
 	if (x < cX - MUSHROOM_WIDTH * 0.5f || x > cX + screenWidth + MUSHROOM_WIDTH * 0.5f) return;
-	if (y < cY - MUSHROOM_HEIGHT * 0.5f || y > cY + screenHeight + MUSHROOM_HEIGHT * 0.5f) return;
+	if (y < cY - MUSHROOM_HEIGHT * 0.5f || y > cY + screenHeight + MUSHROOM_HEIGHT * 0.5f) { isDeleted = true; return; }
 	CSprites::GetInstance()->Get(MUSHROOM_SPRITE)->Draw(x, y);
 }
 

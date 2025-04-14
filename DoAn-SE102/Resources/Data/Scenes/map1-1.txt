@@ -11,6 +11,7 @@ Resources\Data\Entities\pipe.txt
 Resources\Data\Entities\piranha_plant.txt
 Resources\Data\Entities\fireball.txt
 Resources\Data\Entities\items.txt
+Resources\Data\Entities\enemies.txt
 
 #coin.txt
 #cloud.txt
