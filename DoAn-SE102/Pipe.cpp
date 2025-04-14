@@ -20,9 +20,13 @@ void CPipe::LoadSpriteId() {
 			spriteIdTL = PIPE_VERTICAL_BL; spriteIdTR = PIPE_VERTICAL_BR;
 			spriteIdBL = PIPE_VERTICAL_TL; spriteIdBR = PIPE_VERTICAL_TR;
 		}
-		else {
+		else if(endSide == 2) {
 			spriteIdTL = spriteIdBL = PIPE_VERTICAL_TL;
 			spriteIdTR = spriteIdBR = PIPE_VERTICAL_TR;
+		}
+		else {
+			spriteIdTL = spriteIdBL = PIPE_VERTICAL_BL;
+			spriteIdTR = spriteIdBR = PIPE_VERTICAL_BR;
 		}
 	}
 	else {

@@ -32,6 +32,7 @@ Resources\Data\Entities\items.txt
 #	10 = Solid Platform
 #	20 = Empty Question Block
 #	21 = Coin Question Block
+#	22 = Level Up Question Block
 #	30 = Background
 #	40 = Hard block
 #	50 = Color block
@@ -76,15 +77,6 @@ Resources\Data\Entities\items.txt
 
 10	2256	192	16	16	35	2	20011	20012	20013	20014	20015	20016	20017	20018	20019
 
-#QUESTION BLOCK
-#20	120	128
-
-21	176	128
-21	192	128
-
-21	224	80
-
-22	240	80
 
 #BACKGROUND
 #type	x	y	Id	cWidth	cHeight	width	height
@@ -294,10 +286,32 @@ Resources\Data\Entities\items.txt
 40	2272	144
 
 #PIPE
+#id	x	y	cWidth	cHeight	length	verti	side	enemy
 62	352	144	16	16	3	1	0	1
 
 61	1792	160	16	16	2	1	0	0
 62	1856	144	16	16	3	1	0	0
+
+60	2256	160	16	16	2	1	3
+
+60	2320	160	16	16	2	1	0
+
+#QUESTION BLOCK
+#20	120	128
+
+21	176	128
+21	192	128
+
+21	224	80
+22	240	80
+
+21	416	96
+
+22	656	160
+
+21	704	128
+
+22	1472	144
 
 #COIN
 #4	100	120

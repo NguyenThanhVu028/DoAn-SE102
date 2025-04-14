@@ -51,7 +51,7 @@
 #define MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT	10111
 
 enum MarioState { DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT };
-enum MarioLevel { SMALL, BIG, RACOON };
+enum MarioLevel { SMALL, BIG, RACCOON };
 
 class CMario : public CMovableGameObject
 {

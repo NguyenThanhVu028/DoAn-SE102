@@ -54,7 +54,7 @@ void CMario::Render() {
 		case MarioLevel::BIG:
 			aniId = GetAnimationBIG();
 			break;
-		case MarioLevel::RACOON:
+		case MarioLevel::RACCOON:
 			aniId = GetAnimationFOX();
 			break;
 		}

@@ -15,9 +15,9 @@ void CLevelUpQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 }
 
 void CLevelUpQuestionBlock::Render() {
-	
+	if (item != NULL) item->Render();	
 	CQuestionBlock::Render();
-	if (item != NULL) item->Render();
+
 }
 
 void CLevelUpQuestionBlock::Update(DWORD dt) {
@@ -27,7 +27,11 @@ void CLevelUpQuestionBlock::Update(DWORD dt) {
 		}
 	}
 	if (GetTickCount64() - bounce_time_start > QUESTIONBLOCK_BOUNCE_TIME && !hasSummonedItem && !isAvailable) {
-		if (item == NULL) { item = new CLeaf(x, y); item->ReEnable(); hasSummonedItem = true; }
+		if (item == NULL) { 
+			if (dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer())->GetLevel() == MarioLevel::SMALL) item = new CMushroom(x, y, nx);
+			else item = new CLeaf(x, y); 
+			item->ReEnable(); 
+			hasSummonedItem = true; }
 	}
 	if (item != NULL) item->Update(dt);
 }
