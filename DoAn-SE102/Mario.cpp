@@ -6,9 +6,9 @@
 #include "Goomba.h"
 
 void CMario::Update(DWORD dt) {
-	int coin; CGame::GetInstance()->GetCoin(coin);
+	DebugOutTitle(L"jumpTime %d", jumpTime);
 
-	if (GetTickCount64() - lastJumpTime > MARIO_JUMP_TIME) ay = MARIO_GRAVITY;
+	if (GetTickCount64() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
 
 	float prevVx = vx;
 	vx += ax * dt;
@@ -136,7 +136,12 @@ void CMario::SetState(MarioState state) {
 		break;
 	case MarioState::JUMP:
 		if (isGrounded == true) {
-			vy = -MARIO_JUMP_SPEED/2;
+			//Adjust jump time based on player's speed
+			if (abs(vx) < MARIO_WALKING_SPEED * 0.3f) jumpTime = MARIO_JUMP_TIME;
+			else if (abs(vx) <= MARIO_WALKING_SPEED) jumpTime = MARIO_JUMP_WALK_TIME;
+			else if (abs(vx) <= MARIO_RUNNING_SPEED) jumpTime = MARIO_JUMP_RUN_TIME;
+			else if (abs(vx) <= MARIO_RUNNING_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
+			vy = -MARIO_JUMP_SPEED * 0.5f;
 			ay = -MARIO_JUMP_ACCEL;
 			//ax = 0;
 			maxVy = -MARIO_JUMP_SPEED;

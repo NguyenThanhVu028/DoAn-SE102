@@ -15,12 +15,16 @@
 #define MARIO_DECEL_X 0.00015f
 #define MARIO_BRAKE_DECEL MARIO_DECEL_X * 2.5f
 
-#define MARIO_JUMP_SPEED 0.175f
-#define MARIO_JUMP_TIME 230
-#define MARIO_JUMP_RUN_SPEED 0.6f
+#define MARIO_JUMP_TIME 220
+#define MARIO_JUMP_WALK_TIME 250
+#define MARIO_JUMP_RUN_TIME 275
+#define MARIO_JUMP_RUN_MAXSPEED_TIME 300
+#define MARIO_JUMP_SPEED 0.22f
+//#define MARIO_JUMP_RUN_SPEED 0.0.25f
+//#define MARIO_JUMP_RUN_MAXSPEED 0.27f
 #define MARIO_JUMP_ACCEL 0.001f
 
-#define MARIO_GRAVITY 0.0006f
+#define MARIO_GRAVITY 0.0008f
 
 #define MARIO_JUMP_DEFLECT_SPEED 0.4f
 
@@ -62,6 +66,7 @@ class CMario : public CMovableGameObject
 	float maxVy;
 	bool isGrounded;
 
+	ULONGLONG jumpTime;
 	ULONGLONG lastJumpTime;
 
 	LONGLONG pMeter;
@@ -76,6 +81,7 @@ public:
 		maxVy = -MARIO_JUMP_SPEED;
 		isGrounded = false;
 		lastJumpTime = -1;
+		jumpTime = MARIO_JUMP_TIME;
 		pMeter = 0;
 		pMeterCheckpoint = GetTickCount64();
 		//vy = -0.1f;

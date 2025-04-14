@@ -170,6 +170,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ScoreEffect.h" />
     <ClInclude Include="SolidPlatform.h" />
+    <ClInclude Include="Spawner.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Texture.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="ScoreEffect.cpp" />
     <ClCompile Include="SolidPlatform.cpp" />
+    <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
