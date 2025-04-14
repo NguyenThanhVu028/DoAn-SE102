@@ -346,17 +346,23 @@ void CPlayScene::Update(DWORD dt)
 	if (CGameObjectsManager::GetInstance()->GetPlayer() == NULL) return;
 
 	// Update camera to follow mario
-	float cx, cy;
-	CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(cx, cy);
+	//float cx, cy;
+	//CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
+	//cx -= game->GetBackBufferWidth() / 2;
+	//cy -= game->GetBackBufferHeight() / 2;
 
-	if (cx < 0) cx = 0;
-	if (cx > mapLength - CGame::GetInstance()->GetBackBufferWidth()) cx = mapLength - CGame::GetInstance()->GetBackBufferWidth();
+	float cX, cY; game->GetCamPos(cX, cY);
+	float pX, pY; CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(pX, pY);
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	if (pX > cX + game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE * 0.5f);
+	else if (pX < cX + game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE * 0.5f);
+
+	if (cX < 0) cX = 0;
+	if (cX > mapLength - CGame::GetInstance()->GetBackBufferWidth()) cX = mapLength - CGame::GetInstance()->GetBackBufferWidth();
+
+	CGame::GetInstance()->SetCamPos(cX, 0.0f /*cy*/);
 
 	//Remove objects that are deleted
 	PurgeDeletedObjects();

@@ -7,7 +7,7 @@ void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bot
 	left = x - MUSHROOM_WIDTH * 0.5f;
 	top = y - MUSHROOM_HEIGHT * 0.5f;
 	right = x + MUSHROOM_WIDTH * 0.5f;
-	bottom = y + MUSHROOM_HEIGHT * 0.5f;
+	bottom = top + MUSHROOM_HEIGHT;
 }
 
 void CMushroom::Render() {
