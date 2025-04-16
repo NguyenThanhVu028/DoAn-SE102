@@ -5,8 +5,8 @@
 #define QUESTIONBLOCK_BOUNCE_TIME 150
 #define QUESTIONBLOCK_BOUNCE_DISTANCE 16.0f
 
-#define QUESTIONBLOCK_HEIGHT 14
-#define QUESTIONBLOCK_WIDTH 14
+#define QUESTIONBLOCK_HEIGHT 16
+#define QUESTIONBLOCK_WIDTH 12
 
 //Aniamtion Ids
 #define QUESTIONBLOCK_ANIMATION_AVAILABLE 20011
@@ -28,6 +28,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	int IsCollidable() { return 1; };
 	bool IsInteractable() { return (GetTickCount64() - bounce_time_start > QUESTIONBLOCK_BOUNCE_TIME) && isAvailable; }
 	bool IsBouncing() { return (GetTickCount64() - bounce_time_start < QUESTIONBLOCK_BOUNCE_TIME); }
 };

@@ -6,16 +6,13 @@ protected:
 	float lowTrespass, highTrespass;
 	bool isVertical;
 	float x, y;
-	bool sameDirection;
+	int direction;
 
 	bool playerOut;
 	bool hasSpawned;
 public:
-	CSpawner(float lowTresPass, float highTresPass, bool isVertical, float x, float y, bool sameDirection) {
-		this->lowTrespass = lowTresPass;
-		this->highTrespass = highTresPass;
-		this->isVertical = isVertical;
-		this->x = x; this->y = y; this->sameDirection = sameDirection;
+	CSpawner(float x, float y, int direction) {
+		this->x = x; this->y = y; this->direction = direction;
 		playerOut = true;
 		hasSpawned = false;
 	}

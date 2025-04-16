@@ -5,7 +5,7 @@ class CGoombaSpawner : public CSpawner
 {
 	CGoomba* obj = NULL;
 public:
-	CGoombaSpawner(float lowTresPass, float highTresPass, bool isVertical, float x, float y, bool sameDirection) : CSpawner(lowTresPass, highTresPass, isVertical, x, y, sameDirection){}
+	CGoombaSpawner(float x, float y, int direction) : CSpawner(x, y, direction){}	//direction:	0:towards	1:away	2: left	3:right
 	void Spawn();
 	void Update(DWORD dt);
 };

@@ -226,13 +226,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SPAWNER_GOOMBA:
 	{
-		if (tokens.size() < 7) return;
-		float lowTrespass = (float)atof(tokens[3].c_str());
-		float highTrespass = (float)atof(tokens[4].c_str());
-		bool isVertical = (bool)atoi(tokens[5].c_str());
-		bool sameDirection = (bool)atoi(tokens[6].c_str());
+		if (tokens.size() < 3) return;
+		int direction = (int)atoi(tokens[3].c_str());
 
-		auto o = new CGoombaSpawner(lowTrespass, highTrespass, isVertical, x, y, sameDirection);
+		auto o = new CGoombaSpawner(x, y, direction);
 		CGameObjectsManager::GetInstance()->AddSpawner(o);
 	}
 		break;

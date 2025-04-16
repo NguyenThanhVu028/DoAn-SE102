@@ -10,15 +10,16 @@ void CQuestionBlock::Update(DWORD dt) {
 }
 void CQuestionBlock::Render() {
 	if (!isVisible) return;
+
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
 	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
 	if (x < cX - 8 || x > cX + screenWidth + 8 || y < cY - 8 || y > cY + screenHeight + 8) return;
+
 	int aniId;
 	if (isAvailable) aniId = QUESTIONBLOCK_ANIMATION_AVAILABLE;
 	else aniId = QUESTIONBLOCK_ANIMATION_UNAVAILABLE;
 
 	float tempX = x, tempY = y;
-	//float targetHieght = y - QUESTIONBLOCK_BUNCE_DISTANCE;
 	LONGLONG bounce_timer = GetTickCount64() - bounce_time_start;
 	if ( bounce_timer < QUESTIONBLOCK_BOUNCE_TIME) {
 		if(bounce_timer < QUESTIONBLOCK_BOUNCE_TIME * 0.5f){
@@ -28,7 +29,6 @@ void CQuestionBlock::Render() {
 			tempY = y - ((1 - (bounce_timer - QUESTIONBLOCK_BOUNCE_TIME * 0.5f) / (QUESTIONBLOCK_BOUNCE_TIME * 0.5f)) * QUESTIONBLOCK_BOUNCE_DISTANCE);
 		}
 	}
-	//DebugOutTitle(L"Collided %d %d %f %f",bounce_timer, GetTickCount64(), tempX, tempY);
 	CAnimations::GetInstance()->Get(aniId)->Render(tempX, tempY);
 }
 void CQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {

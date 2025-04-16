@@ -1,8 +1,6 @@
 #pragma once
 #include "MovableGameObject.h"
 
-#define ENEMY_DESPAWN_OFFSET 10
-
 class CEnemy : public CMovableGameObject
 {
 protected:

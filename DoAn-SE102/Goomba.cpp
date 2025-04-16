@@ -6,8 +6,8 @@
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - GOOMBA_WIDTH * 0.5f;
 	top = y - GOOMBA_HEIGHT * 0.5f;
-	right = x + GOOMBA_WIDTH * 0.5f;
-	bottom = y + GOOMBA_HEIGHT * 0.5f;
+	right = left + GOOMBA_WIDTH;
+	bottom = top + GOOMBA_HEIGHT - 1;
 }
 
 void CGoomba::Render() {
@@ -15,8 +15,8 @@ void CGoomba::Render() {
 	//Check camera view
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
 	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
-	if (x < cX - GOOMBA_WIDTH * 0.5f - ENEMY_DESPAWN_OFFSET || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f + ENEMY_DESPAWN_OFFSET) { isEnabled = false; return; }
-	if (y < cY - GOOMBA_HEIGHT * 0.5f - ENEMY_DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + ENEMY_DESPAWN_OFFSET) { isKilled = true; return; }
+	if (x < cX - GOOMBA_WIDTH * 0.5f - DESPAWN_OFFSET || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f + DESPAWN_OFFSET) { isEnabled = false; return; }
+	if (y < cY - GOOMBA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + DESPAWN_OFFSET) { isKilled = true; return; }
 
 	//Get animation Id
 	int aniToRender = GOOMBA_ANIMATION_WALKING;
