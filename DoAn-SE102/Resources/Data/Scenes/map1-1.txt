@@ -318,6 +318,10 @@ Resources\Data\Entities\enemies.txt
 #SPAWNER
 #id	x	y	direction
 71	232	183.9	0
+71	535	183.9	0
+71	839	167.9	0
+71	887	167.9	0
+
 
 #COIN
 #4	100	120
