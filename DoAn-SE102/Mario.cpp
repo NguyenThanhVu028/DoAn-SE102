@@ -43,67 +43,102 @@ void CMario::Update(DWORD dt) {
 }
 void CMario::Render() {
 	if (state == MarioState::DIE) {
-		CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_DIE)->Render(x, y);
+		if(aniToRender != NULL) aniToRender->Render(x, y);
+		//CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_DIE)->Render(x, y);
 	}
 	else {
-		int aniId;
 		switch (level) {
 		case MarioLevel::SMALL:
-			aniId = GetAnimationSMALL();
+			GetAnimationSMALL();
 			break;
 		case MarioLevel::BIG:
-			aniId = GetAnimationBIG();
+			GetAnimationBIG();
 			break;
 		case MarioLevel::RACCOON:
-			aniId = GetAnimationFOX();
+			GetAnimationFOX();
 			break;
 		}
-		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+		if(aniToRender != NULL) aniToRender->Render(x, y);
+		//CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	}
 }
 
-int CMario::GetAnimationSMALL() {
+void CMario::GetAnimationSMALL() {
 	if (isGrounded == false) {
 		if (nx == 1) {
-			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_JUMP_RIGHT;
-			else return MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_RIGHT;
+			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) { aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_RIGHT); return; }
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_RIGHT);
+				return;
+			}
 		}
 		else if (nx == -1) {
-			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_JUMP_LEFT;
-			else return MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_LEFT;
+			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_LEFT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_LEFT);
+				return;
+			}
 		}
-	//	//if (nx == 1 && abs(vx) < abs(MARIO_RUNNING_SPEED)) 
-	//	//else if(nx == 1)
 	}
 	if (vx == 0) {
-		if (nx == 1) return MARIO_SMALL_ANIMATION_IDLE_RIGHT;
-		return MARIO_SMALL_ANIMATION_IDLE_LEFT;
+		if (nx == 1) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
+			return;
+		}
+		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_LEFT);
+		return;
 	}
 	if (nx == 1) {
-		if(vx < 0) return MARIO_SMALL_ANIMATION_BRAKE_RIGHT;	
+		if (vx < 0) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_BRAKE_RIGHT);
+			return;
+		}
 		else {
-			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) return MARIO_SMALL_ANIMATION_WALK_RIGHT;
-			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_RUN_RIGHT;
-			else return MARIO_SMALL_ANIMATION_RUN_MAXSPEED_RIGHT;
+			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_WALK_RIGHT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_RIGHT);
+				return;
+			}
+			else { 
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_RIGHT);
+				return; 
+			}
 		}
 	}
 	else {
-		if (vx > 0) return MARIO_SMALL_ANIMATION_BRAKE_LEFT;	
+		if (vx > 0) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_BRAKE_LEFT);
+			return;
+		}
 		else {
-			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) return MARIO_SMALL_ANIMATION_WALK_LEFT;
-			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) return MARIO_SMALL_ANIMATION_RUN_LEFT;
-			else return MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT;
+			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_WALK_LEFT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_LEFT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT);
+				return;
+			}
 		}
 	}
-	return MARIO_SMALL_ANIMATION_IDLE_RIGHT;	//Default animation
 }
 
-int CMario::GetAnimationBIG() {
-	return MARIO_SMALL_ANIMATION_IDLE_RIGHT;
+void CMario::GetAnimationBIG() {
+	aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 }
 
-int CMario::GetAnimationFOX() {
-	return MARIO_SMALL_ANIMATION_IDLE_RIGHT;
+void CMario::GetAnimationFOX() {
+	aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 }
 
 void CMario::SetState(MarioState state) {
@@ -113,6 +148,7 @@ void CMario::SetState(MarioState state) {
 		this->state = state;
 		vx = 0;
 		ax = 0;
+		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_DIE);
 		break;
 	case MarioState::JUMP:
 		if (isGrounded == true) {
@@ -163,6 +199,7 @@ void CMario::SetState(MarioState state) {
 			if (vx > 0) ax = -MARIO_DECEL_X * 0.2f;
 			else ax = MARIO_DECEL_X * 0.2f;
 		}
+		this->state = state;
 		break;
 	case MarioState::WALK_LEFT:
 		nx = -1;

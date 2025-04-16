@@ -55,7 +55,7 @@
 #define MARIO_SMALL_ANIMATION_RUN_MAXSPEED_RIGHT 10101
 #define MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT	10111
 
-enum MarioState { DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT };
+enum MarioState { DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT, HOLDING };
 enum MarioLevel { SMALL, BIG, RACCOON };
 
 class CMario : public CMovableGameObject
@@ -72,6 +72,8 @@ class CMario : public CMovableGameObject
 	LONGLONG pMeter;
 	LONGLONG pMeterCheckpoint;
 
+	LPANIMATION aniToRender;
+
 public:
 
 	CMario(float x, float y) : CMovableGameObject(x, y) {
@@ -84,15 +86,16 @@ public:
 		jumpTime = MARIO_JUMP_TIME;
 		pMeter = 0;
 		pMeterCheckpoint = GetTickCount64();
+		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 		//vy = -0.1f;
 	}
 
 	void Update(DWORD dt);
 	void Render();
 
-	int GetAnimationSMALL();
-	int GetAnimationBIG();
-	int GetAnimationFOX();
+	void GetAnimationSMALL();
+	void GetAnimationBIG();
+	void GetAnimationFOX();
 
 	void SetState(MarioState state);
 	MarioState GetState() { return state; }

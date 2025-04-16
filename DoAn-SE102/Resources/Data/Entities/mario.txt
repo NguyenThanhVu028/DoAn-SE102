@@ -60,9 +60,14 @@
 
 #JUMP MAX SPEED RIGHT & LEFT
 
-#SIT RIGHT & LEFT 
+#SIT RIGHT & LEFT
+#RIGHT
 
-#BRACE RIGHT & LEFT 
+#LEFT
+
+#BRACE RIGHT & LEFT
+
+#----------------------------- RACCOON ------------------------------
 
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...

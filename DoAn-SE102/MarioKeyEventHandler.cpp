@@ -5,7 +5,7 @@ void CMarioKeyEventHandler::KeyState(BYTE* state)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)(CGameObjectsManager::GetInstance()->GetPlayer());
-
+	mario->SetState(MarioState::IDLE);
 	if (game->IsKeyDown(DIK_LEFTARROW)) {
 		if (game->IsKeyDown(DIK_A)) {
 			mario->SetState(MarioState::RUN_LEFT);

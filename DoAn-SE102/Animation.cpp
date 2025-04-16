@@ -93,6 +93,7 @@ void CAnimation::Reset() {
 }
 
 void CAnimation::SetDuration(int duration) {
+	if (duration == -1) ratio = 1;
 	int oldDuration = 0;
 	for (auto i : frames) oldDuration += i->GetTime();
 	ratio = 1.0f * duration / oldDuration;
