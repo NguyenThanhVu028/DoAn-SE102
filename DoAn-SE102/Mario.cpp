@@ -14,6 +14,7 @@ void CMario::Update(DWORD dt) {
 	vx += ax * dt;
 	vy += ay * dt;
 
+	//Velocity correction
 	if (maxVx != 0) {
 		if (maxVx * vx > 0) {
 			if (abs(vx) > abs(maxVx)) {
@@ -31,20 +32,17 @@ void CMario::Update(DWORD dt) {
 	else {
 		if (prevVx == 0 || prevVx * vx < 0) vx = 0;
 	}
-	//(L"PMeter: %d %f", pMeter, vx);
 	if (vy < maxVy) vy = maxVy;
-	
-	//Some timers
+	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 
 	//Check collision
-	isGrounded = false;
+	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
 
 }
 void CMario::Render() {
 	if (state == MarioState::DIE) {
 		if(aniToRender != NULL) aniToRender->Render(x, y);
-		//CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_DIE)->Render(x, y);
 	}
 	else {
 		switch (level) {
@@ -55,25 +53,27 @@ void CMario::Render() {
 			GetAnimationBIG();
 			break;
 		case MarioLevel::RACCOON:
-			GetAnimationFOX();
+			GetAnimationRACCOON();
 			break;
 		}
 		if(aniToRender != NULL) aniToRender->Render(x, y);
-		//CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	}
 }
 
 void CMario::GetAnimationSMALL() {
-	if (isGrounded == false) {
+	if (!isGrounded) {		//If Mario is falling
 		if (nx == 1) {
-			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) { aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_RIGHT); return; }
+			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) { 
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_RIGHT); 
+				return; 
+			}
 			else {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_RIGHT);
 				return;
 			}
 		}
 		else if (nx == -1) {
-			if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) {
+			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_LEFT);
 				return;
 			}
@@ -83,7 +83,7 @@ void CMario::GetAnimationSMALL() {
 			}
 		}
 	}
-	if (vx == 0) {
+	if (vx == 0) {					//If Mario is idling
 		if (nx == 1) {
 			aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 			return;
@@ -97,11 +97,11 @@ void CMario::GetAnimationSMALL() {
 			return;
 		}
 		else {
-			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_WALK_RIGHT);
 				return;
 			}
-			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) {
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_RIGHT);
 				return;
 			}
@@ -117,11 +117,11 @@ void CMario::GetAnimationSMALL() {
 			return;
 		}
 		else {
-			if (abs(vx) <= abs(MARIO_WALKING_SPEED)) {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_WALK_LEFT);
 				return;
 			}
-			else if (abs(vx) < abs(MARIO_RUNNING_MAXSPEED)) {
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_LEFT);
 				return;
 			}
@@ -134,11 +134,103 @@ void CMario::GetAnimationSMALL() {
 }
 
 void CMario::GetAnimationBIG() {
-	aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
+	aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_RIGHT);
+	if (!isGrounded) {
+		if (nx == 1) {
+			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) { 
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_RIGHT); 
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_FALL_RIGHT);
+				}
+				return; 
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_MAXSPEED_RIGHT);
+				return;
+			}
+		}
+		else if (nx == -1) {
+			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_LEFT);
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_FALL_LEFT);
+				}
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_MAXSPEED_LEFT);
+				return;
+			}
+		}
+	}
+	if (vx == 0) {
+		if (nx == 1) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_RIGHT);
+			return;
+		}
+		aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_LEFT);
+		return;
+	}
+	if (nx == 1) {
+		if (vx < 0) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_BRAKE_RIGHT);
+			return;
+		}
+		else {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_WALK_RIGHT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_RIGHT);
+				return;
+			}
+		}
+	}
+	else {
+		if (vx > 0) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_BRAKE_LEFT);
+			return;
+		}
+		else {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_WALK_LEFT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_LEFT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_LEFT);
+				return;
+			}
+		}
+	}
 }
 
-void CMario::GetAnimationFOX() {
+void CMario::GetAnimationRACCOON() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
+	if (!isGrounded) {
+
+	}
+	if (vx == 0) {
+		return;
+	}
+	if (nx == 1) {
+
+	}
+	else {
+
+	}
 }
 
 void CMario::SetState(MarioState state) {
@@ -153,10 +245,10 @@ void CMario::SetState(MarioState state) {
 	case MarioState::JUMP:
 		if (isGrounded == true) {
 			//Adjust jump time based on player's speed
-			if (abs(vx) < MARIO_WALKING_SPEED * 0.3f) jumpTime = MARIO_JUMP_TIME;
-			else if (abs(vx) <= MARIO_WALKING_SPEED) jumpTime = MARIO_JUMP_WALK_TIME;
-			else if (abs(vx) <= MARIO_RUNNING_SPEED) jumpTime = MARIO_JUMP_RUN_TIME;
-			else if (abs(vx) <= MARIO_RUNNING_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
+			if (abs(vx) < MARIO_WALK_SPEED * 0.3f) jumpTime = MARIO_JUMP_TIME;
+			else if (abs(vx) <= MARIO_WALK_SPEED) jumpTime = MARIO_JUMP_WALK_TIME;
+			else if (abs(vx) <= MARIO_RUN_SPEED) jumpTime = MARIO_JUMP_RUN_TIME;
+			else if (abs(vx) <= MARIO_RUN_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
 			vy = -MARIO_JUMP_SPEED * 0.5f;
 			ay = -MARIO_JUMP_ACCEL;
 			//ax = 0;
@@ -203,13 +295,13 @@ void CMario::SetState(MarioState state) {
 		break;
 	case MarioState::WALK_LEFT:
 		nx = -1;
-		maxVx = -MARIO_WALKING_SPEED;
-		ax = -MARIO_WALKING_ACCEL_X;
+		maxVx = -MARIO_WALK_SPEED;
+		ax = -MARIO_WALK_ACCEL_X;
 		break;
 	case MarioState::WALK_RIGHT:
 		nx = 1;
-		maxVx = MARIO_WALKING_SPEED;
-		ax = MARIO_WALKING_ACCEL_X;
+		maxVx = MARIO_WALK_SPEED;
+		ax = MARIO_WALK_ACCEL_X;
 		break;
 	case MarioState::RUN_LEFT:
 		nx = -1;
@@ -218,19 +310,19 @@ void CMario::SetState(MarioState state) {
 		//}
 		//else                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 
-		ax = -MARIO_RUNNING_ACCEL_X;
-		if (isGrounded && vx < -MARIO_WALKING_SPEED) {
+		ax = -MARIO_RUN_ACCEL_X;
+		if (isGrounded && vx < -MARIO_WALK_SPEED) {
 			pMeter += GetTickCount64() - pMeterCheckpoint;
 			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 		}
 		else {
-			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
+			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALK_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
 			if (pMeter < 0) pMeter = 0;
 		}
 		pMeterCheckpoint = GetTickCount64();
 
-		if (pMeter >= MARIO_PMETER_MAX) maxVx = -MARIO_RUNNING_MAXSPEED;
-		else maxVx = -MARIO_RUNNING_SPEED;
+		if (pMeter >= MARIO_PMETER_MAX) maxVx = -MARIO_RUN_MAXSPEED;
+		else maxVx = -MARIO_RUN_SPEED;
 
 		break;
 	case MarioState::RUN_RIGHT:
@@ -239,19 +331,19 @@ void CMario::SetState(MarioState state) {
 			if(vx < 0) ax = MARIO_RUNNING_ACCEL_X;
 		}
 		else*/ 
-		ax = MARIO_RUNNING_ACCEL_X;
-		if (isGrounded && vx > MARIO_WALKING_SPEED) {
+		ax = MARIO_RUN_ACCEL_X;
+		if (isGrounded && vx > MARIO_WALK_SPEED) {
 			pMeter += GetTickCount64() - pMeterCheckpoint;
 			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 		}
 		else {
-			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALKING_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
+			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALK_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
 			if (pMeter < 0) pMeter = 0;
 		}
 		pMeterCheckpoint = GetTickCount64();
 
-		if (pMeter >= MARIO_PMETER_MAX) maxVx = MARIO_RUNNING_MAXSPEED;
-		else maxVx = MARIO_RUNNING_SPEED;
+		if (pMeter >= MARIO_PMETER_MAX) maxVx = MARIO_RUN_MAXSPEED;
+		else maxVx = MARIO_RUN_SPEED;
 
 		break;
 	case MarioState::SIT:
@@ -318,8 +410,8 @@ void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-	left = x - MARIO_SMALL_BBOX_WIDTH / 2;
-	top = y - MARIO_SMALL_BBOX_HEIGHT / 2;
-	right = left + MARIO_SMALL_BBOX_WIDTH;
-	bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+	left = x - width / 2;
+	top = y - height / 2;
+	right = left + width;
+	bottom = top + height;
 }
