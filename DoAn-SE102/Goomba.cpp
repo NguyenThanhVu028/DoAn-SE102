@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "GameObjectsManager.h"
 #include "debug.h"
+#include "Mario.h"
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - GOOMBA_WIDTH * 0.5f;
@@ -52,6 +53,14 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = -vx;
 	}
+	if (dynamic_cast<CMario*>(e->src_obj)) {
+		OnCollisionWithMario(e);
+	}
+}
+
+void CGoomba::OnCollisionWithMario(LPCOLLISIONEVENT e) {
+	if (IsDead()) return;
+	if (e->ny < 0) SetState(GoombaState::FLATTENED);
 }
 
 void CGoomba::OnNoCollision(DWORD dt) {
@@ -60,7 +69,7 @@ void CGoomba::OnNoCollision(DWORD dt) {
 }
 
 bool CGoomba::IsDead() {
-	return (state == GoombaState::FLATTENED || state == GoombaState::UPSIDE_DOWN);
+	return (state == GoombaState::FLATTENED || state == GoombaState::UPSIDE_DOWN || !isEnabled);
 }
 
 void CGoomba::SetState(GoombaState state, int nx) {

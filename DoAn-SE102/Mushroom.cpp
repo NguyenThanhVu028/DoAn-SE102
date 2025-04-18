@@ -28,7 +28,6 @@ void CMushroom::Update(DWORD dt) {
 	else {
 		ay = MUSHROOM_GRAVITY;
 		vy += ay * dt;
-		DebugOutTitle(L"vy %f", vy);
 		CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 0, 1);
 	}
 }

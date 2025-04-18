@@ -16,9 +16,9 @@ void CLevelUpQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 }
 
 void CLevelUpQuestionBlock::Render() {
-	if (item != NULL) item->Render();	
+	if (dynamic_cast<CMushroom*>(item)) item->Render();	
 	CQuestionBlock::Render();
-
+	if (dynamic_cast<CLeaf*>(item)) item->Render();
 }
 
 void CLevelUpQuestionBlock::Update(DWORD dt) {

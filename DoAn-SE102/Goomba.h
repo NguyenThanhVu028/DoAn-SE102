@@ -40,5 +40,7 @@ public:
 	void SetState(GoombaState state, int nx = 0);
 
 	void SetDirection(int nx);
+
+	void OnCollisionWithMario(LPCOLLISIONEVENT e);
 };
 

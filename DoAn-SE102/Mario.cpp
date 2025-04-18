@@ -42,7 +42,7 @@ void CMario::Update(DWORD dt) {
 }
 void CMario::Render() {
 	if (state == MarioState::DIE) {
-		if(aniToRender != NULL) aniToRender->Render(x, y);
+		if(aniToRender != NULL) aniToRender->Render(x, y - (height - MARIO_SMALL_BBOX_HEIGHT) * 0.5f);
 	}
 	else {
 		switch (level) {
@@ -56,7 +56,7 @@ void CMario::Render() {
 			GetAnimationRACCOON();
 			break;
 		}
-		if(aniToRender != NULL) aniToRender->Render(x, y);
+		if(aniToRender != NULL) aniToRender->Render(x, y - (height - MARIO_SMALL_BBOX_HEIGHT) * 0.5f);
 	}
 }
 
@@ -379,7 +379,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = 0;
 	}
-	
 	//Dynamic cast
 	if (dynamic_cast<CQuestionBlock*>(e->obj)) {
 		dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
@@ -396,10 +395,11 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	if((dynamic_cast<CGoomba*>(e->obj)->IsDead())) return;
 	if (e->ny < 0) {
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		dynamic_cast<CGoomba*>(e->obj)->SetState(GoombaState::FLATTENED);
+		e->obj->OnCollisionWith(e);
+		/*dynamic_cast<CGoomba*>(e->obj)->SetState(GoombaState::FLATTENED);*/
 	}
 	else {
-		DebugOutTitle(L"Collided %f", x);
+		OnLevelDown();
 	}
 }
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e) {
@@ -407,11 +407,28 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e) {
 }
 void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
 	((CLevelUpItem*)e->src_obj)->Delete();
+	OnLevelUp();
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - width / 2;
-	top = y - height / 2;
+	bottom = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f;
+	top = bottom - height;
 	right = left + width;
-	bottom = top + height;
+	
+}
+
+void CMario::OnLevelUp() {
+	level = (MarioLevel)(level + 1);
+	height = MARIO_BIG_BBOX_HEIGHT;
+}
+
+void CMario::OnLevelDown() {
+	if (level == MarioLevel::SMALL) {
+
+	}
+	else {
+		level = (MarioLevel)(level - 1);
+		if (level == MarioLevel::SMALL) height = MARIO_SMALL_BBOX_HEIGHT;
+	}
 }

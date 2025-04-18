@@ -12,10 +12,23 @@ typedef CGameObject* LPGAMEOBJECT;
 struct CCollisionEvent;
 typedef CCollisionEvent* LPCOLLISIONEVENT;
 
+//struct COverlapDetail {
+//	float left, top, right, bottom;
+//	COverlapDetail(float left, float top, float right, float bottom) {
+//		this->left = left;
+//		this->top = top;
+//		this->right = right;
+//		this->bottom = bottom;
+//	}
+//};
+//typedef COverlapDetail* LPOVERLAPDETAIL;
+
 struct CCollisionEvent 
 {
 	LPGAMEOBJECT src_obj;		// source object : the object from which to calculate collision
 	LPGAMEOBJECT obj;			// the target object
+
+	//LPOVERLAPDETAIL overlap_detail;		//details if there is overlap
 	
 	float t, nx, ny;
 
@@ -36,6 +49,7 @@ struct CCollisionEvent
 		this->src_obj = src_obj;
 		this->isDeleted = false;
 		this->isOverlap = isOverlap;
+		//this->overlap_detail = overlap_detail;
 	}
 
 	int WasCollided();

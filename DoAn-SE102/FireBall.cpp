@@ -15,7 +15,7 @@ void CFireBall::Update(DWORD dt) {
 	x += vx * dt;
 	y += vy * dt;
 	float cx, cy;
-	float screenWidth, screenHeight;
+	int screenWidth, screenHeight;
 	CGame::GetInstance()->GetCamPos(cx, cy);
 	screenWidth = CGame::GetInstance()->GetBackBufferWidth();
 	screenHeight = CGame::GetInstance()->GetBackBufferHeight();

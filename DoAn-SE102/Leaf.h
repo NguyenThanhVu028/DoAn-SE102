@@ -4,6 +4,7 @@
 #define LEAF_WIDTH 16
 #define LEAF_HEIGHT 16
 
+#define LEAF_RISE_TIME 350
 #define LEAF_HALF_CYCLE_TIME 600
 
 #define LEAF_ACCEL_X 0.00004f
@@ -11,7 +12,7 @@
 
 #define LEAF_VX 0.06f
 #define LEAF_VY 0.06f
-#define LEAF_INITIAL_VY -0.08f
+#define LEAF_INITIAL_VY -0.1f
 
 //Sprite Id
 #define LEAF_SPRITE_LEFT 70021
