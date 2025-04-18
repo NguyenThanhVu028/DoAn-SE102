@@ -218,18 +218,96 @@ void CMario::GetAnimationBIG() {
 }
 
 void CMario::GetAnimationRACCOON() {
-	aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
+	aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_RIGHT);
 	if (!isGrounded) {
-
+		if (nx == 1) {
+			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_RIGHT);
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FALL_RIGHT);
+				}
+				return;
+			}
+			else {
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_MAXSPEED_RIGHT);
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FALL_MAXSPEED_RIGHT);
+				}
+				return;
+			}
+		}
+		else if (nx == -1) {
+			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_LEFT);
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FALL_LEFT);
+				}
+				return;
+			}
+			else {
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_MAXSPEED_LEFT);
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FALL_MAXSPEED_LEFT);
+				}
+				return;
+			}
+		}
 	}
 	if (vx == 0) {
+		if (nx == 1) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_RIGHT);
+			return;
+		}
+		aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_LEFT);
 		return;
 	}
 	if (nx == 1) {
-
+		if (vx < 0) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_BRAKE_RIGHT);
+			return;
+		}
+		else {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_WALK_RIGHT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_MAXSPEED_RIGHT);
+				return;
+			}
+		}
 	}
 	else {
-
+		if (vx > 0) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_BRAKE_LEFT);
+			return;
+		}
+		else {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_WALK_LEFT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_LEFT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_MAXSPEED_LEFT);
+				return;
+			}
+		}
 	}
 }
 

@@ -157,6 +157,7 @@
     <ClInclude Include="LevelUpItem.h" />
     <ClInclude Include="LevelUpQuestionBlock.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="MarioAniIds.h" />
     <ClInclude Include="MarioKeyEventHandler.h" />
     <ClInclude Include="MovableGameObject.h" />
     <ClInclude Include="MultiTilesBlock.h" />
