@@ -6,8 +6,12 @@
 #include "Goomba.h"
 
 void CMario::Update(DWORD dt) {
-	//DebugOutTitle(L"state %d", state);
 
+	if (GetTickCount64() - level_start < level_duration) return;
+	else CGame::GetInstance()->UnFreezeGame();
+
+	if (level == MarioLevel::SMALL) height = MARIO_SMALL_BBOX_HEIGHT;
+	else height = MARIO_BIG_BBOX_HEIGHT;
 	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
 
 	float prevVx = vx;
@@ -42,22 +46,26 @@ void CMario::Update(DWORD dt) {
 }
 void CMario::Render() {
 	if (state == MarioState::DIE) {
-		if(aniToRender != NULL) aniToRender->Render(x, y - (height - MARIO_SMALL_BBOX_HEIGHT) * 0.5f);
+		if(aniToRender != NULL) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f);
+		return;
 	}
-	else {
-		switch (level) {
-		case MarioLevel::SMALL:
-			GetAnimationSMALL();
-			break;
-		case MarioLevel::BIG:
-			GetAnimationBIG();
-			break;
-		case MarioLevel::RACCOON:
-			GetAnimationRACCOON();
-			break;
-		}
-		if(aniToRender != NULL) aniToRender->Render(x, y - (height - MARIO_SMALL_BBOX_HEIGHT) * 0.5f);
+	if (GetTickCount64() - level_start < level_duration) {
+		aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, 0);
+		return;
 	}
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) flicker_time = 0;
+	switch (level) {
+	case MarioLevel::SMALL:
+		GetAnimationSMALL();
+		break;
+	case MarioLevel::BIG:
+		GetAnimationBIG();
+		break;
+	case MarioLevel::RACCOON:
+		GetAnimationRACCOON();
+		break;
+	}
+	if(aniToRender != NULL) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
 }
 
 void CMario::GetAnimationSMALL() {
@@ -468,7 +476,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 		OnCollisionWithGoomba(e);
 	}
 }
-
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	if((dynamic_cast<CGoomba*>(e->obj)->IsDead())) return;
 	if (e->ny < 0) {
@@ -477,6 +484,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 		/*dynamic_cast<CGoomba*>(e->obj)->SetState(GoombaState::FLATTENED);*/
 	}
 	else {
+		if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
 		OnLevelDown();
 	}
 }
@@ -497,8 +505,24 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 }
 
 void CMario::OnLevelUp() {
+	if (level == MarioLevel::RACCOON) return;
+	level_start = GetTickCount64();
+	if (level == MarioLevel::SMALL) {
+		if (nx == 1)
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_LEVELUP_RIGHT);
+		else aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_LEVELUP_LEFT);
+		aniToRender->Reset();
+		aniToRender->SetDuration(MARIO_LEVEL_LONG_TIME);
+		level_duration = MARIO_LEVEL_LONG_TIME;
+	}
+	else {
+		aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_LEVELUP);
+		aniToRender->Reset();
+		aniToRender->SetDuration(MARIO_LEVEL_SHORT_TIME);
+		level_duration = MARIO_LEVEL_SHORT_TIME;
+	}
 	level = (MarioLevel)(level + 1);
-	height = MARIO_BIG_BBOX_HEIGHT;
+	CGame::GetInstance()->FreezeGame();
 }
 
 void CMario::OnLevelDown() {
@@ -506,7 +530,25 @@ void CMario::OnLevelDown() {
 
 	}
 	else {
+		level_start = GetTickCount64();
+		untouchable_start = GetTickCount64();
+		flicker_time = MARIO_FLICKER_TIME;
+
+		if (level == MarioLevel::BIG) {
+			if(nx == 1)
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_LEVELDOWN_RIGHT);
+			else aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_LEVELDOWN_LEFT);
+			aniToRender->Reset();
+			aniToRender->SetDuration(MARIO_LEVEL_LONG_TIME);
+			level_duration = MARIO_LEVEL_LONG_TIME;
+		}
+		else {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_LEVELDOWN);
+			aniToRender->Reset();
+			aniToRender->SetDuration(MARIO_LEVEL_SHORT_TIME);
+			level_duration = MARIO_LEVEL_SHORT_TIME;
+		}
 		level = (MarioLevel)(level - 1);
-		if (level == MarioLevel::SMALL) height = MARIO_SMALL_BBOX_HEIGHT;
+		CGame::GetInstance()->FreezeGame();
 	}
 }

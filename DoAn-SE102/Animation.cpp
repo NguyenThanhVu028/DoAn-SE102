@@ -74,7 +74,7 @@ void CAnimation::RenderByDuration(float x, float y, DWORD flickering_time) {
 		}
 
 	}
-	if (isFlickering) return;
+	if (isFlickering) { return; }
 	frames[currentFrame]->GetSprite()->Draw(x, y);
 }
 

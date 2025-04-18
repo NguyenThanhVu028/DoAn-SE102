@@ -5,6 +5,11 @@
 #include "debug.h"
 #include "MarioAniIds.h"
 
+#define MARIO_UNTOUCHABLE_TIME 2700
+#define MARIO_LEVEL_LONG_TIME 700
+#define MARIO_LEVEL_SHORT_TIME 350
+#define MARIO_FLICKER_TIME 100
+
 #define MARIO_WALK_SPEED 0.07f
 #define MARIO_RUN_SPEED 0.2f
 #define MARIO_RUN_MAXSPEED 0.25f
@@ -63,6 +68,11 @@ class CMario : public CMovableGameObject
 
 	LPANIMATION aniToRender;
 
+	ULONGLONG untouchable_start;
+	ULONGLONG level_start;
+	ULONGLONG level_duration;
+	DWORD flicker_time;
+
 public:
 
 	CMario(float x, float y) : CMovableGameObject(x, y) {
@@ -79,6 +89,11 @@ public:
 		maxFallSpeed = -1;
 		width = MARIO_BIG_BBOX_WIDTH;
 		height = MARIO_BIG_BBOX_HEIGHT;
+		maxVx = 0;
+		untouchable_start = CGame::GetInstance()->GetTickCount() - MARIO_UNTOUCHABLE_TIME - 10;
+		level_start = CGame::GetInstance()->GetTickCount() - MARIO_LEVEL_LONG_TIME - 10;
+		level_duration = 0;
+		flicker_time = 0;
 	}
 
 	void Update(DWORD dt);

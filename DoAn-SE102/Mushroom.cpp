@@ -11,6 +11,7 @@ void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bot
 }
 
 void CMushroom::Render() {
+	if (isDeleted) return;
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
 	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
 	if (x < cX - MUSHROOM_WIDTH * 0.5f || x > cX + screenWidth + MUSHROOM_WIDTH * 0.5f) return;

@@ -10,6 +10,7 @@ void CLeaf::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 }
 
 void CLeaf::Render() {
+	if (isDeleted) return;
 	int aniToRender = (nx == 1) ? LEAF_SPRITE_RIGHT : LEAF_SPRITE_LEFT;
 	CSprites::GetInstance()->Get(aniToRender)->Draw(x, y);
 }
