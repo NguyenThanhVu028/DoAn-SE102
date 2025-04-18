@@ -31,7 +31,9 @@ void  CFireBall::Render() {
 	else {
 		aniToRender = FIREBALL_ANIMATION_LEFT;
 	}
-	CAnimations::GetInstance()->Get(aniToRender)->Render(x, y);
+	if (CGame::GetInstance()->IsFrozen())
+		CAnimations::GetInstance()->Get(aniToRender)->Render1Frame(x, y);
+	else CAnimations::GetInstance()->Get(aniToRender)->Render(x, y);
 }
 
 void CFireBall::OnNoCollision(DWORD dt) {

@@ -39,16 +39,10 @@ void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MarioState::DIE);
 		break;
 	case DIK_S:
-		//float vx, vy;
-		//mario->GetSpeed(vx, vy);
-		//if (vx > 0) {
-		//	mario->SetState(MarioState::JUMP_WALK_RIGHT);
-		//}
-		//else if (vx < 0) {
-		//	mario->SetState(MarioState::JUMP_WALK_LEFT);
-		//}
-		//else 
 		mario->SetState(MarioState::JUMP);
+		break;
+	case DIK_P:
+		CGame::GetInstance()->FreezeGame();
 	}
 }
 
@@ -58,5 +52,9 @@ void CMarioKeyEventHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode) {
 	case DIK_S:
 		mario->SetState(MarioState::RELEASE_JUMP);
+		break;
+	case DIK_P:
+		CGame::GetInstance()->UnFreezeGame();
+		break;
 	}
 }

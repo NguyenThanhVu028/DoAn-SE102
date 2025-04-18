@@ -18,7 +18,7 @@ protected:
 	ULONGLONG waitingTime;
 	ULONGLONG checkPoint;
 public:
-	CPiranhaPlant(float x, float y) : CGameObject(x, y) { isActive = true; oriX = x; oriY = y; checkPoint = GetTickCount64(); }
+	CPiranhaPlant(float x, float y) : CGameObject(x, y) { isActive = true; oriX = x; oriY = y; checkPoint = CGame::GetInstance()->GetTickCount(); }
 
 	void Update(DWORD dt);
 	virtual void Render() = 0;

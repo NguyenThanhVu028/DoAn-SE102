@@ -32,12 +32,14 @@ void CGoomba::Render() {
 		aniToRender = GOOMBA_ANIMATION_UPSIDE_DOWN;
 		break;
 	}
-	CAnimations::GetInstance()->Get(aniToRender)->Render(x, y);
+	if(CGame::GetInstance()->IsFrozen())
+		CAnimations::GetInstance()->Get(aniToRender)->Render1Frame(x, y);
+	else CAnimations::GetInstance()->Get(aniToRender)->Render(x, y);
 }
 
 void CGoomba::Update(DWORD dt) {
 	if (isKilled) return;
-	if (GetTickCount64() - dead_start > GOOMBA_DEAD_TIME && state == GoombaState::FLATTENED) {
+	if (CGame::GetInstance()->GetTickCount() - dead_start > GOOMBA_DEAD_TIME && state == GoombaState::FLATTENED) {
 		this->isKilled = true; return;
 	}
 	if (!isEnabled) return;
@@ -79,7 +81,7 @@ void CGoomba::SetState(GoombaState state, int nx) {
 		break;
 	case GoombaState::FLATTENED:
 		vx = 0;
-		dead_start = GetTickCount64();
+		dead_start = CGame::GetInstance()->CGame::GetInstance()->GetTickCount();
 		break;
 	case GoombaState::UPSIDE_DOWN:
 		vx = (nx == -1) ? GOOMBA_MOVING_SPEED * 2 : -GOOMBA_MOVING_SPEED * 2;

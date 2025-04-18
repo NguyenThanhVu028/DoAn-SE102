@@ -9,12 +9,14 @@ CGameObjectsManager* CGameObjectsManager::GetInstance() {
 
 void CGameObjectsManager::Update(DWORD dt) {
 	int score; CGame::GetInstance()->GetScore(score);
-	for (auto i : staticObjects) i->Update(dt);
-	for (auto i : movableObjects) i->Update(dt);
-	for (auto i : coinEffects) i->Update(dt);
-	for (auto i : scoreEffects) i->Update(dt);
-	for (auto i : fireBalls) i->Update(dt);
-	for (auto i : spawners) i->Update(dt);
+	if (!CGame::GetInstance()->IsFrozen()) {
+		for (auto i : staticObjects) i->Update(dt);
+		for (auto i : movableObjects) i->Update(dt);
+		for (auto i : coinEffects) i->Update(dt);
+		for (auto i : scoreEffects) i->Update(dt);
+		for (auto i : fireBalls) i->Update(dt);
+		for (auto i : spawners) i->Update(dt);
+	}
 	player->Update(dt);
 }
 void CGameObjectsManager::Render() {

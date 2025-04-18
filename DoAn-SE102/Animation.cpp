@@ -1,5 +1,6 @@
 #include "Animation.h"
 #include "debug.h"
+#include "Game.h"
 
 void CAnimation::Add(int spriteId, DWORD time)
 {
@@ -16,7 +17,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 
 void CAnimation::Render(float x, float y, DWORD flickering_time)
 {
-	ULONGLONG now = GetTickCount64();
+	ULONGLONG now = CGame::GetInstance()->GetTickCount();
 
 	//Flickering effect (used when Mario is untouchable)
 	if (flickering_time == 0) isFlickering = false;
@@ -47,7 +48,7 @@ void CAnimation::Render(float x, float y, DWORD flickering_time)
 }
 
 void CAnimation::RenderByDuration(float x, float y, DWORD flickering_time) {
-	ULONGLONG now = GetTickCount64();
+	ULONGLONG now = CGame::GetInstance()->GetTickCount();
 
 	//Flickering effect (used when Mario is untouchable)
 	if (flickering_time == 0) isFlickering = false;
@@ -78,7 +79,7 @@ void CAnimation::RenderByDuration(float x, float y, DWORD flickering_time) {
 }
 
 void CAnimation::Render1Frame(float x, float y) {
-	ULONGLONG now = GetTickCount64();
+	ULONGLONG now = CGame::GetInstance()->GetTickCount();
 	if (currentFrame == -1)
 	{
 		currentFrame = 0;
@@ -89,7 +90,7 @@ void CAnimation::Render1Frame(float x, float y) {
 
 void CAnimation::Reset() {
 	currentFrame = 0;
-	lastFrameTime = GetTickCount64();
+	lastFrameTime = CGame::GetInstance()->GetTickCount();
 }
 
 void CAnimation::SetDuration(int duration) {

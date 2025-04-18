@@ -9,7 +9,7 @@ void CLevelUpQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 			dynamic_cast<CMario*>(e->src_obj)->GetPosition(pX, pY);
 			if (pX < x) nx = 1;
 			else nx = -1;
-			bounce_time_start = GetTickCount64();
+			bounce_time_start = CGame::GetInstance()->GetTickCount();
 			isAvailable = false;
 		}
 	}
@@ -27,7 +27,7 @@ void CLevelUpQuestionBlock::Update(DWORD dt) {
 			delete item; item = NULL;
 		}
 	}
-	if (GetTickCount64() - bounce_time_start > QUESTIONBLOCK_BOUNCE_TIME && !hasSummonedItem && !isAvailable) {
+	if (CGame::GetInstance()->GetTickCount() - bounce_time_start > QUESTIONBLOCK_BOUNCE_TIME && !hasSummonedItem && !isAvailable) {
 		if (item == NULL) { 
 			if (dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer())->GetLevel() == MarioLevel::SMALL) item = new CMushroom(x, y, nx);
 			else item = new CLeaf(x, y); 

@@ -26,7 +26,7 @@ public:
 		nx = -1;
 		vx = 0;
 		vy = LEAF_INITIAL_VY;
-		checkPoint = GetTickCount64(); 
+		checkPoint = CGame::GetInstance()->GetTickCount();
 		ax = 0;
 		ay = 0;
 	}

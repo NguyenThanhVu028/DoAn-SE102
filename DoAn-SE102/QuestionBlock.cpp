@@ -20,7 +20,7 @@ void CQuestionBlock::Render() {
 	else aniId = QUESTIONBLOCK_ANIMATION_UNAVAILABLE;
 
 	float tempX = x, tempY = y;
-	LONGLONG bounce_timer = GetTickCount64() - bounce_time_start;
+	LONGLONG bounce_timer = CGame::GetInstance()->GetTickCount() - bounce_time_start;
 	if ( bounce_timer < QUESTIONBLOCK_BOUNCE_TIME) {
 		if(bounce_timer < QUESTIONBLOCK_BOUNCE_TIME * 0.5f){
 			tempY = y - ((bounce_timer / (QUESTIONBLOCK_BOUNCE_TIME * 0.5f)) * QUESTIONBLOCK_BOUNCE_DISTANCE);
@@ -35,7 +35,7 @@ void CQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (!IsInteractable()) return;
 	if (dynamic_cast<CMario*>(e->src_obj)) {
 		if (e->ny > 0) {
-			bounce_time_start = GetTickCount64();
+			bounce_time_start = CGame::GetInstance()->GetTickCount();
 			//isAvailable = false;
 			//CGameObjectsManager::GetInstance()->GetCoinEffect(x, y - 16);
 		}

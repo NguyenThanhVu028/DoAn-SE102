@@ -21,7 +21,7 @@ void CMushroom::Render() {
 void CMushroom::Update(DWORD dt) {
 	if (IsRising()) {
 		ay = MUSHROOM_GRAVITY;
-		ULONGLONG timer = GetTickCount64() - checkPoint;
+		ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
 		y = spawnY - MUSHROOM_RISING_HEIGHT * (timer * 1.0f / MUSHROOM_RISING_TIME);
 		CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 0, 0);
 	}
@@ -50,4 +50,4 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e) {
 	}
 }
 
-bool CMushroom::IsRising() { return GetTickCount64() - checkPoint < MUSHROOM_RISING_TIME; }
+bool CMushroom::IsRising() { return CGame::GetInstance()->GetTickCount() - checkPoint < MUSHROOM_RISING_TIME; }

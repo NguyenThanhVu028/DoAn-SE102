@@ -1,15 +1,17 @@
 #include "ScoreEffect.h"
 
 void CScoreEffect::Update(DWORD dt) {
+	if (CGame::GetInstance()->GetTickCount() - existing_start > duration) isEnabled = false;
 	if (!isEnabled) return;
-	float tempVy = vy * (duration - (GetTickCount64() - existing_start)) / duration;
+	float tempVy = vy * (duration - (CGame::GetInstance()->GetTickCount() - existing_start)) / duration;
 	y -= tempVy * dt;
 }
 
 void CScoreEffect::Render() {
-	if (GetTickCount64() - existing_start > duration) isEnabled = false;
+
 	if (!isEnabled) return;
-	ani->Render(x, y);
+	if (CGame::GetInstance()->IsFrozen()) ani->Render1Frame(x, y);
+	else ani->Render(x, y);
 }
 
 void CScoreEffect::ReEnable() {

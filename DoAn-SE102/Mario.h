@@ -109,7 +109,7 @@ public:
 		lastJumpTime = -1;
 		jumpTime = MARIO_JUMP_TIME;
 		pMeter = 0;
-		pMeterCheckpoint = GetTickCount64();
+		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 		maxFallSpeed = -1;
 		width = MARIO_BIG_BBOX_WIDTH;

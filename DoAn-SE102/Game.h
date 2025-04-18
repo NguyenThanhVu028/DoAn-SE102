@@ -52,6 +52,11 @@ class CGame
 	int coin = 0;
 	int score = 0;
 
+	bool isFrozen = false;
+
+	ULONGLONG tickOffset = 0;
+	ULONGLONG tickFreeze = 0;
+
 	HINSTANCE hInstance;
 
 	ID3D10SamplerState* pPointSamplerState;
@@ -117,6 +122,12 @@ public:
 	void SetScore(int x) { score = x; }
 	void GetScore(int& x) { x = score; }
 	void IncreaseScore(int x) { score += x; }
+
+	void FreezeGame() { if (isFrozen) return; isFrozen = true; tickFreeze = GetTickCount64(); };
+	void UnFreezeGame() { if (!isFrozen) return; isFrozen = false; tickOffset += GetTickCount64() - tickFreeze; };
+	bool IsFrozen() { return isFrozen; }
+
+	ULONGLONG GetTickCount();
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);

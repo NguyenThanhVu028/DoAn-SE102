@@ -23,10 +23,6 @@
 class CPlayScene: public CScene
 {
 protected: 
-	// A play scene has to have a player, right? 
-	//LPGAMEOBJECT player;					
-
-	//vector<LPGAMEOBJECT> objects;
 	float mapLength, mapHeight;
 
 	void _ParseSection_SPRITES(string line);
@@ -46,7 +42,6 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-
 	//LPGAMEOBJECT GetPlayer() { return player; }
 
 	//void Clear();

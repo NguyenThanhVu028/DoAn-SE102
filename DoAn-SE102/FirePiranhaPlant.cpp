@@ -53,7 +53,9 @@ void CFirePiranhaPlant::Render() {
 		break;
 	}
 	//DebugOutTitle(L"Direction: %d %d %d", type, IsRising(), aniToRender);
-	CAnimations::GetInstance()->Get(aniToRender)->Render(x, y);
+	if (CGame::GetInstance()->IsFrozen())
+		CAnimations::GetInstance()->Get(aniToRender)->Render1Frame(x, y);
+	else CAnimations::GetInstance()->Get(aniToRender)->Render(x, y);
 }
 
 void CFirePiranhaPlant::Update(DWORD dt) {
@@ -62,7 +64,7 @@ void CFirePiranhaPlant::Update(DWORD dt) {
 	CPiranhaPlant::Update(dt);
 	if (!hasRised) hasShot = false;
 	else {
-		ULONGLONG timer = GetTickCount64() - checkPoint;
+		ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
 		if (timer > risingTime + waitingTime * 0.5f) {
 			if (!hasShot) {
 				float tempAngle = (180 / 3.14f) * atanf(abs((pY - y) / (pX - x)));

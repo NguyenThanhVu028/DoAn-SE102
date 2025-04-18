@@ -517,6 +517,7 @@ void CGame::SwitchScene()
 	current_scene = next_scene;
 	LPSCENE s = scenes[next_scene];
 	this->SetKeyHandler(s->GetKeyEventHandler());
+	isFrozen = false; tickOffset = 0;
 	s->Load();
 }
 
@@ -524,7 +525,6 @@ void CGame::InitiateSwitchScene(int scene_id)
 {
 	next_scene = scene_id;
 }
-
 
 void CGame::_ParseSection_TEXTURES(string line)
 {
@@ -538,6 +538,9 @@ void CGame::_ParseSection_TEXTURES(string line)
 	CTextures::GetInstance()->Add(texID, path.c_str());
 }
 
+ULONGLONG CGame::GetTickCount() {
+	return GetTickCount64() - tickOffset;
+}
 
 CGame::~CGame()
 {

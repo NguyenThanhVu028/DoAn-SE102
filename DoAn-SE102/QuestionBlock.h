@@ -20,7 +20,7 @@ protected:
 	bool isVisible;
 public:
 	CQuestionBlock(float x, float y, bool isVisible = true) : CGameObject(x + 8, y + 8) {
-		bounce_time_start = GetTickCount64() - QUESTIONBLOCK_BOUNCE_TIME - 10;
+		bounce_time_start = CGame::GetInstance()->GetTickCount() - QUESTIONBLOCK_BOUNCE_TIME - 10;
 		isAvailable = true;
 		this->isVisible = isVisible;
 	}
@@ -29,7 +29,7 @@ public:
 	virtual void Render();
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	int IsCollidable() { return 1; };
-	bool IsInteractable() { return (GetTickCount64() - bounce_time_start > QUESTIONBLOCK_BOUNCE_TIME) && isAvailable; }
-	bool IsBouncing() { return (GetTickCount64() - bounce_time_start < QUESTIONBLOCK_BOUNCE_TIME); }
+	bool IsInteractable() { return (CGame::GetInstance()->GetTickCount() - bounce_time_start > QUESTIONBLOCK_BOUNCE_TIME) && isAvailable; }
+	bool IsBouncing() { return (CGame::GetInstance()->GetTickCount() - bounce_time_start < QUESTIONBLOCK_BOUNCE_TIME); }
 };
 

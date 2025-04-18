@@ -2,7 +2,7 @@
 #include "Game.h"
 void CBackground::Render() {
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
-	float screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
+	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
 	for (auto detail : tilesList) {
 		CSprite* sprite = CSprites::GetInstance()->Get(detail->GetSpriteId());
 		for (int i = 0; i < detail->GetWidth(); i++) {

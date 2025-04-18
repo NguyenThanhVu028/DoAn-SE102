@@ -2,10 +2,10 @@
 #include "debug.h"
 
 void CPiranhaPlant::Update(DWORD dt) {
-	ULONGLONG timer = GetTickCount64() - checkPoint;
+	ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
 	if (!hasRised) {
 		if (timer > waitingTime && isActive) {
-			checkPoint = GetTickCount64(); hasRised = true;
+			checkPoint = CGame::GetInstance()->GetTickCount(); hasRised = true;
 		}
 		else return;
 	}
@@ -20,7 +20,7 @@ void CPiranhaPlant::Update(DWORD dt) {
 			y = oriY - risingHeight * (1.0f - ((1.0f * timer - (waitingTime + risingTime)) / risingTime));
 		}
 		else {
-			y = oriY; hasRised = false; checkPoint = GetTickCount64();
+			y = oriY; hasRised = false; checkPoint = CGame::GetInstance()->GetTickCount();
 		}
 	}
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 1, 0);
@@ -33,7 +33,7 @@ void CPiranhaPlant::OnCollisionWith(LPCOLLISIONEVENT e) {
 };
 
 bool CPiranhaPlant::IsRising() {
-	ULONGLONG timer = GetTickCount64() - checkPoint;
+	ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
 	if (hasRised) {
 		if (timer <= risingTime || (timer > waitingTime + risingTime && timer < waitingTime + risingTime * 2.0f)) return true;
 	}

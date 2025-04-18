@@ -8,7 +8,7 @@
 void CMario::Update(DWORD dt) {
 	//DebugOutTitle(L"state %d", state);
 
-	if (GetTickCount64() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
+	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
 
 	float prevVx = vx;
 	vx += ax * dt;
@@ -253,7 +253,7 @@ void CMario::SetState(MarioState state) {
 			ay = -MARIO_JUMP_ACCEL;
 			//ax = 0;
 			maxVy = -MARIO_JUMP_SPEED;
-			lastJumpTime = GetTickCount64();
+			lastJumpTime = CGame::GetInstance()->GetTickCount();
 		}
 		break;
 	//case MarioState::JUMP_WALK_LEFT:
@@ -312,14 +312,14 @@ void CMario::SetState(MarioState state) {
 
 		ax = -MARIO_RUN_ACCEL_X;
 		if (isGrounded && vx < -MARIO_WALK_SPEED) {
-			pMeter += GetTickCount64() - pMeterCheckpoint;
+			pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
 			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 		}
 		else {
-			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALK_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
+			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
 			if (pMeter < 0) pMeter = 0;
 		}
-		pMeterCheckpoint = GetTickCount64();
+		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
 
 		if (pMeter >= MARIO_PMETER_MAX) maxVx = -MARIO_RUN_MAXSPEED;
 		else maxVx = -MARIO_RUN_SPEED;
@@ -333,14 +333,14 @@ void CMario::SetState(MarioState state) {
 		else*/ 
 		ax = MARIO_RUN_ACCEL_X;
 		if (isGrounded && vx > MARIO_WALK_SPEED) {
-			pMeter += GetTickCount64() - pMeterCheckpoint;
+			pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
 			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 		}
 		else {
-			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALK_SPEED) pMeter -= (GetTickCount64() - pMeterCheckpoint) / 2;
+			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
 			if (pMeter < 0) pMeter = 0;
 		}
-		pMeterCheckpoint = GetTickCount64();
+		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
 
 		if (pMeter >= MARIO_PMETER_MAX) maxVx = MARIO_RUN_MAXSPEED;
 		else maxVx = MARIO_RUN_SPEED;
@@ -350,9 +350,9 @@ void CMario::SetState(MarioState state) {
 		if (level == MarioLevel::SMALL) return;
 		break;
 	case MarioState::NOT_RUN:
-		pMeter -= (GetTickCount64() - pMeterCheckpoint) * 0.5;
+		pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) * 0.5;
 		if (pMeter < 0) pMeter = 0;
-		pMeterCheckpoint = GetTickCount64();
+		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
 		break;
 	}
 }
