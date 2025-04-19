@@ -3,6 +3,7 @@
 #include "GameObjectsManager.h"
 #include "debug.h"
 #include "Mario.h"
+#include "RedGoomba.h"
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - GOOMBA_WIDTH * 0.5f;
@@ -44,7 +45,7 @@ void CGoomba::Update(DWORD dt) {
 	}
 	if (!isEnabled) return;
 	vy += ay * dt;
-	if (state != GoombaState::UPSIDE_DOWN) CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 1);
+	if (state != GoombaState::UPSIDE_DOWN) CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
 	else CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 0);
 }
 
@@ -57,6 +58,21 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
 	}
 	if (dynamic_cast<CMario*>(e->src_obj)) {
 		OnCollisionWithMario(e);
+	}
+	if (dynamic_cast<CGoomba*>(e->obj) && dynamic_cast<CGoomba*>(e->src_obj) && !dynamic_cast<CRedGoomba*>(e->obj)) {
+		if (e->obj != this && dynamic_cast<CGoomba*>(e->obj)->IsEnabled()) {
+			float oX, oY;
+			e->obj->GetPosition(oX, oY);
+			if (oX > x) {
+				vx = -abs(vx);
+				dynamic_cast<CGoomba*>(e->obj)->SetSpeed(-vx, 0);
+			}
+			else {
+				vx = abs(vx);
+				dynamic_cast<CGoomba*>(e->obj)->SetSpeed(-vx, 0);
+			}
+		}
+
 	}
 }
 

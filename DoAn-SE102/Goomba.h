@@ -46,5 +46,7 @@ public:
 	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
 
 	virtual bool IsUntouchable() { return false; }
+
+	int IsBlocking() { return 0; }
 };
 
