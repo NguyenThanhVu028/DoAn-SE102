@@ -12,14 +12,15 @@
 #define GOOMBA_DEAD_TIME 500
 
 //Animation Ids
-#define GOOMBA_ANIMATION_WALKING 80101
-#define GOOMBA_ANIMATION_FLATTENED 80111
+#define GOOMBA_ANIMATION_WALK 80101
+#define GOOMBA_ANIMATION_FLATENNED 80111
 #define GOOMBA_ANIMATION_UPSIDE_DOWN 80121
 
 enum GoombaState {ALIVE, FLATTENED, UPSIDE_DOWN};
 
 class CGoomba : public CEnemy
 {
+protected:
 	GoombaState state;
 	ULONGLONG dead_start;
 public:
@@ -30,17 +31,20 @@ public:
 	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void Render();
-	void Update(DWORD dt);
+	virtual void Render();
+	virtual void Update(DWORD dt);
 
 	void OnNoCollision(DWORD dt);
-	void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	bool IsDead();
-	void SetState(GoombaState state, int nx = 0);
+	virtual void SetState(GoombaState state, int nx = 0);
+	virtual void SetEnable(bool t) { CEnemy::SetEnable(t); }
 
 	void SetDirection(int nx);
 
-	void OnCollisionWithMario(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
+
+	virtual bool IsUntouchable() { return false; }
 };
 

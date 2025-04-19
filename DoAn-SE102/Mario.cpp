@@ -10,6 +10,8 @@ void CMario::Update(DWORD dt) {
 	if (GetTickCount64() - level_start < level_duration) return;
 	else CGame::GetInstance()->UnFreezeGame();
 
+	if (CGame::GetInstance()->IsFrozen()) return;
+
 	if (level == MarioLevel::SMALL) height = MARIO_SMALL_BBOX_HEIGHT;
 	else height = MARIO_BIG_BBOX_HEIGHT;
 	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
@@ -472,9 +474,16 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CLevelUpItem*>(e->src_obj)) {
 		OnCollisionWidthPowerUpItem(e);
 	}
+	if (dynamic_cast<CEnemy*>(e->obj)) {
+		OncollisionWithEnemy(e);
+	}
+}
+void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CGoomba*>(e->obj)) {
 		OnCollisionWithGoomba(e);
+		return;
 	}
+	OnLevelDown();
 }
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	if((dynamic_cast<CGoomba*>(e->obj)->IsDead())) return;
@@ -485,6 +494,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	}
 	else {
 		if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
+		if((dynamic_cast<CGoomba*>(e->obj)->IsUntouchable())) return;
 		OnLevelDown();
 	}
 }
@@ -526,6 +536,7 @@ void CMario::OnLevelUp() {
 }
 
 void CMario::OnLevelDown() {
+	if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
 	if (level == MarioLevel::SMALL) {
 
 	}

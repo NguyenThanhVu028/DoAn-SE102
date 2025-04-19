@@ -168,6 +168,8 @@
     <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="QuestionBlock.h" />
+    <ClInclude Include="RedGoomba.h" />
+    <ClInclude Include="RedGoombaSpawner.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ScoreEffect.h" />
@@ -214,6 +216,8 @@
     <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
+    <ClCompile Include="RedGoomba.cpp" />
+    <ClCompile Include="RedGoombaSpawner.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="ScoreEffect.cpp" />
     <ClCompile Include="SolidPlatform.cpp" />

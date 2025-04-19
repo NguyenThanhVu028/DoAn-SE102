@@ -233,6 +233,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddSpawner(o);
 	}
 		break;
+
+	case OBJECT_TYPE_SPAWNER_RED_GOOMBA:
+	{
+		if (tokens.size() < 3) return;
+		int direction = (int)atoi(tokens[3].c_str());
+
+		auto o = new CRedGoombaSpawner(x, y, direction);
+		CGameObjectsManager::GetInstance()->AddSpawner(o);
+	}
+		break;
 	//case OBJECT_TYPE_PORTAL:
 	//{
 	//	float r = (float)atof(tokens[3].c_str());

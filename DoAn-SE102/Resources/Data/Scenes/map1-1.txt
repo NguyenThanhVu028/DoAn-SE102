@@ -11,7 +11,7 @@ Resources\Data\Entities\pipe.txt
 Resources\Data\Entities\piranha_plant.txt
 Resources\Data\Entities\fireball.txt
 Resources\Data\Entities\items.txt
-Resources\Data\Entities\enemies.txt
+Resources\Data\Entities\goomba.txt
 
 #coin.txt
 #cloud.txt
@@ -321,6 +321,7 @@ Resources\Data\Entities\enemies.txt
 71	535	183.9	0
 71	839	167.9	0
 71	887	167.9	0
+72	953	167.9	0
 
 
 #COIN

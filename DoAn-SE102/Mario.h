@@ -77,7 +77,7 @@ public:
 
 	CMario(float x, float y) : CMovableGameObject(x, y) {
 		state = MarioState::IDLE;
-		level = MarioLevel::BIG;
+		level = MarioLevel::SMALL;
 		ay = MARIO_GRAVITY;
 		maxVy = -MARIO_JUMP_SPEED;
 		isGrounded = false;
@@ -118,6 +118,7 @@ public:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e);
+	void OncollisionWithEnemy(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 

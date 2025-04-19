@@ -20,7 +20,7 @@ public:
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 
 	virtual bool IsDead() = 0;
-	void SetEnable(bool t) { isEnabled = t; }
+	virtual void SetEnable(bool t) { isEnabled = t; }
 	bool IsEnabled() { return isEnabled; }
 	bool IsKilled() { return isKilled; }
 };

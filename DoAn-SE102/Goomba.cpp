@@ -20,13 +20,13 @@ void CGoomba::Render() {
 	if (y < cY - GOOMBA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + DESPAWN_OFFSET) { isEnabled = false; return; }
 
 	//Get animation Id
-	int aniToRender = GOOMBA_ANIMATION_WALKING;
+	int aniToRender = GOOMBA_ANIMATION_WALK;
 	switch (state) {
 	case GoombaState::ALIVE:
-		aniToRender = GOOMBA_ANIMATION_WALKING;
+		aniToRender = GOOMBA_ANIMATION_WALK;
 		break;
 	case GoombaState::FLATTENED:
-		aniToRender = GOOMBA_ANIMATION_FLATTENED;
+		aniToRender = GOOMBA_ANIMATION_FLATENNED;
 		break;
 	case GoombaState::UPSIDE_DOWN:
 		aniToRender = GOOMBA_ANIMATION_UPSIDE_DOWN;
