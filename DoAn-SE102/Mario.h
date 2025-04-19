@@ -9,6 +9,7 @@
 #define MARIO_LEVEL_LONG_TIME 700
 #define MARIO_LEVEL_SHORT_TIME 350
 #define MARIO_FLICKER_TIME 100
+#define MARIO_DEATH_TIME 5000
 
 #define MARIO_WALK_SPEED 0.07f
 #define MARIO_RUN_SPEED 0.2f
@@ -72,6 +73,7 @@ class CMario : public CMovableGameObject
 	ULONGLONG level_start;
 	ULONGLONG level_duration;
 	DWORD flicker_time;
+	ULONGLONG death_start;
 
 public:
 

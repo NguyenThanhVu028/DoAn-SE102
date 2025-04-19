@@ -7,6 +7,22 @@
 
 void CMario::Update(DWORD dt) {
 
+	if (state == MarioState::DIE) {
+		if (CGame::GetInstance()->GetTickCount() - death_start < MARIO_DEATH_TIME * 0.2f) {
+			maxVx = 0;
+			vx = 0;
+			maxVy = -1.0f;
+			vy = -0.4f;
+			ay = MARIO_GRAVITY;
+			ax = 0;
+		}
+		else {
+			vy += ay * dt;
+			y += vy * dt;
+		}
+		return;
+	}
+
 	if (GetTickCount64() - level_start < level_duration) return;
 	else CGame::GetInstance()->UnFreezeGame();
 
@@ -14,6 +30,7 @@ void CMario::Update(DWORD dt) {
 
 	if (level == MarioLevel::SMALL) height = MARIO_SMALL_BBOX_HEIGHT;
 	else height = MARIO_BIG_BBOX_HEIGHT;
+
 	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
 
 	float prevVx = vx;
@@ -326,8 +343,7 @@ void CMario::SetState(MarioState state) {
 	switch (state) {
 	case MarioState::DIE:
 		this->state = state;
-		vx = 0;
-		ax = 0;
+		death_start = CGame::GetInstance()->GetTickCount();
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_DIE);
 		break;
 	case MarioState::JUMP:
@@ -538,7 +554,8 @@ void CMario::OnLevelUp() {
 void CMario::OnLevelDown() {
 	if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
 	if (level == MarioLevel::SMALL) {
-
+		CGame::GetInstance()->FreezeGame();
+		SetState(MarioState::DIE);
 	}
 	else {
 		level_start = GetTickCount64();
