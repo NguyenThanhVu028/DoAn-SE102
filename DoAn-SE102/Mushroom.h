@@ -15,10 +15,11 @@
 
 class CMushroom : public CLevelUpItem
 {
+	float tempVx;
 	ULONGLONG checkPoint;
 	float spawnX, spawnY;
 public:
-	CMushroom(float x, float y, int nx = 1) : CLevelUpItem(x, y) { checkPoint = CGame::GetInstance()->GetTickCount(); spawnX = x; spawnY = y; ay = MUSHROOM_GRAVITY; vx = (nx > 0)? MUSHROOM_MOVING_SPEED : -MUSHROOM_MOVING_SPEED;}
+	CMushroom(float x, float y, int nx = 1) : CLevelUpItem(x, y) { checkPoint = CGame::GetInstance()->GetTickCount(); spawnX = x; spawnY = y; ay = MUSHROOM_GRAVITY; tempVx = vx = (nx > 0)? MUSHROOM_MOVING_SPEED : -MUSHROOM_MOVING_SPEED;}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();
 	void Update(DWORD dt);
