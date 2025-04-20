@@ -5,21 +5,29 @@
 #define MUSHROOM_HEIGHT 16
 
 #define MUSHROOM_MOVING_SPEED 0.05f
-#define MUSHROOM_EMERGING_SPEED 0.01f
+#define MUSHROOM_RISING_SPEED -0.02f
 #define MUSHROOM_GRAVITY 0.00075f
 
-#define MUSHROOM_RISING_TIME 500
-#define MUSHROOM_RISING_HEIGHT 17
+//#define MUSHROOM_RISING_TIME 500
+//#define MUSHROOM_RISING_HEIGHT 17
 //Sprite Id
 #define MUSHROOM_SPRITE 70011
 
 class CMushroom : public CLevelUpItem
 {
+	bool isOverlapped;
+	bool isRising;
 	float tempVx;
-	ULONGLONG checkPoint;
+	//ULONGLONG checkPoint;
 	float spawnX, spawnY;
 public:
-	CMushroom(float x, float y, int nx = 1) : CLevelUpItem(x, y) { checkPoint = CGame::GetInstance()->GetTickCount(); spawnX = x; spawnY = y; ay = MUSHROOM_GRAVITY; tempVx = vx = (nx > 0)? MUSHROOM_MOVING_SPEED : -MUSHROOM_MOVING_SPEED;}
+	CMushroom(float x, float y, int nx = 1) : CLevelUpItem(x, y) {
+		//checkPoint = CGame::GetInstance()->GetTickCount();
+		spawnX = x; spawnY = y;
+		ay = MUSHROOM_GRAVITY; tempVx = vx = (nx > 0) ? MUSHROOM_MOVING_SPEED : -MUSHROOM_MOVING_SPEED;
+		isOverlapped = false;
+		isRising = true;
+	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();
 	void Update(DWORD dt);

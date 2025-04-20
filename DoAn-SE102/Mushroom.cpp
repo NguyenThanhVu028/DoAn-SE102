@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "GameObjectsManager.h"
 #include "Mario.h"
+#include "LevelUpQuestionBlock.h"
 
 void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - MUSHROOM_WIDTH * 0.5f;
@@ -20,28 +21,43 @@ void CMushroom::Render() {
 }
 
 void CMushroom::Update(DWORD dt) {
-	if (IsRising()) {
+	isOverlapped = false;
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 0, 1, 0);
+	if (!isOverlapped) isRising = false;
+	if (isRising) {
 		vx = 0;
-		ay = MUSHROOM_GRAVITY;
-		ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
-		y = spawnY - MUSHROOM_RISING_HEIGHT * (timer * 1.0f / MUSHROOM_RISING_TIME);
-		CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 0, 0, 0);
+		ay = 0;
+		//ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
+		vy = MUSHROOM_RISING_SPEED;
+		//y = spawnY - MUSHROOM_RISING_HEIGHT * (timer * 1.0f / MUSHROOM_RISING_TIME);
 	}
 	else {
-		vx = tempVx;
+		if(vx == 0) vx = tempVx;
 		ay = MUSHROOM_GRAVITY;
 		vy += ay * dt;
-		CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 0, 1, 0);
 	}
+	//if (IsRising()) {
+	//	vx = 0;
+	//	ay = MUSHROOM_GRAVITY;
+	//	ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
+	//	y = spawnY - MUSHROOM_RISING_HEIGHT * (timer * 1.0f / MUSHROOM_RISING_TIME);
+	//	
+	//}
+	//else {
+	//	vx = tempVx;
+	//	ay = MUSHROOM_GRAVITY;
+	//	vy += ay * dt;
+	//	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 0, 1, 0);
+	//}
 }
 
 void CMushroom::OnNoCollision(DWORD dt) {
-	if (IsRising()) return;
 	x += vx * dt;
 	y += vy * dt;
 }
 
 void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e) {
+	if (e->isOverlap && dynamic_cast<CLevelUpQuestionBlock*>(e->obj)) isOverlapped = true;
 	if (dynamic_cast<CMario*>(e->obj)) {
 		e->obj->OnCollisionWith(e); return;
 	}
@@ -53,4 +69,4 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e) {
 	}
 }
 
-bool CMushroom::IsRising() { return CGame::GetInstance()->GetTickCount() - checkPoint < MUSHROOM_RISING_TIME; }
+bool CMushroom::IsRising() { return isRising; }
