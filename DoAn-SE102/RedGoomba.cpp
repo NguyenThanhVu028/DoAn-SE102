@@ -44,11 +44,17 @@ void CRedGoomba::Render() {
 
 void CRedGoomba::Update(DWORD dt) {
 	CGoomba::Update(dt);
+	if (vy == 0 && !IsDead()) vx = (nx == 1) ? GOOMBA_MOVING_SPEED : -GOOMBA_MOVING_SPEED;
 	if (CGame::GetInstance()->GetTickCount() - jump_timer > RED_GOOMBA_CYCLE && hasWings) {
 		if (vy == 0) {
 			vy = RED_GOOMBA_LONG_JUMP_SPEED;
 			jump_timer = CGame::GetInstance()->GetTickCount();
 			isCharging = false;
+
+			float pX, pY;
+			CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(pX, pY);
+			if (pX < x) nx = -1;
+			else nx = 1;
 		}
 		return;
 	}
@@ -72,7 +78,9 @@ void CRedGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
 		vy = 0;
 	}
 	if (e->nx != 0 && e->obj->IsBlocking()) {
-		vx = -vx;
+		if (e->nx > 0) nx = 1;
+		else nx = -1;
+		//vx = -vx;
 	}
 	if (dynamic_cast<CMario*>(e->src_obj)) {
 		OnCollisionWithMario(e);

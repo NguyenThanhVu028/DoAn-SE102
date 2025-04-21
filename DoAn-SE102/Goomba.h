@@ -27,6 +27,7 @@ public:
 	CGoomba(float x, float y, int nx = 1) : CEnemy(x, y, nx) {
 		state = GoombaState::ALIVE;
 		vx = (nx == 1) ? GOOMBA_MOVING_SPEED : -GOOMBA_MOVING_SPEED;
+		this->nx = nx;
 		ay = GOOMBA_GRAVITY;
 	}
 
