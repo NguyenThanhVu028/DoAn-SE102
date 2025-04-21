@@ -246,10 +246,13 @@
     <ClInclude Include="RedGoombaSpawner.h">
       <Filter>Header Files\Entities\Spawners</Filter>
     </ClInclude>
-    <ClInclude Include="RedKoopaTroopa.h">
+    <ClInclude Include="RedKoopaTroopaSpawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RedKoopaTroopaSpawner.h">
+    <ClInclude Include="RedKoopaTroopa.h">
+      <Filter>Header Files\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="EdgeSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -390,9 +393,12 @@
       <Filter>Source Files\Entities\Spawners</Filter>
     </ClCompile>
     <ClCompile Include="RedKoopaTroopa.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="RedKoopaTroopaSpawner.cpp">
+      <Filter>Source Files\Entities\Spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="EdgeSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

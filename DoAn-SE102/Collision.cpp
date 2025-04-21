@@ -208,7 +208,7 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 		if (c->isOverlap) continue;
 
 		//if filter = -1, dont filter any object
-		if(filter == -1) continue;
+		if(filter == -1) return;
 
 		// if filter == 1, ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc)
 		if (filter == 1 && !c->obj->IsBlocking())

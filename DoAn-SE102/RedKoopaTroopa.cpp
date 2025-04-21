@@ -59,7 +59,13 @@ void CRedKoopaTroopa::Update(DWORD dt) {
 
 	vy += ay * dt;
 
+	edgeSensor->x = x; edgeSensor->y = y + KOOPA_TROOPA_SHELL_HEIGHT * 0.5f - edgeSensor->height * 0.5f;
+	edgeSensor->SetSpeed(vx, vy);
+	edgeSensor->ClearTouchedBlocks();
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(edgeSensor, dt, 0, 0, 1, 0, -1, 0, 0);
+	edgeSensor->ProcessTouchedBlocks();
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1, 0);
+	if ((!edgeSensor->RightEdge() && vx > 0) || (!edgeSensor->LeftEdge() && vx < 0)) vx = -vx;
 }
 
 void CRedKoopaTroopa::OnNoCollision(DWORD dt) {
@@ -100,4 +106,10 @@ void CRedKoopaTroopa::SetState(KoopaTroopaState state){
 		break;
 	}
 	this->state = state;
+}
+
+void CRedKoopaTroopa::SetDirection(int nx) {
+	CMovableGameObject::SetDirection(nx);
+	if (nx == 1) vx = KOOPA_TROOPA_MOVE_SPEED;
+	else vx = -KOOPA_TROOPA_MOVE_SPEED;
 }

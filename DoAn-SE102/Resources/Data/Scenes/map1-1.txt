@@ -325,7 +325,7 @@ Resources\Data\Entities\koopa_troopa.txt
 71	839	167.9	0
 71	887	167.9	0
 72	953	167.9	0
-73	232	150	0
+73	587	141	1
 
 
 #COIN
