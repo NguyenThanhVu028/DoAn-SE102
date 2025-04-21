@@ -28,7 +28,7 @@ void CMario::Update(DWORD dt) {
 
 	if (CGame::GetInstance()->IsFrozen()) return;
 
-	if (level == MarioLevel::SMALL) height = MARIO_SMALL_BBOX_HEIGHT;
+	if (level == MarioLevel::SMALL || state == MarioState::SIT) height = MARIO_SMALL_BBOX_HEIGHT;
 	else height = MARIO_BIG_BBOX_HEIGHT;
 
 	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
@@ -201,6 +201,11 @@ void CMario::GetAnimationBIG() {
 			}
 		}
 	}
+	if (state == MarioState::SIT) {
+		if (nx == 1) aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_SIT_RIGHT);
+		else aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_SIT_LEFT);
+		return;
+	}
 	if (vx == 0) {
 		if (nx == 1) {
 			aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_RIGHT);
@@ -294,6 +299,11 @@ void CMario::GetAnimationRACCOON() {
 				return;
 			}
 		}
+	}
+	if (state == MarioState::SIT) {
+		if (nx == 1) aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_SIT_RIGHT);
+		else aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_SIT_LEFT);
+		return;
 	}
 	if (vx == 0) {
 		if (nx == 1) {
@@ -459,6 +469,7 @@ void CMario::SetState(MarioState state) {
 		break;
 	case MarioState::SIT:
 		if (level == MarioLevel::SMALL) return;
+		this->state = state;
 		break;
 	case MarioState::NOT_RUN:
 		pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) * 0.5;
