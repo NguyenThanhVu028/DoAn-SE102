@@ -7,7 +7,7 @@ protected:
 	bool isKilled;		//When enemy is killed -> Spawner will delete it
 	bool isEnabled;		//When enemy is out of screen view -> Spawner can respawn it
 public:
-	CEnemy(float x, float y, int nx = 1) : CMovableGameObject(x, y) { isEnabled = true; isKilled = false; }
+	CEnemy(float x, float y, int nx = 1) : CMovableGameObject(x, y) { isEnabled = true; isKilled = false; this->nx = nx; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Render() = 0;

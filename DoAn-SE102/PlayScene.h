@@ -15,6 +15,7 @@
 #include "FirePiranhaPlantPipe.h"
 #include "GoombaSpawner.h"
 #include "RedGoombaSpawner.h"
+#include "RedKoopaTroopaSpawner.h"
 //#include "Brick.h"
 //#include "Mario.h"
 //#include "Goomba.h"

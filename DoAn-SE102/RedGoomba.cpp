@@ -8,8 +8,16 @@ void CRedGoomba::Render() {
 	//Check camera view
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
 	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
-	if (x < cX - GOOMBA_WIDTH * 0.5f - DESPAWN_OFFSET || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f + DESPAWN_OFFSET) { isEnabled = false; return; }
-	if (y < cY - GOOMBA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + DESPAWN_OFFSET) { isEnabled = false; return; }
+	if (x < cX - GOOMBA_WIDTH * 0.5f - DESPAWN_OFFSET || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f + DESPAWN_OFFSET) { 
+		if (state == GoombaState::UPSIDE_DOWN) isKilled = true;
+		else isEnabled = false;
+		return;
+	}
+	if (y < cY - GOOMBA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + DESPAWN_OFFSET) { 
+		if (state == GoombaState::UPSIDE_DOWN) isKilled = true;
+		else isEnabled = false;
+		return;
+	}
 
 	//Get animation Id
 	int wingAniToRender;
@@ -44,7 +52,7 @@ void CRedGoomba::Render() {
 
 void CRedGoomba::Update(DWORD dt) {
 	CGoomba::Update(dt);
-	if (vy == 0 && !IsDead()) vx = (nx == 1) ? GOOMBA_MOVING_SPEED : -GOOMBA_MOVING_SPEED;
+	if (vy == 0 && !IsDead()) vx = (nx == 1) ? GOOMBA_MOVE_SPEED : -GOOMBA_MOVE_SPEED;
 	if (CGame::GetInstance()->GetTickCount() - jump_timer > RED_GOOMBA_CYCLE && hasWings) {
 		if (vy == 0) {
 			vy = RED_GOOMBA_LONG_JUMP_SPEED;

@@ -1,7 +1,7 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #----------GOOMBA----------
-#WALKING
+#WALK
 80101	0	0	15	15	30
 80102	16	0	31	15	30
 
@@ -12,7 +12,7 @@
 80121	256	0	271	15	30
 
 #----------RED GOOMBA----------
-#WALKING
+#WALK
 80131	88	0	103	15	30
 80132	104	0	119	15	30
 
@@ -29,7 +29,7 @@
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 #----------GOOMBA----------
-#WALKING
+#WALK
 80101	80101	100	80102	100
 
 #FLATTENED
@@ -39,7 +39,7 @@
 80121	80121	100
 
 #----------RED GOOMBA----------
-#WALKING
+#WALK
 80131	80131	100	80132	100
 
 #FLATENNED

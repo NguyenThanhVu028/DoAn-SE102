@@ -240,10 +240,16 @@
     <ClInclude Include="RedGoomba.h">
       <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="MarioHead.h">
+      <Filter>Header Files\Entities\Mario</Filter>
+    </ClInclude>
     <ClInclude Include="RedGoombaSpawner.h">
+      <Filter>Header Files\Entities\Spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="RedKoopaTroopa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MarioHead.h">
+    <ClInclude Include="RedKoopaTroopaSpawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -377,10 +383,16 @@
     <ClCompile Include="RedGoomba.cpp">
       <Filter>Source Files\Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="MarioHead.cpp">
+      <Filter>Source Files\Entities\Mario</Filter>
+    </ClCompile>
     <ClCompile Include="RedGoombaSpawner.cpp">
+      <Filter>Source Files\Entities\Spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="RedKoopaTroopa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MarioHead.cpp">
+    <ClCompile Include="RedKoopaTroopaSpawner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

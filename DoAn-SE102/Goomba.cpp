@@ -17,8 +17,16 @@ void CGoomba::Render() {
 	//Check camera view
 	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
 	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
-	if (x < cX - GOOMBA_WIDTH * 0.5f - DESPAWN_OFFSET || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f + DESPAWN_OFFSET) { isEnabled = false; return; }
-	if (y < cY - GOOMBA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + DESPAWN_OFFSET) { isEnabled = false; return; }
+	if (x < cX - GOOMBA_WIDTH * 0.5f - DESPAWN_OFFSET || x > cX + screenWidth + GOOMBA_WIDTH * 0.5f + DESPAWN_OFFSET) { 
+		if (state == GoombaState::UPSIDE_DOWN) isKilled = true;
+		else isEnabled = false; 
+		return; 
+	}
+	if (y < cY - GOOMBA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + GOOMBA_HEIGHT * 0.5f + DESPAWN_OFFSET) { 
+		if (state == GoombaState::UPSIDE_DOWN) isKilled = true;
+		else isEnabled = false;
+		return;
+	}
 
 	//Get animation Id
 	int aniToRender = GOOMBA_ANIMATION_WALK;
@@ -100,7 +108,7 @@ void CGoomba::SetState(GoombaState state, int nx) {
 		dead_start = CGame::GetInstance()->CGame::GetInstance()->GetTickCount();
 		break;
 	case GoombaState::UPSIDE_DOWN:
-		vx = (nx == -1) ? GOOMBA_MOVING_SPEED * 2 : -GOOMBA_MOVING_SPEED * 2;
+		vx = (nx == -1) ? GOOMBA_MOVE_SPEED * 2 : -GOOMBA_MOVE_SPEED * 2;
 		vy = -GOOMBA_JUMP_DEFLECT_SPEED;
 		break;
 	}
@@ -108,6 +116,6 @@ void CGoomba::SetState(GoombaState state, int nx) {
 
 void CGoomba::SetDirection(int nx) {
 	CMovableGameObject::SetDirection(nx);
-	if (nx == 1) vx = GOOMBA_MOVING_SPEED;
-	else vx = -GOOMBA_MOVING_SPEED;
+	if (nx == 1) vx = GOOMBA_MOVE_SPEED;
+	else vx = -GOOMBA_MOVE_SPEED;
 }

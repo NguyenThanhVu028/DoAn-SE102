@@ -12,6 +12,7 @@ Resources\Data\Entities\piranha_plant.txt
 Resources\Data\Entities\fireball.txt
 Resources\Data\Entities\items.txt
 Resources\Data\Entities\goomba.txt
+Resources\Data\Entities\koopa_troopa.txt
 
 #coin.txt
 #cloud.txt
@@ -41,6 +42,8 @@ Resources\Data\Entities\goomba.txt
 #	61 = Normal piranha plant pipe
 #	62 = Fire piranha plant pipe
 #	71 = Goomba spawner
+#	72 = Red Goomba spawner
+#	73 = Red KoopaTroopa spawner
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
@@ -322,6 +325,7 @@ Resources\Data\Entities\goomba.txt
 71	839	167.9	0
 71	887	167.9	0
 72	953	167.9	0
+73	232	150	0
 
 
 #COIN

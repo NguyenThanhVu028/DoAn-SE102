@@ -4,7 +4,7 @@
 #define GOOMBA_WIDTH 16
 #define GOOMBA_HEIGHT 16
 
-#define GOOMBA_MOVING_SPEED 0.05f
+#define GOOMBA_MOVE_SPEED 0.05f
 #define GOOMBA_JUMP_DEFLECT_SPEED 0.2f;
 
 #define GOOMBA_GRAVITY 0.0006f
@@ -26,7 +26,7 @@ protected:
 public:
 	CGoomba(float x, float y, int nx = 1) : CEnemy(x, y, nx) {
 		state = GoombaState::ALIVE;
-		vx = (nx == 1) ? GOOMBA_MOVING_SPEED : -GOOMBA_MOVING_SPEED;
+		vx = (nx == 1) ? GOOMBA_MOVE_SPEED : -GOOMBA_MOVE_SPEED;
 		this->nx = nx;
 		ay = GOOMBA_GRAVITY;
 	}
