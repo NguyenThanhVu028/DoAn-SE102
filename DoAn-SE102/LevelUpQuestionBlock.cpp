@@ -3,10 +3,10 @@
 
 void CLevelUpQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (!IsInteractable()) return;
-	if (dynamic_cast<CMario*>(e->src_obj)) {
+	if (dynamic_cast<CMarioHead*>(e->src_obj)) {
 		if (e->ny > 0) {
 			float pX, pY;
-			dynamic_cast<CMario*>(e->src_obj)->GetPosition(pX, pY);
+			dynamic_cast<CMarioHead*>(e->src_obj)->GetPosition(pX, pY);
 			if (pX < x) nx = 1;
 			else nx = -1;
 			bounce_time_start = CGame::GetInstance()->GetTickCount();

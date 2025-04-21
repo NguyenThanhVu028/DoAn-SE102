@@ -189,7 +189,7 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 	vector<LPCOLLISIONEVENT>& coEvents,
 	LPCOLLISIONEVENT& colX,
 	LPCOLLISIONEVENT& colY,
-	int filterBlock = 1,		// 1 = only filter block collisions, 0 = filter all collisions 
+	int filter = 1,		// 1 = only filter block collisions, 0 = filter all collisions, -1 = no filter
 	int filterX = 1,			// 1 = process events on X-axis, 0 = skip events on X 
 	int filterY = 1)			// 1 = process events on Y-axis, 0 = skip events on Y
 {
@@ -205,9 +205,13 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 		LPCOLLISIONEVENT c = coEvents[i];
 		if (c->isDeleted) continue;
 		if (c->obj->IsDeleted()) continue;
+		if (c->isOverlap) continue;
 
-		// ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc)
-		if (filterBlock == 1 && !c->obj->IsBlocking())
+		//if filter = -1, dont filter any object
+		if(filter == -1) continue;
+
+		// if filter == 1, ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc)
+		if (filter == 1 && !c->obj->IsBlocking())
 		{
 			continue;
 		}
@@ -229,7 +233,7 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 *  Simple/Sample collision framework
 *  NOTE: Student might need to improve this based on game logic
 */
-void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects, int filter, int filterX, int filterY)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
 	LPCOLLISIONEVENT colX = NULL;
@@ -249,7 +253,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 	}
 	else
 	{
-		Filter(objSrc, coEvents, colX, colY);
+		Filter(objSrc, coEvents, colX, colY, filter, filterX, filterY);
 
 		float x, y, vx, vy, dx, dy;
 		objSrc->GetPosition(x, y);
@@ -355,7 +359,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 	{
 		LPCOLLISIONEVENT e = coEvents[i];
 		if (e->isDeleted) continue;
-		if (e->obj->IsBlocking() && !e->isOverlap) continue;  // blocking collisions were handled already, skip them
+		if (filter == 1 && e->obj->IsBlocking() && !e->isOverlap) continue;  // if filter = 1, blocking collisions were handled already, skip them
 
 		objSrc->OnCollisionWith(e);
 	}

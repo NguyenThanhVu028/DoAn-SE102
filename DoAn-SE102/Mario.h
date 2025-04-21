@@ -4,10 +4,11 @@
 #include "GameObjectsManager.h"
 #include "debug.h"
 #include "MarioAniIds.h"
+#include "MarioHead.h"
 
 #define MARIO_UNTOUCHABLE_TIME 2700
-#define MARIO_LEVEL_LONG_TIME 700
-#define MARIO_LEVEL_SHORT_TIME 350
+#define MARIO_LEVEL_LONG_TIME 800
+#define MARIO_LEVEL_SHORT_TIME 400
 #define MARIO_FLICKER_TIME 100
 #define MARIO_DEATH_TIME 5000
 
@@ -49,6 +50,8 @@ enum MarioLevel { SMALL, BIG, RACCOON };
 
 class CMario : public CMovableGameObject
 {
+	CMarioHead* head;
+
 	MarioState state;
 	MarioLevel level;
 
@@ -60,7 +63,6 @@ class CMario : public CMovableGameObject
 	float maxFallSpeed;
 	bool isGrounded;
 	//float slowFalling;
-
 	ULONGLONG jumpTime;
 	ULONGLONG lastJumpTime;
 
@@ -90,12 +92,14 @@ public:
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 		maxFallSpeed = -1;
 		width = MARIO_BIG_BBOX_WIDTH;
-		height = MARIO_BIG_BBOX_HEIGHT;
+		height = MARIO_SMALL_BBOX_HEIGHT;
 		maxVx = 0;
 		untouchable_start = CGame::GetInstance()->GetTickCount() - MARIO_UNTOUCHABLE_TIME - 10;
 		level_start = CGame::GetInstance()->GetTickCount() - MARIO_LEVEL_LONG_TIME - 10;
 		level_duration = 0;
 		flicker_time = 0;
+
+		head = new CMarioHead(x, y - height * 0.5f);
 	}
 
 	void Update(DWORD dt);

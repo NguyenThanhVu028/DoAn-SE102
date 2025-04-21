@@ -58,6 +58,13 @@ void CMario::Update(DWORD dt) {
 	if (vy < maxVy) vy = maxVy;
 	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 
+	//Cheking collision for Mairo's head
+	head->x = x; head->y = y - height;
+	head->vx = vx; head->vy = vy;
+	head->ClearHitBlocks();
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(head, dt, 0, 0, 1, 0, -1, 0, 0);
+	head->ProcessHitBlocks();
+
 	//Check collision
 	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
@@ -484,9 +491,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 		vx = 0;
 	}
 	//Dynamic cast
-	if (dynamic_cast<CQuestionBlock*>(e->obj)) {
-		dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
-	}
 	if (dynamic_cast<CLevelUpItem*>(e->src_obj)) {
 		OnCollisionWidthPowerUpItem(e);
 	}

@@ -243,6 +243,9 @@
     <ClInclude Include="RedGoombaSpawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MarioHead.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -375,6 +378,9 @@
       <Filter>Source Files\Entities\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="RedGoombaSpawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioHead.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

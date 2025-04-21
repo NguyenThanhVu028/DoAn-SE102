@@ -88,7 +88,7 @@ void CGameObjectsManager::PurgeDeletedObjects()
 	//	objects.end());
 }
 
-void CGameObjectsManager::CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool player, bool movableObjects, bool staticObjects, bool others) {
+void CGameObjectsManager::CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool player, bool movableObjects, bool staticObjects, bool others, int filterBlock, int filterX, int filterY) {
 	vector<LPGAMEOBJECT> temp;
 	if (player) temp.push_back(this->player);
 	if (movableObjects) {
@@ -102,8 +102,7 @@ void CGameObjectsManager::CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool
 			if (i->IsEnabled()) temp.push_back(i);
 		}
 	}
-	CCollision::GetInstance()->Process(srcObj, dt, &temp);
-	//CCollision::GetInstance()->Process(srcObj, dt, &movableObjects);
+	CCollision::GetInstance()->Process(srcObj, dt, &temp, filterBlock, filterX, filterY);
 }
 
 bool CGameObjectsManager::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }

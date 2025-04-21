@@ -98,7 +98,7 @@ public:
 		int filterX,
 		int filterY);
 
-	void Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects, int filter = 1, int filterX = 1, int filterY = 1);
 
 	static CCollision* GetInstance();
 };

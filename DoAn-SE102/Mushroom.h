@@ -1,5 +1,6 @@
 #pragma once
 #include "LevelUpItem.h"
+#include "debug.h"
 
 #define MUSHROOM_WIDTH 16
 #define MUSHROOM_HEIGHT 16
@@ -19,12 +20,13 @@ class CMushroom : public CLevelUpItem
 	bool isRising;
 	float tempVx;
 	//ULONGLONG checkPoint;
-	float spawnX, spawnY;
+	//float spawnX, spawnY;
 public:
 	CMushroom(float x, float y, int nx = 1) : CLevelUpItem(x, y) {
 		//checkPoint = CGame::GetInstance()->GetTickCount();
-		spawnX = x; spawnY = y;
-		ay = MUSHROOM_GRAVITY; tempVx = vx = (nx > 0) ? MUSHROOM_MOVING_SPEED : -MUSHROOM_MOVING_SPEED;
+		//this->x = x; this->y = y;
+		vx = 0;
+		ay = MUSHROOM_GRAVITY; tempVx = (nx > 0) ? MUSHROOM_MOVING_SPEED : -MUSHROOM_MOVING_SPEED;
 		isOverlapped = false;
 		isRising = true;
 	}

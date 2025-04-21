@@ -53,6 +53,6 @@ public:
 	vector<LPGAMEOBJECT> GetStaticObjects() { return staticObjects; }
 	void AddMovableObject(LPGAMEOBJECT p) { movableObjects.push_back(p); }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
-	void CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool player = false, bool movableObjects = false, bool staticObjects = false, bool others = true);
+	void CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool player = false, bool movableObjects = false, bool staticObjects = false, bool others = true, int filterBlock = 1, int filterX = 1, int filterY = 1);
 };
 
