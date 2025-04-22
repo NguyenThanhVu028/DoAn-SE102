@@ -1,4 +1,5 @@
 #include "EdgeSensor.h"
+#include "GameObjectsManager.h"
 
 void CEdgeSensor::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - width * 0.5f;
@@ -31,4 +32,10 @@ void CEdgeSensor::ProcessTouchedBlocks() {
 		if (oL <= x - width * 0.5f) leftEdge = true;
 		if (oR >= x + width * 0.5f) rightEdge = true;
 	}
+}
+
+void CEdgeSensor::ProcessCollision(DWORD dt) {
+	ClearTouchedBlocks();
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 1, 0, -1);
+	ProcessTouchedBlocks();
 }

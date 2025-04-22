@@ -23,5 +23,6 @@ public:
 	virtual int IsBlocking() { return 0; }
 	void ClearHitBlocks();
 	void ProcessHitBlocks();
+	void ProcessCollision(DWORD dt);
 };
 

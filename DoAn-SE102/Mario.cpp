@@ -61,9 +61,10 @@ void CMario::Update(DWORD dt) {
 	//Cheking collision for Mairo's head
 	head->x = x; head->y = y - height;
 	head->vx = vx; head->vy = vy;
-	head->ClearHitBlocks();
-	CGameObjectsManager::GetInstance()->CheckCollisionWith(head, dt, 0, 0, 1, 0, -1, 0, 0);
-	head->ProcessHitBlocks();
+	head->ProcessCollision(dt);
+	//head->ClearHitBlocks();
+	//CGameObjectsManager::GetInstance()->CheckCollisionWith(head, dt, 0, 0, 1, 0, -1, 0, 0);
+	//head->ProcessHitBlocks();
 
 	//Check collision
 	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground

@@ -47,3 +47,9 @@ void CMarioHead::ProcessHitBlocks() {
 	if(hitBlock != NULL)
 		hitBlock->OnCollisionWith(e);
 }
+
+void CMarioHead::ProcessCollision(DWORD dt) {
+	ClearHitBlocks();
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 1, 0, -1);
+	ProcessHitBlocks();
+}

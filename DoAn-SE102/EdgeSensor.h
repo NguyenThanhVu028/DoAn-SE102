@@ -20,6 +20,7 @@ public:
 	void OnNoCollision(DWORD dt) { DebugOutTitle(L"detail: %f, %f, %f, %f", x, y, vx, vy); };
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual int IsBlocking() { return 0; }
+	void ProcessCollision(DWORD dt);
 	void ClearTouchedBlocks();
 	void ProcessTouchedBlocks();
 
