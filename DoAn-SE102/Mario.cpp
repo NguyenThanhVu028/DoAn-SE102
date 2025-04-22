@@ -75,6 +75,8 @@ void CMario::Update(DWORD dt) {
 	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
 
+	//Update position for the shell being held
+	AdjustShellPosition();
 }
 void CMario::Render() {
 	if (state == MarioState::DIE) {
@@ -421,16 +423,19 @@ void CMario::SetState(MarioState state) {
 		this->state = state;
 		break;
 	case MarioState::WALK_LEFT:
+		if (nx == 1) ResetTurningTimer();
 		nx = -1;
 		maxVx = -MARIO_WALK_SPEED;
 		ax = -MARIO_WALK_ACCEL_X;
 		break;
 	case MarioState::WALK_RIGHT:
+		if (nx == -1) ResetTurningTimer();
 		nx = 1;
 		maxVx = MARIO_WALK_SPEED;
 		ax = MARIO_WALK_ACCEL_X;
 		break;
 	case MarioState::RUN_LEFT:
+		if(nx == 1) ResetTurningTimer();
 		nx = -1;
 		//if (!isGrounded) {
 		//	if(vx > 0) ax = -MARIO_RUNNING_ACCEL_X;
@@ -453,6 +458,7 @@ void CMario::SetState(MarioState state) {
 
 		break;
 	case MarioState::RUN_RIGHT:
+		if(nx == -1) ResetTurningTimer();
 		nx = 1;
 		/*if (!isGrounded) {
 			if(vx < 0) ax = MARIO_RUNNING_ACCEL_X;
@@ -554,7 +560,10 @@ void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
 		if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
 		if ((dynamic_cast<CKoopaTroopa*>(e->obj)->IsUntouchable())) return;
 		if (dynamic_cast<CKoopaTroopa*>(e->obj)->IsIdling()) {
-			if (isRunButtonPressed && shell == NULL) DebugOutTitle(L"Hold the shell");
+			if (isRunButtonPressed && shell == NULL) {
+				shell = dynamic_cast<CKoopaTroopa*>(e->obj);
+				shell->OnHeld();
+			}
 			dynamic_cast<CKoopaTroopa*>(e->obj)->OnCollisionWithMario(e);
 			return;
 		}
@@ -618,5 +627,63 @@ void CMario::OnLevelDown() {
 		}
 		level = (MarioLevel)(level - 1);
 		CGame::GetInstance()->FreezeGame();
+	}
+}
+
+void CMario::OnReleaseRunButton() {
+	if (shell != NULL) {
+		shell->ReleaseHeld();
+		shell = NULL;
+	}
+	isRunButtonPressed = false; 
+}
+
+void CMario::ResetTurningTimer() {
+	auto game = CGame::GetInstance();
+	ULONGLONG timer = game->GetTickCount() - turning_start;
+	if (timer > MARIO_TURNING_TIME) turning_start = game->GetTickCount();
+	else {
+		turning_start = game->GetTickCount() - (MARIO_TURNING_TIME - timer);
+	}
+}
+
+void CMario::AdjustShellPosition() {
+	if (shell != NULL) {
+		float tempX, tempY;
+		ULONGLONG turningTimer = CGame::GetInstance()->GetTickCount() - turning_start;
+		switch (level) {
+		case MarioLevel::SMALL:
+			tempY = y - MARIO_SHELL_POSITION_OFFSET_SMALL_Y;
+			if (nx == 1) {
+				if (turningTimer < MARIO_TURNING_TIME) {
+					tempX = x - MARIO_SHELL_POSITION_OFFSET_SMALL_X + (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_SMALL_X * 2;
+				}
+				else tempX = x + MARIO_SHELL_POSITION_OFFSET_SMALL_X;
+			}
+			else {
+				if (turningTimer < MARIO_TURNING_TIME) {
+					tempX = x + MARIO_SHELL_POSITION_OFFSET_SMALL_X - (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_SMALL_X * 2;
+				}
+				else tempX = x - MARIO_SHELL_POSITION_OFFSET_SMALL_X;
+			}
+			break;
+		case MarioLevel::BIG:
+		case MarioLevel::RACCOON:
+			tempY = y - MARIO_SHELL_POSITION_OFFSET_BIG_Y;
+			if (nx == 1) {
+				if (turningTimer < MARIO_TURNING_TIME) {
+					tempX = x - MARIO_SHELL_POSITION_OFFSET_BIG_X + (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_BIG_X * 2;
+				}
+				else tempX = x + MARIO_SHELL_POSITION_OFFSET_BIG_X;
+			}
+			else {
+				if (turningTimer < MARIO_TURNING_TIME) {
+					tempX = x + MARIO_SHELL_POSITION_OFFSET_BIG_X - (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_BIG_X * 2;
+				}
+				else tempX = x - MARIO_SHELL_POSITION_OFFSET_BIG_X;
+			}
+			break;
+		}
+		shell->SetPosition(tempX, tempY);
 	}
 }

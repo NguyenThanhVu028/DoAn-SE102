@@ -12,6 +12,7 @@
 #define MARIO_LEVEL_SHORT_TIME 400
 #define MARIO_FLICKER_TIME 100
 #define MARIO_DEATH_TIME 5000
+#define MARIO_TURNING_TIME 200
 
 #define MARIO_WALK_SPEED 0.07f
 #define MARIO_RUN_SPEED 0.2f
@@ -40,11 +41,15 @@
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
-
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
+
+#define MARIO_SHELL_POSITION_OFFSET_SMALL_X 8
+#define MARIO_SHELL_POSITION_OFFSET_BIG_X 8
+#define MARIO_SHELL_POSITION_OFFSET_SMALL_Y 4
+#define MARIO_SHELL_POSITION_OFFSET_BIG_Y 6
 
 enum MarioState { NONE, DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT, HOLDING };
 enum MarioLevel { SMALL, BIG, RACCOON };
@@ -79,10 +84,12 @@ class CMario : public CMovableGameObject
 	ULONGLONG level_duration;
 	DWORD flicker_time;
 	ULONGLONG death_start;
+	ULONGLONG turning_start;	//Used for Mario's turning animations while holding shell
 
 public:
 
 	CMario(float x, float y) : CMovableGameObject(x, y) {
+		auto game = CGame::GetInstance();
 		state = MarioState::IDLE;
 		level = MarioLevel::SMALL;
 		ay = MARIO_GRAVITY;
@@ -91,18 +98,18 @@ public:
 		lastJumpTime = -1;
 		jumpTime = MARIO_JUMP_TIME;
 		pMeter = 0;
-		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
+		pMeterCheckpoint = game->GetTickCount();
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 		maxFallSpeed = -1;
 		width = MARIO_BIG_BBOX_WIDTH;
 		height = MARIO_SMALL_BBOX_HEIGHT;
 		maxVx = 0;
-		untouchable_start = CGame::GetInstance()->GetTickCount() - MARIO_UNTOUCHABLE_TIME - 10;
-		level_start = CGame::GetInstance()->GetTickCount() - MARIO_LEVEL_LONG_TIME - 10;
+		untouchable_start = game->GetTickCount() - MARIO_UNTOUCHABLE_TIME - 10;
+		level_start = game->GetTickCount() - MARIO_LEVEL_LONG_TIME - 10;
 		level_duration = 0;
 		flicker_time = 0;
 		isRunButtonPressed = false;
-
+		turning_start = game->GetTickCount();
 		head = new CMarioHead(x, y - height * 0.5f);
 		shell = NULL;
 	}
@@ -138,9 +145,11 @@ public:
 	void OnLevelDown();
 
 	void OnPressRunButton() { isRunButtonPressed = true; }
-	void OnReleaseRunButton() { isRunButtonPressed = false; }
+	void OnReleaseRunButton();
 	bool IsRunButtonPressed() { return isRunButtonPressed; }
 	
 	bool IsHoldingShell() { return shell != NULL; }
+	void ResetTurningTimer();
+	void AdjustShellPosition();
 };
 

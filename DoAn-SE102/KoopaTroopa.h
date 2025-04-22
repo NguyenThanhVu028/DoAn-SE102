@@ -2,7 +2,7 @@
 #include "Enemy.h"
 
 #define KOOPA_TROOPA_MOVE_SPEED 0.03f
-#define KOOPA_TROOPA_SHELL_MOVE_SPEED 0.1f
+#define KOOPA_TROOPA_SHELL_MOVE_SPEED 0.2f
 #define KOOPA_TROOPA_DIE_JUMP_SPEED 0.06f
 #define KOOPA_TROOPA_DIE_MOVE_SPEED 0.01f
 #define KOOPA_TROOPA_GRAVITY 0.0006f
@@ -11,7 +11,7 @@
 #define KOOPA_TROOPA_HEIGHT 32
 #define KOOPA_TROOPA_SHELL_HEIGHT 16
 
-#define KOOPA_TROOPA_CHARGING_TIME 4000
+#define KOOPA_TROOPA_CHARGING_TIME 10000
 #define KOOPA_TROOPA_UNTOUCHABLE_TIME 100
 
 enum KoopaTroopaState { OUTSIDE, SHELL_IDLE, SHELL_MOVING, K_DIE, K_DIE_KICKED };
@@ -58,7 +58,7 @@ public:
 	bool IsIdling() { return state == KoopaTroopaState::SHELL_IDLE; }
 	virtual void SetDirection(int nx);
 	bool IsUntouchable();
-	void IsHeld() { isHeld = true; }
-	void ReleaseHeld() { isHeld = false; }
+	void OnHeld() { isHeld = true; ay = 0; vy = 0; }
+	void ReleaseHeld() { isHeld = false; ay = KOOPA_TROOPA_GRAVITY; }
 };
 
