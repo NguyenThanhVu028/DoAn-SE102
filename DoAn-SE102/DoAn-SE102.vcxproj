@@ -154,6 +154,7 @@
     <ClInclude Include="GoombaSpawner.h" />
     <ClInclude Include="HardBlock.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="KoopaTroopa.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="LevelUpItem.h" />
     <ClInclude Include="LevelUpQuestionBlock.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GoombaSpawner.cpp" />
     <ClCompile Include="HardBlock.cpp" />
+    <ClCompile Include="KoopaTroopa.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LevelUpItem.cpp" />
     <ClCompile Include="LevelUpQuestionBlock.cpp" />

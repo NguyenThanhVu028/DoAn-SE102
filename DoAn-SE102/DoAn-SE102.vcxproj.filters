@@ -253,6 +253,9 @@
       <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="EdgeSensor.h">
+      <Filter>Header Files\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopaTroopa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -399,6 +402,9 @@
       <Filter>Source Files\Entities\Spawners</Filter>
     </ClCompile>
     <ClCompile Include="EdgeSensor.cpp">
+      <Filter>Source Files\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="KoopaTroopa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

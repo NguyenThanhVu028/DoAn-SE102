@@ -537,6 +537,9 @@ void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
 	((CLevelUpItem*)e->src_obj)->Delete();
 	OnLevelUp();
 }
+void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
+
+}
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - width / 2;

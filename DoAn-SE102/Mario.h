@@ -76,6 +76,8 @@ class CMario : public CMovableGameObject
 	ULONGLONG level_duration;
 	DWORD flicker_time;
 	ULONGLONG death_start;
+	
+
 
 public:
 
@@ -122,6 +124,7 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e);
 	void OncollisionWithEnemy(LPCOLLISIONEVENT e);
