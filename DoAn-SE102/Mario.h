@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "MarioAniIds.h"
 #include "MarioHead.h"
+#include "KoopaTroopa.h"
 
 #define MARIO_UNTOUCHABLE_TIME 2700
 #define MARIO_LEVEL_LONG_TIME 800
@@ -51,6 +52,7 @@ enum MarioLevel { SMALL, BIG, RACCOON };
 class CMario : public CMovableGameObject
 {
 	CMarioHead* head;
+	CKoopaTroopa* shell;
 
 	MarioState state;
 	MarioLevel level;
@@ -62,7 +64,8 @@ class CMario : public CMovableGameObject
 	float maxVy;
 	float maxFallSpeed;
 	bool isGrounded;
-	//float slowFalling;
+	bool isRunButtonPressed;
+
 	ULONGLONG jumpTime;
 	ULONGLONG lastJumpTime;
 
@@ -76,8 +79,6 @@ class CMario : public CMovableGameObject
 	ULONGLONG level_duration;
 	DWORD flicker_time;
 	ULONGLONG death_start;
-	
-
 
 public:
 
@@ -100,8 +101,10 @@ public:
 		level_start = CGame::GetInstance()->GetTickCount() - MARIO_LEVEL_LONG_TIME - 10;
 		level_duration = 0;
 		flicker_time = 0;
+		isRunButtonPressed = false;
 
 		head = new CMarioHead(x, y - height * 0.5f);
+		shell = NULL;
 	}
 
 	void Update(DWORD dt);
@@ -133,5 +136,11 @@ public:
 
 	void OnLevelUp();
 	void OnLevelDown();
+
+	void OnPressRunButton() { isRunButtonPressed = true; }
+	void OnReleaseRunButton() { isRunButtonPressed = false; }
+	bool IsRunButtonPressed() { return isRunButtonPressed; }
+	
+	bool IsHoldingShell() { return shell != NULL; }
 };
 

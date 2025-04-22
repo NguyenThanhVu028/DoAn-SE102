@@ -18,7 +18,6 @@ class CRedGoomba : public CGoomba
 	bool hasWings;
 	bool isCharging;
 	ULONGLONG jump_timer;
-	ULONGLONG untouchable_start;
 public:
 	CRedGoomba(float x, float y, int nx = 1) : CGoomba(x, y, nx) {
 		hasWings = true;

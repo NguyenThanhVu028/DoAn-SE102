@@ -25,7 +25,6 @@ public:
 	void Render();
 	void Update(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-	bool IsDead();
 
 	KoopaTroopaState GetState() { return state; }
 };

@@ -92,14 +92,18 @@ void CGameObjectsManager::CheckCollisionWith(LPGAMEOBJECT srcObj, DWORD dt, bool
 	vector<LPGAMEOBJECT> temp;
 	if (player) temp.push_back(this->player);
 	if (movableObjects) {
-		for (auto i : this->movableObjects) temp.push_back(i);
+		for (auto i : this->movableObjects) {
+			if(i != srcObj) temp.push_back(i);
+		}
 	}
 	if (staticObjects) {
-		for (auto i : this->staticObjects) temp.push_back(i);
+		for (auto i : this->staticObjects) {
+			if (i != srcObj) temp.push_back(i);
+		}
 	}
 	if (others) {
 		for (auto i : fireBalls) {
-			if (i->IsEnabled()) temp.push_back(i);
+			if (i->IsEnabled() && i!=srcObj) temp.push_back(i);
 		}
 	}
 	CCollision::GetInstance()->Process(srcObj, dt, &temp, filterBlock, filterX, filterY);

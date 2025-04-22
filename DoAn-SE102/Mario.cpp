@@ -4,6 +4,7 @@
 #include "QuestionBlock.h"
 #include "Mushroom.h"
 #include "Goomba.h"
+#include "KoopaTroopa.h"
 
 void CMario::Update(DWORD dt) {
 
@@ -32,6 +33,13 @@ void CMario::Update(DWORD dt) {
 	else height = MARIO_BIG_BBOX_HEIGHT;
 
 	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
+
+	if (shell != NULL) {
+		if (!shell->IsIdling()) {
+			shell->ReleaseHeld();
+			shell = NULL;
+		}
+	}
 
 	float prevVx = vx;
 	vx += ax * dt;
@@ -62,9 +70,6 @@ void CMario::Update(DWORD dt) {
 	head->x = x; head->y = y - height;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
-	//head->ClearHitBlocks();
-	//CGameObjectsManager::GetInstance()->CheckCollisionWith(head, dt, 0, 0, 1, 0, -1, 0, 0);
-	//head->ProcessHitBlocks();
 
 	//Check collision
 	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
@@ -479,7 +484,6 @@ void CMario::SetState(MarioState state) {
 		break;
 	}
 }
-
 void CMario::OnNoCollision(DWORD dt) {
 	x += vx * dt;
 	y += vy * dt;
@@ -515,6 +519,10 @@ void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {
 		OnCollisionWithGoomba(e);
 		return;
 	}
+	if (dynamic_cast<CKoopaTroopa*>(e->obj)) {
+		OnCollisionWidthKoopaTroopa(e);
+		return;
+	}
 	OnLevelDown();
 }
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
@@ -522,7 +530,6 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	if (e->ny < 0) {
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		e->obj->OnCollisionWith(e);
-		/*dynamic_cast<CGoomba*>(e->obj)->SetState(GoombaState::FLATTENED);*/
 	}
 	else {
 		if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
@@ -538,7 +545,21 @@ void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
 	OnLevelUp();
 }
 void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
-
+	if ((dynamic_cast<CKoopaTroopa*>(e->obj)->IsDead())) return;
+	if (e->ny < 0) {
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		dynamic_cast<CKoopaTroopa*>(e->obj)->OnCollisionWithMario(e);
+	}
+	else {
+		if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
+		if ((dynamic_cast<CKoopaTroopa*>(e->obj)->IsUntouchable())) return;
+		if (dynamic_cast<CKoopaTroopa*>(e->obj)->IsIdling()) {
+			if (isRunButtonPressed && shell == NULL) DebugOutTitle(L"Hold the shell");
+			dynamic_cast<CKoopaTroopa*>(e->obj)->OnCollisionWithMario(e);
+			return;
+		}
+		OnLevelDown();
+	}
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {

@@ -2,8 +2,9 @@
 #include "Enemy.h"
 
 #define KOOPA_TROOPA_MOVE_SPEED 0.03f
-#define KOOPA_TROOPA_SHELL_MOVE_SPEED 0.06f
+#define KOOPA_TROOPA_SHELL_MOVE_SPEED 0.1f
 #define KOOPA_TROOPA_DIE_JUMP_SPEED 0.06f
+#define KOOPA_TROOPA_DIE_MOVE_SPEED 0.01f
 #define KOOPA_TROOPA_GRAVITY 0.0006f
 
 #define KOOPA_TROOPA_WIDTH 16
@@ -11,18 +12,22 @@
 #define KOOPA_TROOPA_SHELL_HEIGHT 16
 
 #define KOOPA_TROOPA_CHARGING_TIME 4000
+#define KOOPA_TROOPA_UNTOUCHABLE_TIME 100
 
 enum KoopaTroopaState { OUTSIDE, SHELL_IDLE, SHELL_MOVING, K_DIE, K_DIE_KICKED };
-enum KoopaTroopaDirection { NORMAL, UPSIDEDOWN };
+enum KoopaTroopaShellDirection { NORMAL, UPSIDEDOWN };
 
 class CKoopaTroopa : public CEnemy
 {
 protected:
 	KoopaTroopaState state;
-	KoopaTroopaDirection direction;
+	KoopaTroopaShellDirection shellDirection;
 	float height;
+	CAnimation* aniToRender = NULL;
 
 	ULONGLONG charging_start;
+
+	bool isHeld;
 public:
 	CKoopaTroopa(float x, float y, int nx) : CEnemy(x, y, nx) {
 		vx = (nx == 1) ? KOOPA_TROOPA_MOVE_SPEED : -KOOPA_TROOPA_MOVE_SPEED;
@@ -30,9 +35,10 @@ public:
 		vy = 0;
 		ay = KOOPA_TROOPA_GRAVITY;
 		state = KoopaTroopaState::OUTSIDE;
-		direction = KoopaTroopaDirection::NORMAL;
+		shellDirection = KoopaTroopaShellDirection::NORMAL;
 		height = KOOPA_TROOPA_HEIGHT;
 		charging_start = CGame::GetInstance()->GetTickCount();
+		isHeld = false;
 	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -40,13 +46,19 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e);
 	virtual bool IsDead();
+	virtual void SetEnable(bool t);
 
 	KoopaTroopaState GetState() { return state; }
 	virtual void SetState(KoopaTroopaState state);
-	void SetShellDirection(KoopaTroopaDirection direction) { this->direction = direction; }
+	void SetShellDirection(KoopaTroopaShellDirection direction) { this->shellDirection = direction; }
 	bool IsIdling() { return state == KoopaTroopaState::SHELL_IDLE; }
 	virtual void SetDirection(int nx);
-
+	bool IsUntouchable();
+	void IsHeld() { isHeld = true; }
+	void ReleaseHeld() { isHeld = false; }
 };
 

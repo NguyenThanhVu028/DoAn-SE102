@@ -17,28 +17,35 @@ void CRedKoopaTroopa::Render() {
 		return;
 	}
 
-	int aniToRender = RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT;
+	if (aniToRender == NULL) aniToRender = CAnimations::GetInstance()->Get(RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT);
+
+	if (CGame::GetInstance()->IsFrozen()) {
+		aniToRender->Render1Frame(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
+		return;
+	}
+
+	int Id = RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT;
 	switch (state) {
 	case KoopaTroopaState::K_DIE:
 	case KoopaTroopaState::K_DIE_KICKED:
-		aniToRender = (direction == KoopaTroopaDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_IDLE : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_IDLE;
+		Id = (shellDirection == KoopaTroopaShellDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_IDLE : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_IDLE;
 		break;
 	case KoopaTroopaState::OUTSIDE:
-		aniToRender = (vx > 0) ? RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT : RED_KOOPA_TROOPA_ANIMATION_WALK_LEFT;
+		Id = (vx > 0) ? RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT : RED_KOOPA_TROOPA_ANIMATION_WALK_LEFT;
 		break;
 	case KoopaTroopaState::SHELL_IDLE:
 		if (CGame::GetInstance()->GetTickCount() - charging_start < KOOPA_TROOPA_CHARGING_TIME * 0.75f)
-			aniToRender = (direction == KoopaTroopaDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_IDLE : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_IDLE;
+			Id = (shellDirection == KoopaTroopaShellDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_IDLE : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_IDLE;
 		else if (CGame::GetInstance()->GetTickCount() - charging_start <= KOOPA_TROOPA_CHARGING_TIME)
-			aniToRender = (direction == KoopaTroopaDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_CHARGING : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_CHARGING;
+			Id = (shellDirection == KoopaTroopaShellDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_CHARGING : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_CHARGING;
 		break;
 	case KoopaTroopaState::SHELL_MOVING:
-		aniToRender = (direction == KoopaTroopaDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_MOVING : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_MOVING;
+		Id = (shellDirection == KoopaTroopaShellDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_MOVING : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_MOVING;
 		break;
 	}
-	if (CGame::GetInstance()->IsFrozen())
-		CAnimations::GetInstance()->Get(aniToRender)->Render1Frame(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
-	else CAnimations::GetInstance()->Get(aniToRender)->Render(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
+	aniToRender = CAnimations::GetInstance()->Get(Id);
+	aniToRender->Render(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
+
 }
 
 void CRedKoopaTroopa::Update(DWORD dt) {
@@ -49,13 +56,9 @@ void CRedKoopaTroopa::Update(DWORD dt) {
 	edgeSensor->ProcessCollision(dt);
 
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1, 0);
-	if ((!edgeSensor->RightEdge() && vx > 0) || (!edgeSensor->LeftEdge() && vx < 0)) vx = -vx;
+	if (((!edgeSensor->RightEdge() && vx > 0) || (!edgeSensor->LeftEdge() && vx < 0)) && state == KoopaTroopaState::OUTSIDE) vx = -vx;
 }
 
 void CRedKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 	CKoopaTroopa::OnCollisionWith(e);
-}
-
-bool CRedKoopaTroopa::IsDead() {
-	return false;
 }

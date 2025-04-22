@@ -43,6 +43,10 @@ void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_P:
 		CGame::GetInstance()->FreezeGame();
+		break;
+	case DIK_A:
+		mario->OnPressRunButton();
+		break;
 	}
 }
 
@@ -55,6 +59,9 @@ void CMarioKeyEventHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_P:
 		CGame::GetInstance()->UnFreezeGame();
+		break;
+	case DIK_A:
+		mario->OnReleaseRunButton();
 		break;
 	}
 }
