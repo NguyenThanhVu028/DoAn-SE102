@@ -395,6 +395,65 @@ void CMario::GetAnimationBIG() {
 void CMario::GetAnimationRACCOON() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_RIGHT);
 	if (shell != NULL) {	//If Mario is holding a shell
+		if (CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_TURN_SHELL);
+			return;
+		}
+		if (!isGrounded) {
+			if (nx == 1) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_SHELL_LEFT);
+				return;
+			}
+		}
+		if (vx == 0) {
+			if (nx == 1) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_SHELL_LEFT);
+				return;
+			}
+		}
+		if (nx == 1) {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_WALK_SHELL_RIGHT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_MAXSPEED_SHELL_RIGHT);
+				return;
+			}
+		}
+		else {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_WALK_SHELL_LEFT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_SHELL_LEFT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_MAXSPEED_SHELL_LEFT);
+				return;
+			}
+		}
+		return;
+	}
+	if (CGame::GetInstance()->GetTickCount() - kick_shell_start < MARIO_KICK_SHELL_TIME) {
+		if (nx == 1) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_KICK_SHELL_RIGHT);
+		}
+		else aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_KICK_SHELL_LEFT);
 		return;
 	}
 	if (!isGrounded) {
@@ -804,7 +863,6 @@ void CMario::AdjustShellPosition() {
 			}
 			break;
 		case MarioLevel::BIG:
-		case MarioLevel::RACCOON:
 			tempY = y - MARIO_SHELL_POSITION_OFFSET_BIG_Y;
 			if (nx == 1) {
 				if (turningTimer < MARIO_TURN_TIME) {
@@ -817,6 +875,21 @@ void CMario::AdjustShellPosition() {
 					tempX = x + MARIO_SHELL_POSITION_OFFSET_BIG_X - (1.0f * turningTimer / MARIO_TURN_TIME) * MARIO_SHELL_POSITION_OFFSET_BIG_X * 2;
 				}
 				else tempX = x - MARIO_SHELL_POSITION_OFFSET_BIG_X;
+			}
+			break;
+		case MarioLevel::RACCOON:
+			tempY = y - MARIO_SHELL_POSITION_OFFSET_BIG_Y;
+			if (nx == 1) {
+				if (turningTimer < MARIO_TURN_TIME) {
+					tempX = x - MARIO_SHELL_POSITION_OFFSET_RACCOON_X + (1.0f * turningTimer / MARIO_TURN_TIME) * MARIO_SHELL_POSITION_OFFSET_RACCOON_X * 2;
+				}
+				else tempX = x + MARIO_SHELL_POSITION_OFFSET_RACCOON_X;
+			}
+			else {
+				if (turningTimer < MARIO_TURN_TIME) {
+					tempX = x + MARIO_SHELL_POSITION_OFFSET_RACCOON_X - (1.0f * turningTimer / MARIO_TURN_TIME) * MARIO_SHELL_POSITION_OFFSET_RACCOON_X * 2;
+				}
+				else tempX = x - MARIO_SHELL_POSITION_OFFSET_RACCOON_X;
 			}
 			break;
 		}

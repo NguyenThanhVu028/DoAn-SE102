@@ -48,7 +48,8 @@
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
 #define MARIO_SHELL_POSITION_OFFSET_SMALL_X 8
-#define MARIO_SHELL_POSITION_OFFSET_BIG_X 8
+#define MARIO_SHELL_POSITION_OFFSET_BIG_X 10
+#define MARIO_SHELL_POSITION_OFFSET_RACCOON_X 14
 #define MARIO_SHELL_POSITION_OFFSET_SMALL_Y 4
 #define MARIO_SHELL_POSITION_OFFSET_BIG_Y 6
 
@@ -63,8 +64,8 @@ class CMario : public CMovableGameObject
 	MarioState state;
 	MarioLevel level;
 
-	int width;
-	int height;
+	float width;
+	float height;
 
 	float maxVx;
 	float maxVy;

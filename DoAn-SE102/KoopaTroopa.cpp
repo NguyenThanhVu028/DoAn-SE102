@@ -66,6 +66,7 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 	}
 	else if (dynamic_cast<CQuestionBlock*>(e->obj)) {
 		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
+			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
 			SetState(KoopaTroopaState::K_DIE); return;
 		}
 		if (state == KoopaTroopaState::SHELL_MOVING) 
@@ -73,6 +74,7 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 	}
 	else {
 		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
+			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
 			SetState(KoopaTroopaState::K_DIE);
 		}
 	}
