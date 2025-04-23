@@ -9,6 +9,27 @@ void CKoopaTroopa::GetBoundingBox(float& left, float& top, float& right, float& 
 	bottom = y + KOOPA_TROOPA_SHELL_HEIGHT * 0.5f;
 }
 
+void CKoopaTroopa::Render() {
+	if (!isEnabled || isKilled) return;
+
+	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
+	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
+	if (x < cX - KOOPA_TROOPA_WIDTH * 0.5f - DESPAWN_OFFSET || x > cX + screenWidth + KOOPA_TROOPA_WIDTH * 0.5f + DESPAWN_OFFSET) {
+		if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) isKilled = true;
+		else isEnabled = false;
+		return;
+	}
+	if (y < cY - KOOPA_TROOPA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + KOOPA_TROOPA_HEIGHT * 0.5f + DESPAWN_OFFSET) {
+		if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) isKilled = true;
+		else isEnabled = false;
+		return;
+	}
+
+	if (isHeld) return;
+
+	RealRender();
+}
+
 void CKoopaTroopa::Update(DWORD dt) {
 	DebugOutTitle(L"vy %f", vy);
 	if (isKilled) return;
@@ -44,7 +65,10 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 		OnCollisionWithOtherEnemy(e);
 	}
 	else if (dynamic_cast<CQuestionBlock*>(e->obj)) {
-		if (state == KoopaTroopaState::SHELL_MOVING)
+		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
+			SetState(KoopaTroopaState::K_DIE); return;
+		}
+		if (state == KoopaTroopaState::SHELL_MOVING) 
 			dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
 	}
 	else {

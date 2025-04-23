@@ -23,6 +23,7 @@ public:
 	}
 
 	void Render();
+	void RealRender();
 	void Update(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 

@@ -12,7 +12,8 @@
 #define MARIO_LEVEL_SHORT_TIME 400
 #define MARIO_FLICKER_TIME 100
 #define MARIO_DEATH_TIME 5000
-#define MARIO_TURNING_TIME 200
+#define MARIO_TURN_TIME 200
+#define MARIO_KICK_SHELL_TIME 200
 
 #define MARIO_WALK_SPEED 0.07f
 #define MARIO_RUN_SPEED 0.2f
@@ -85,6 +86,7 @@ class CMario : public CMovableGameObject
 	DWORD flicker_time;
 	ULONGLONG death_start;
 	ULONGLONG turning_start;	//Used for Mario's turning animations while holding shell
+	ULONGLONG kick_shell_start;	//Used for Mario's kicking shell animations
 
 public:
 

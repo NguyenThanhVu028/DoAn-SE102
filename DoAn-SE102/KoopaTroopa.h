@@ -42,7 +42,8 @@ public:
 	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Render() = 0;
+	virtual void Render();				//Check conditions to call RealRender function
+	virtual void RealRender() {};		//Real render function for KoopaTroopa, Mario can use this function to determine the order of shell's rendering
 	virtual void Update(DWORD dt);
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);

@@ -246,9 +246,6 @@
     <ClInclude Include="RedGoombaSpawner.h">
       <Filter>Header Files\Entities\Spawners</Filter>
     </ClInclude>
-    <ClInclude Include="RedKoopaTroopaSpawner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RedKoopaTroopa.h">
       <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
@@ -256,7 +253,10 @@
       <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="KoopaTroopa.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="RedKoopaTroopaSpawner.h">
+      <Filter>Header Files\Entities\Spawners</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,7 +405,7 @@
       <Filter>Source Files\Entities\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="KoopaTroopa.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

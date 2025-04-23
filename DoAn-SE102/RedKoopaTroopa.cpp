@@ -2,21 +2,22 @@
 #include "GameObjectsManager.h"
 
 void CRedKoopaTroopa::Render() {
-	if (!isEnabled || isKilled) return;
+	CKoopaTroopa::Render();
+}
 
-	float cX, cY; CGame::GetInstance()->GetCamPos(cX, cY);
-	int screenWidth = CGame::GetInstance()->GetBackBufferWidth(), screenHeight = CGame::GetInstance()->GetBackBufferHeight();
-	if (x < cX - KOOPA_TROOPA_WIDTH * 0.5f - DESPAWN_OFFSET || x > cX + screenWidth + KOOPA_TROOPA_WIDTH * 0.5f + DESPAWN_OFFSET) {
-		if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) isKilled = true;
-		else isEnabled = false;
-		return;
-	}
-	if (y < cY - KOOPA_TROOPA_HEIGHT * 0.5f - DESPAWN_OFFSET || y > cY + screenHeight + KOOPA_TROOPA_HEIGHT * 0.5f + DESPAWN_OFFSET) {
-		if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) isKilled = true;
-		else isEnabled = false;
-		return;
-	}
+void CRedKoopaTroopa::Update(DWORD dt) {
+	CKoopaTroopa::Update(dt);
 
+	edgeSensor->x = x; edgeSensor->y = y + KOOPA_TROOPA_SHELL_HEIGHT * 0.5f - edgeSensor->height * 0.5f;
+	edgeSensor->SetSpeed(vx, vy);
+	edgeSensor->ProcessCollision(dt);
+
+	if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) return;
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1, 0);
+	if (((!edgeSensor->RightEdge() && vx > 0) || (!edgeSensor->LeftEdge() && vx < 0)) && state == KoopaTroopaState::OUTSIDE) vx = -vx;
+}
+
+void CRedKoopaTroopa::RealRender() {
 	if (aniToRender == NULL) aniToRender = CAnimations::GetInstance()->Get(RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT);
 
 	if (CGame::GetInstance()->IsFrozen()) {
@@ -45,19 +46,6 @@ void CRedKoopaTroopa::Render() {
 	}
 	aniToRender = CAnimations::GetInstance()->Get(Id);
 	aniToRender->Render(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
-
-}
-
-void CRedKoopaTroopa::Update(DWORD dt) {
-	CKoopaTroopa::Update(dt);
-
-	edgeSensor->x = x; edgeSensor->y = y + KOOPA_TROOPA_SHELL_HEIGHT * 0.5f - edgeSensor->height * 0.5f;
-	edgeSensor->SetSpeed(vx, vy);
-	edgeSensor->ProcessCollision(dt);
-
-	if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) return;
-	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1, 0);
-	if (((!edgeSensor->RightEdge() && vx > 0) || (!edgeSensor->LeftEdge() && vx < 0)) && state == KoopaTroopaState::OUTSIDE) vx = -vx;
 }
 
 void CRedKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {

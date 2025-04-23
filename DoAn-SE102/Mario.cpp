@@ -84,7 +84,7 @@ void CMario::Render() {
 		return;
 	}
 	if (GetTickCount64() - level_start < level_duration) {
-		aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, 0);
+		aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, MARIO_FLICKER_TIME);
 		return;
 	}
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) flicker_time = 0;
@@ -99,10 +99,75 @@ void CMario::Render() {
 		GetAnimationRACCOON();
 		break;
 	}
+	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start > MARIO_TURN_TIME) shell->RealRender();
 	if(aniToRender != NULL) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
+	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) shell->RealRender();
 }
 
 void CMario::GetAnimationSMALL() {
+	aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
+	if (shell != NULL) {	//If Mario is holding a shell
+		if (CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_TURN_SHELL);
+			return;
+		}
+		if (!isGrounded) {
+			if (nx == 1) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_SHELL_LEFT);
+				return;
+			}
+		}
+		if (vx == 0) {
+			if (nx == 1) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_SHELL_LEFT);
+				return;
+			}
+		}
+		if (nx == 1) {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_WALK_SHELL_RIGHT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_SHELL_RIGHT);
+				return;
+			}
+		}
+		else {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_WALK_SHELL_LEFT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_SHELL_LEFT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_SHELL_LEFT);
+				return;
+			}
+		}
+		return;
+	}
+	if (CGame::GetInstance()->GetTickCount() - kick_shell_start < MARIO_KICK_SHELL_TIME) {
+		if (nx == 1) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_KICK_SHELL_RIGHT);
+		}
+		else aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_KICK_SHELL_LEFT);
+		return;
+	}
 	if (!isGrounded) {		//If Mario is falling
 		if (nx == 1) {
 			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) { 
@@ -177,6 +242,9 @@ void CMario::GetAnimationSMALL() {
 
 void CMario::GetAnimationBIG() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_RIGHT);
+	if (shell != NULL) {	//If Mario is holding a shell
+		return;
+	}
 	if (!isGrounded) {
 		if (nx == 1) {
 			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) { 
@@ -266,6 +334,9 @@ void CMario::GetAnimationBIG() {
 
 void CMario::GetAnimationRACCOON() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_RIGHT);
+	if (shell != NULL) {	//If Mario is holding a shell
+		return;
+	}
 	if (!isGrounded) {
 		if (nx == 1) {
 			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
@@ -367,6 +438,10 @@ void CMario::SetState(MarioState state) {
 	if (this->state == MarioState::DIE) return;
 	switch (state) {
 	case MarioState::DIE:
+		if (shell != NULL) {
+			shell->ReleaseHeld();
+			shell = NULL;
+		}
 		this->state = state;
 		death_start = CGame::GetInstance()->GetTickCount();
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_DIE);
@@ -564,6 +639,7 @@ void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
 				shell = dynamic_cast<CKoopaTroopa*>(e->obj);
 				shell->OnHeld();
 			}
+			else kick_shell_start = CGame::GetInstance()->GetTickCount();
 			dynamic_cast<CKoopaTroopa*>(e->obj)->OnCollisionWithMario(e);
 			return;
 		}
@@ -641,9 +717,9 @@ void CMario::OnReleaseRunButton() {
 void CMario::ResetTurningTimer() {
 	auto game = CGame::GetInstance();
 	ULONGLONG timer = game->GetTickCount() - turning_start;
-	if (timer > MARIO_TURNING_TIME) turning_start = game->GetTickCount();
+	if (timer > MARIO_TURN_TIME) turning_start = game->GetTickCount();
 	else {
-		turning_start = game->GetTickCount() - (MARIO_TURNING_TIME - timer);
+		turning_start = game->GetTickCount() - (MARIO_TURN_TIME - timer);
 	}
 }
 
@@ -655,14 +731,14 @@ void CMario::AdjustShellPosition() {
 		case MarioLevel::SMALL:
 			tempY = y - MARIO_SHELL_POSITION_OFFSET_SMALL_Y;
 			if (nx == 1) {
-				if (turningTimer < MARIO_TURNING_TIME) {
-					tempX = x - MARIO_SHELL_POSITION_OFFSET_SMALL_X + (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_SMALL_X * 2;
+				if (turningTimer < MARIO_TURN_TIME) {
+					tempX = x - MARIO_SHELL_POSITION_OFFSET_SMALL_X + (1.0f * turningTimer / MARIO_TURN_TIME) * MARIO_SHELL_POSITION_OFFSET_SMALL_X * 2;
 				}
 				else tempX = x + MARIO_SHELL_POSITION_OFFSET_SMALL_X;
 			}
 			else {
-				if (turningTimer < MARIO_TURNING_TIME) {
-					tempX = x + MARIO_SHELL_POSITION_OFFSET_SMALL_X - (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_SMALL_X * 2;
+				if (turningTimer < MARIO_TURN_TIME) {
+					tempX = x + MARIO_SHELL_POSITION_OFFSET_SMALL_X - (1.0f * turningTimer / MARIO_TURN_TIME) * MARIO_SHELL_POSITION_OFFSET_SMALL_X * 2;
 				}
 				else tempX = x - MARIO_SHELL_POSITION_OFFSET_SMALL_X;
 			}
@@ -671,14 +747,14 @@ void CMario::AdjustShellPosition() {
 		case MarioLevel::RACCOON:
 			tempY = y - MARIO_SHELL_POSITION_OFFSET_BIG_Y;
 			if (nx == 1) {
-				if (turningTimer < MARIO_TURNING_TIME) {
-					tempX = x - MARIO_SHELL_POSITION_OFFSET_BIG_X + (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_BIG_X * 2;
+				if (turningTimer < MARIO_TURN_TIME) {
+					tempX = x - MARIO_SHELL_POSITION_OFFSET_BIG_X + (1.0f * turningTimer / MARIO_TURN_TIME) * MARIO_SHELL_POSITION_OFFSET_BIG_X * 2;
 				}
 				else tempX = x + MARIO_SHELL_POSITION_OFFSET_BIG_X;
 			}
 			else {
-				if (turningTimer < MARIO_TURNING_TIME) {
-					tempX = x + MARIO_SHELL_POSITION_OFFSET_BIG_X - (1.0f * turningTimer / MARIO_TURNING_TIME) * MARIO_SHELL_POSITION_OFFSET_BIG_X * 2;
+				if (turningTimer < MARIO_TURN_TIME) {
+					tempX = x + MARIO_SHELL_POSITION_OFFSET_BIG_X - (1.0f * turningTimer / MARIO_TURN_TIME) * MARIO_SHELL_POSITION_OFFSET_BIG_X * 2;
 				}
 				else tempX = x - MARIO_SHELL_POSITION_OFFSET_BIG_X;
 			}
