@@ -14,7 +14,7 @@ using namespace std;
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 #define BBOX_ALPHA 0.25f		// Bounding box transparency
 
-#define DESPAWN_OFFSET 10		// determine the area outside camera view that objects will despawn 
+#define DESPAWN_OFFSET 32		// determine the area outside camera view that objects will despawn 
 
 class CGameObject
 {
@@ -59,6 +59,9 @@ public:
 
 	// Does this object collide with other object at certain direction ( like ColorBox )
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
+
+	//Does this object allow other objects to overlap
+	virtual bool AllowOverlap() { return false; }
 
 	~CGameObject();
 

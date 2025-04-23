@@ -13,6 +13,14 @@ void CLevelUpQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 			isAvailable = false;
 		}
 	}
+	if (dynamic_cast<CKoopaTroopa*>(e->src_obj)) {
+		float pX, pY;
+		e->src_obj->GetPosition(pX, pY);
+		if (pX < x) nx = 1;
+		else nx = -1;
+		bounce_time_start = CGame::GetInstance()->GetTickCount();
+		isAvailable = false;
+	}
 }
 
 void CLevelUpQuestionBlock::Render() {

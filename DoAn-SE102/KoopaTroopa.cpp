@@ -1,5 +1,6 @@
 #include "KoopaTroopa.h"
 #include "Mario.h"
+#include "QuestionBlock.h"
 
 void CKoopaTroopa::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - KOOPA_TROOPA_WIDTH * 0.5f;
@@ -9,6 +10,7 @@ void CKoopaTroopa::GetBoundingBox(float& left, float& top, float& right, float& 
 }
 
 void CKoopaTroopa::Update(DWORD dt) {
+	DebugOutTitle(L"vy %f", vy);
 	if (isKilled) return;
 	if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) {
 		vy += ay * dt;
@@ -20,6 +22,7 @@ void CKoopaTroopa::Update(DWORD dt) {
 	if (CGame::GetInstance()->GetTickCount() - charging_start > KOOPA_TROOPA_CHARGING_TIME && state == KoopaTroopaState::SHELL_IDLE) SetState(KoopaTroopaState::OUTSIDE);
 
 	vy += ay * dt;
+
 }
 
 void CKoopaTroopa::OnNoCollision(DWORD dt) {
@@ -37,8 +40,17 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CMario*>(e->src_obj)) {
 		OnCollisionWithMario(e);
 	}
-	if (dynamic_cast<CEnemy*>(e->obj)) {
+	else if (dynamic_cast<CEnemy*>(e->obj)) {
 		OnCollisionWithOtherEnemy(e);
+	}
+	else if (dynamic_cast<CQuestionBlock*>(e->obj)) {
+		if (state == KoopaTroopaState::SHELL_MOVING)
+			dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
+	}
+	else {
+		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
+			SetState(KoopaTroopaState::K_DIE);
+		}
 	}
 }
 
@@ -70,6 +82,7 @@ void CKoopaTroopa::OnCollisionWithMario(LPCOLLISIONEVENT e) {
 		//if the shell is being held, not check collision with Mario
 		break;
 	case KoopaTroopaState::SHELL_MOVING:
+		if (e->ny < 0) SetState(KoopaTroopaState::SHELL_IDLE);
 		break;
 	}
 }

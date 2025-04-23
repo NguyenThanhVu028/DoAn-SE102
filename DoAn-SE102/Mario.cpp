@@ -67,7 +67,7 @@ void CMario::Update(DWORD dt) {
 	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 
 	//Cheking collision for Mairo's head
-	head->x = x; head->y = y - height;
+	head->x = x; head->y = y - height + head->height * 0.5f;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
 
@@ -380,7 +380,7 @@ void CMario::SetState(MarioState state) {
 			else if (abs(vx) <= MARIO_RUN_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
 			vy = -MARIO_JUMP_SPEED * 0.5f;
 			ay = -MARIO_JUMP_ACCEL;
-			//ax = 0;
+			ax = 0;
 			maxVy = -MARIO_JUMP_SPEED;
 			lastJumpTime = CGame::GetInstance()->GetTickCount();
 		}

@@ -55,6 +55,7 @@ void CRedKoopaTroopa::Update(DWORD dt) {
 	edgeSensor->SetSpeed(vx, vy);
 	edgeSensor->ProcessCollision(dt);
 
+	if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) return;
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1, 0);
 	if (((!edgeSensor->RightEdge() && vx > 0) || (!edgeSensor->LeftEdge() && vx < 0)) && state == KoopaTroopaState::OUTSIDE) vx = -vx;
 }

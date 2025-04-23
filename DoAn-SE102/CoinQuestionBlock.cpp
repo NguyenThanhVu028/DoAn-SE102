@@ -9,4 +9,9 @@ void CCoinQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 			CGameObjectsManager::GetInstance()->GetCoinEffect(x, y - 16, 1);
 		}
 	}
+	if (dynamic_cast<CKoopaTroopa*>(e->src_obj)) {
+		bounce_time_start = CGame::GetInstance()->GetTickCount();
+		isAvailable = false;
+		CGameObjectsManager::GetInstance()->GetCoinEffect(x, y - 16, 1);
+	}
 }
