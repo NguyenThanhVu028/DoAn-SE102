@@ -85,6 +85,7 @@ void CMario::Render() {
 	}
 	if (GetTickCount64() - level_start < level_duration) {
 		aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, MARIO_FLICKER_TIME);
+		if (shell != NULL) shell->RealRender();
 		return;
 	}
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) flicker_time = 0;
@@ -243,6 +244,65 @@ void CMario::GetAnimationSMALL() {
 void CMario::GetAnimationBIG() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_RIGHT);
 	if (shell != NULL) {	//If Mario is holding a shell
+		if (CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_TURN_SHELL);
+			return;
+		}
+		if (!isGrounded) {
+			if (nx == 1) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_SHELL_LEFT);
+				return;
+			}
+		}
+		if (vx == 0) {
+			if (nx == 1) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_SHELL_LEFT);
+				return;
+			}
+		}
+		if (nx == 1) {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_WALK_SHELL_RIGHT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_SHELL_RIGHT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_SHELL_RIGHT);
+				return;
+			}
+		}
+		else {
+			if (abs(vx) <= abs(MARIO_WALK_SPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_WALK_SHELL_LEFT);
+				return;
+			}
+			else if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_SHELL_LEFT);
+				return;
+			}
+			else {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_SHELL_LEFT);
+				return;
+			}
+		}
+		return;
+	}
+	if (CGame::GetInstance()->GetTickCount() - kick_shell_start < MARIO_KICK_SHELL_TIME) {
+		if (nx == 1) {
+			aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_KICK_SHELL_RIGHT);
+		}
+		else aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_KICK_SHELL_LEFT);
 		return;
 	}
 	if (!isGrounded) {

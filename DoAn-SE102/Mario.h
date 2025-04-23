@@ -113,6 +113,7 @@ public:
 		isRunButtonPressed = false;
 		turning_start = game->GetTickCount();
 		head = new CMarioHead(x, y - height * 0.5f);
+		head->width = width;
 		shell = NULL;
 	}
 
