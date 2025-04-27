@@ -52,6 +52,7 @@ void CRedGoomba::Render() {
 
 void CRedGoomba::Update(DWORD dt) {
 	CGoomba::Update(dt);
+	if (state == GoombaState::UPSIDE_DOWN) hasWings = false;
 	if (vy == 0 && !IsDead()) vx = (nx == 1) ? GOOMBA_MOVE_SPEED : -GOOMBA_MOVE_SPEED;
 	if (CGame::GetInstance()->GetTickCount() - jump_timer > RED_GOOMBA_CYCLE && hasWings) {
 		if (vy == 0) {

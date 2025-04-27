@@ -1,5 +1,10 @@
 #include "FirePiranhaPlantPipe.h"
 void CFirePiranhaPlantPipe::Update(DWORD dt) {
+	if(plant!= NULL)
+		if (plant->IsKilled()) {
+			delete plant;
+			plant = NULL;
+		}
 	float pL, pT, pR, pB;
 	float L, T, R, B;
 	CGameObjectsManager::GetInstance()->GetPlayer()->GetBoundingBox(pL, pT, pR, pB);

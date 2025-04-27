@@ -57,6 +57,8 @@ public:
 	virtual void SetState(KoopaTroopaState state);
 	void SetShellDirection(KoopaTroopaShellDirection direction) { this->shellDirection = direction; }
 	bool IsIdling() { return state == KoopaTroopaState::SHELL_IDLE; }
+	bool IsMoving() { return state == KoopaTroopaState::SHELL_MOVING; }
+	bool IsHeld() { return isHeld; }
 	virtual void SetDirection(int nx);
 	bool IsUntouchable();
 	void OnHeld() { isHeld = true; ay = 0; vy = 0; }

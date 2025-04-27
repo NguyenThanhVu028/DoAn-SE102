@@ -16,6 +16,7 @@ public:
 			plant = new CFirePiranhaPlant(this->x + cellWidth * width * 0.5f, this->y + PIRANHA_PLANT_HEIGHT * 0.5f, FIRE_PIRANHA_PLANT_RED);
 			break;
 		}
+		//CGameObjectsManager::GetInstance()->AddMovableObject(plant);
 	}
 	void Update(DWORD dt);
 	void Render();

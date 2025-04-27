@@ -94,6 +94,8 @@ void CFirePiranhaPlant::Update(DWORD dt) {
 		if (pY < y) direction = 2;
 		else direction = 3;
 	}
+
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 1, 0, 0);
 }
 
 void CFirePiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom) {

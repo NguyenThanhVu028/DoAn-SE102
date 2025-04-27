@@ -1,12 +1,17 @@
 #include "NormalPiranhaPlantPipe.h"
 void CNormalPiranhaPlantPipe::Update(DWORD dt) {
-	if (plant != NULL) {
-		if (plant->IsDeleted()) {
+	if (plant != NULL)
+		if (plant->IsKilled()) {
 			delete plant;
 			plant = NULL;
-			return;
 		}
-	}
+	//if (plant != NULL) {
+	//	if (plant->IsDeleted()) {
+	//		delete plant;
+	//		plant = NULL;
+	//		return;
+	//	}
+	//}
 
 	float pL, pT, pR, pB;
 	float L, T, R, B;

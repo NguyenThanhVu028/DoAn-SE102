@@ -31,5 +31,6 @@ public:
 	int IsCollidable() { return 1; };
 	bool IsInteractable() { return (CGame::GetInstance()->GetTickCount() - bounce_time_start > QUESTIONBLOCK_BOUNCE_TIME) && isAvailable; }
 	bool IsBouncing() { return (CGame::GetInstance()->GetTickCount() - bounce_time_start < QUESTIONBLOCK_BOUNCE_TIME); }
+	bool AllowOverlap() { return false; }
 };
 

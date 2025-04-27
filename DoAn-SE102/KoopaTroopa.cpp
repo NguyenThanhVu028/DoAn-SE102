@@ -31,8 +31,7 @@ void CKoopaTroopa::Render() {
 }
 
 void CKoopaTroopa::Update(DWORD dt) {
-	DebugOutTitle(L"vy %f", vy);
-	if (isKilled) return;
+	if (isKilled || !isEnabled) return;
 	if (state == KoopaTroopaState::K_DIE || state == KoopaTroopaState::K_DIE_KICKED) {
 		vy += ay * dt;
 		y += vy * dt;
@@ -114,8 +113,22 @@ void CKoopaTroopa::OnCollisionWithMario(LPCOLLISIONEVENT e) {
 }
 
 void CKoopaTroopa::OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e) {
-	if ((state == KoopaTroopaState::SHELL_IDLE && isHeld) || state == KoopaTroopaState::SHELL_MOVING)
-		dynamic_cast<CEnemy*>(e->obj)->OnCollisionWithShell(e);
+	if (dynamic_cast<CEnemy*>(e->obj)->IsDead() || !dynamic_cast<CEnemy*>(e->obj)->IsEnabled()) return;
+	if ((state == KoopaTroopaState::SHELL_IDLE && isHeld) || state == KoopaTroopaState::SHELL_MOVING) {
+		if(isHeld) {
+			SetState(KoopaTroopaState::K_DIE_KICKED);
+			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
+			float oX, oY;
+			if (e->obj != this) {
+				e->obj->GetPosition(oX, oY);
+				
+			}
+			else e->src_obj->GetPosition(oX, oY);
+			vx = (oX < x) ? KOOPA_TROOPA_DIE_MOVE_SPEED : -KOOPA_TROOPA_DIE_MOVE_SPEED;
+		}
+		if(e->obj != this )dynamic_cast<CEnemy*>(e->obj)->OnCollisionWithShell(e);
+	}
+
 }
 
 void CKoopaTroopa::OnCollisionWithShell(LPCOLLISIONEVENT e) {

@@ -88,6 +88,12 @@ void CGoomba::OnCollisionWithMario(LPCOLLISIONEVENT e) {
 	if (IsDead()) return;
 	if (e->ny < 0) SetState(GoombaState::FLATTENED);
 }
+void CGoomba::OnCollisionWithShell(LPCOLLISIONEVENT e) {
+	float sX, sY;
+	e->src_obj->GetPosition(sX, sY);
+	int nx = (sX < x) ? -1 : 1;
+	SetState(GoombaState::UPSIDE_DOWN, nx);
+}
 
 void CGoomba::OnNoCollision(DWORD dt) {
 	x += vx * dt;

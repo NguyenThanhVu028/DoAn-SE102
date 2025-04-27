@@ -19,3 +19,8 @@ void CNormalPiranhaPlant::GetBoundingBox(float& left, float& top, float& right, 
 	right = x + PIRANHA_PLANT_WIDTH * 0.5f;
 	bottom = y + PIRANHA_PLANT_HEIGHT * 0.5f;
 }
+
+void CNormalPiranhaPlant::Update(DWORD dt) {
+	CPiranhaPlant::Update(dt);
+	//CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 1, 0, 0);
+}

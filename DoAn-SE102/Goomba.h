@@ -45,6 +45,7 @@ public:
 	void SetDirection(int nx);
 
 	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e);
 
 	virtual bool IsUntouchable() { return false; }
 

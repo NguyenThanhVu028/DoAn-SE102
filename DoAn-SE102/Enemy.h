@@ -25,7 +25,7 @@ public:
 	virtual bool IsUntouchable() { return false; }
 	virtual bool IsDead() = 0;
 	virtual void SetEnable(bool t) { isEnabled = t; }
-	bool IsEnabled() { return isEnabled; }
-	bool IsKilled() { return isKilled; }
+	virtual bool IsEnabled() { return isEnabled; }
+	virtual bool IsKilled() { return isKilled; }
 };
 

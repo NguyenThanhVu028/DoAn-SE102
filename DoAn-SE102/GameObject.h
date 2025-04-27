@@ -61,7 +61,7 @@ public:
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 
 	//Does this object allow other objects to overlap
-	virtual bool AllowOverlap() { return false; }
+	virtual bool AllowOverlap() { return true; }
 
 	~CGameObject();
 

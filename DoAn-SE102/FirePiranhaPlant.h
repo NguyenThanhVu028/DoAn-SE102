@@ -57,6 +57,5 @@ public:
 	void Render();
 	void Update(DWORD dt);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void OnCollisionWith(LPCOLLISIONEVENT e) {};
 };
 

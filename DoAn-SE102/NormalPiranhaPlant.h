@@ -32,7 +32,7 @@ public:
 		waitingTime = NORMAL_PIRANHA_PLANT_WAITING_TIME;
 	}
 	void Render();
+	void Update(DWORD dt);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void OnCollisionWith(LPCOLLISIONEVENT e){}
 };
 
