@@ -5,6 +5,7 @@
 #include "Mushroom.h"
 #include "Goomba.h"
 #include "KoopaTroopa.h"
+#include "PiranhaPlant.h"
 
 void CMario::Update(DWORD dt) {
 
@@ -710,7 +711,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CLevelUpItem*>(e->src_obj)) {
 		OnCollisionWidthPowerUpItem(e);
 	}
-	if (dynamic_cast<CEnemy*>(e->obj)) {
+	if (dynamic_cast<CEnemy*>(e->obj) || dynamic_cast<CEnemy*>(e->src_obj)) {
 		OncollisionWithEnemy(e);
 	}
 }
@@ -722,6 +723,9 @@ void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CKoopaTroopa*>(e->obj)) {
 		OnCollisionWidthKoopaTroopa(e);
 		return;
+	}
+	if (dynamic_cast<CPiranhaPlant*>(e->src_obj)) {
+		OnCollisionWithPiranhaPlant(e);
 	}
 	OnLevelDown();
 }
@@ -764,6 +768,9 @@ void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
 		}
 		OnLevelDown();
 	}
+}
+void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
+	OnLevelDown();
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {

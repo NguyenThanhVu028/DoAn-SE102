@@ -139,6 +139,7 @@ public:
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e);
 	void OncollisionWithEnemy(LPCOLLISIONEVENT e);
