@@ -6,9 +6,6 @@
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
-//#include "Portal.h"
-//#include "Coin.h"
-//#include "Platform.h"
 
 #include "MarioKeyEventHandler.h"
 #include "debug.h"
@@ -393,12 +390,15 @@ void CPlayScene::Update(DWORD dt)
 
 	//Remove objects that are deleted
 	PurgeDeletedObjects();
+
+	UIManager::Update(dt);
 }
 
 void CPlayScene::Render()
 {
 	background->Render();
 	CGameObjectsManager::GetInstance()->Render();
+	UIManager::Render();
 }
 
 /*
@@ -435,21 +435,5 @@ void CPlayScene::Unload()
 
 void CPlayScene::PurgeDeletedObjects()
 {
-	//vector<LPGAMEOBJECT>::iterator it;
-	//for (it = objects.begin(); it != objects.end(); it++)
-	//{
-	//	LPGAMEOBJECT o = *it;
-	//	if (o->IsDeleted())
-	//	{
-	//		delete o;
-	//		*it = NULL;
-	//	}
-	//}
-
-	//// NOTE: remove_if will swap all deleted items to the end of the vector
-	//// then simply trim the vector, this is much more efficient than deleting individual items
-	//objects.erase(
-	//	std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
-	//	objects.end());
 	CGameObjectsManager::GetInstance()->PurgeDeletedObjects();
 }

@@ -91,6 +91,12 @@
     <Filter Include="Header Files\Entities\Spawners">
       <UniqueIdentifier>{e99a5e7a-da6b-4e1c-911b-ae3d67c34e6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{9346c38d-e86a-4ce8-9537-dbe37b59f905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{d1b8e583-8601-4e38-9259-2a54b11d0e4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -258,6 +264,15 @@
     <ClInclude Include="RedKoopaTroopaSpawner.h">
       <Filter>Header Files\Entities\Spawners</Filter>
     </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySceneUI.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -359,17 +374,11 @@
     <ClCompile Include="LevelUpQuestionBlock.cpp">
       <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
-    <ClCompile Include="LevelUpItem.cpp">
-      <Filter>Source Files\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Mushroom.cpp">
       <Filter>Source Files\Entities\LevelUpItems</Filter>
     </ClCompile>
     <ClCompile Include="Leaf.cpp">
       <Filter>Source Files\Entities\LevelUpItems</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="Goomba.cpp">
       <Filter>Source Files\Entities\Enemies</Filter>
@@ -406,6 +415,12 @@
     </ClCompile>
     <ClCompile Include="KoopaTroopa.cpp">
       <Filter>Source Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaySceneUI.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -16,10 +16,7 @@
 #include "GoombaSpawner.h"
 #include "RedGoombaSpawner.h"
 #include "RedKoopaTroopaSpawner.h"
-//#include "Brick.h"
-//#include "Mario.h"
-//#include "Goomba.h"
-//#include "Koopas.h"
+#include "UIManager.h"
 
 
 class CPlayScene: public CScene
@@ -49,7 +46,7 @@ public:
 	//void Clear();
 	void PurgeDeletedObjects();
 
-	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o) {};
 };
 
 typedef CPlayScene* LPPLAYSCENE;

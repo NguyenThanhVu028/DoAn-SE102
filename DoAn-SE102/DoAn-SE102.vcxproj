@@ -170,6 +170,7 @@
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="PlaySceneUI.h" />
     <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="RedGoomba.h" />
     <ClInclude Include="RedGoombaSpawner.h" />
@@ -184,6 +185,8 @@
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +200,6 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="EdgeSensor.cpp" />
     <ClCompile Include="Effect.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FirePiranhaPlant.cpp" />
     <ClCompile Include="FirePiranhaPlantPipe.cpp" />
@@ -209,7 +211,6 @@
     <ClCompile Include="HardBlock.cpp" />
     <ClCompile Include="KoopaTroopa.cpp" />
     <ClCompile Include="Leaf.cpp" />
-    <ClCompile Include="LevelUpItem.cpp" />
     <ClCompile Include="LevelUpQuestionBlock.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
@@ -223,6 +224,7 @@
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="PlaySceneUI.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="RedGoomba.cpp" />
     <ClCompile Include="RedGoombaSpawner.cpp" />
@@ -235,6 +237,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

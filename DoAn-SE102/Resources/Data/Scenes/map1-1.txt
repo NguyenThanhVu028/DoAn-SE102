@@ -13,6 +13,7 @@ Resources\Data\Entities\fireball.txt
 Resources\Data\Entities\items.txt
 Resources\Data\Entities\goomba.txt
 Resources\Data\Entities\koopa_troopa.txt
+Resources\Data\UI\playscene_ui.txt
 
 #coin.txt
 #cloud.txt
