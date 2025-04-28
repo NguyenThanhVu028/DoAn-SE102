@@ -85,7 +85,7 @@ void CMario::Render() {
 		return;
 	}
 	if (GetTickCount64() - level_start < level_duration) {
-		aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, MARIO_FLICKER_TIME);
+		aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
 		if (shell != NULL) shell->RealRender();
 		return;
 	}
