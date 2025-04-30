@@ -78,6 +78,40 @@ void CMario::Update(DWORD dt) {
 
 	//Update position for the shell being held
 	AdjustShellPosition();
+
+	//Update PMeter
+		//Check timer for Raccoon form
+	if (level == MarioLevel::RACCOON) {
+		if (CGame::GetInstance()->GetTickCount() - pMeterMax_start > MARIO_PMETER_TIME && isPMeterMax) {
+			pMeter = 0;
+			isPMeterMax = false;
+		}
+		if (pMeter == MARIO_PMETER_MAX && !isPMeterMax) {
+			isPMeterMax = true;
+			pMeterMax_start = CGame::GetInstance()->GetTickCount();
+		}
+	}
+		//If Mario is not jumping or falling
+	if (isGrounded) {
+		if (abs(vx) >= MARIO_RUN_SPEED && abs(maxVx) >= MARIO_RUN_SPEED){
+			if (pMeter < MARIO_PMETER_MAX) {
+				pMeter += MARIO_PMETER_INCREASE_SPEED * dt;
+				if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
+			}
+		}
+		else {
+			if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
+				if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+				if (pMeter < 0) pMeter = 0;
+			}
+		}
+	}
+	else {
+		if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) && pMeter != MARIO_PMETER_MAX) {
+			if(pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+			if (pMeter < 0) pMeter = 0;
+		}
+	}
 }
 void CMario::Render() {
 	if (state == MarioState::DIE) {
@@ -638,15 +672,15 @@ void CMario::SetState(MarioState state) {
 		//else                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 
 		ax = -MARIO_RUN_ACCEL_X;
-		if (isGrounded && vx < -MARIO_WALK_SPEED) {
-			pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
-			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
-		}
-		else {
-			if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
-			if (pMeter < 0) pMeter = 0;
-		}
-		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
+		//if (isGrounded && vx < -MARIO_WALK_SPEED) {
+		//	pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
+		//	if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
+		//}
+		//else {
+		//	if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
+		//	if (pMeter < 0) pMeter = 0;
+		//}
+		//pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
 
 		if (pMeter >= MARIO_PMETER_MAX) maxVx = -MARIO_RUN_MAXSPEED;
 		else maxVx = -MARIO_RUN_SPEED;
@@ -660,15 +694,15 @@ void CMario::SetState(MarioState state) {
 		}
 		else*/ 
 		ax = MARIO_RUN_ACCEL_X;
-		if (isGrounded && vx > MARIO_WALK_SPEED) {
-			pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
-			if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
-		}
-		else {
-			if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
-			if (pMeter < 0) pMeter = 0;
-		}
-		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
+		//if (isGrounded && vx > MARIO_WALK_SPEED) {
+		//	pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
+		//	if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
+		//}
+		//else {
+		//	if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
+		//	if (pMeter < 0) pMeter = 0;
+		//}
+		//pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
 
 		if (pMeter >= MARIO_PMETER_MAX) maxVx = MARIO_RUN_MAXSPEED;
 		else maxVx = MARIO_RUN_SPEED;
@@ -679,9 +713,9 @@ void CMario::SetState(MarioState state) {
 		this->state = state;
 		break;
 	case MarioState::NOT_RUN:
-		pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) * 0.5;
-		if (pMeter < 0) pMeter = 0;
-		pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
+		//pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) * 0.5;
+		//if (pMeter < 0) pMeter = 0;
+		//pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
 		break;
 	}
 }
@@ -851,7 +885,7 @@ void CMario::ResetTurningTimer() {
 
 void CMario::AdjustShellPosition() {
 	if (shell != NULL) {
-		float tempX, tempY;
+		float tempX = x, tempY = y;
 		ULONGLONG turningTimer = CGame::GetInstance()->GetTickCount() - turning_start;
 		switch (level) {
 		case MarioLevel::SMALL:

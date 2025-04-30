@@ -2,6 +2,8 @@
 #include "Sprites.h"
 #include "Game.h"
 #include "debug.h"
+#include "Mario.h"
+#include "GameObjectsManager.h"
 void PlaySceneUI::Update(DWORD dt) {
 	secondsRemain = CGame::GetInstance()->GetSecondsRemain();
 }
@@ -60,4 +62,21 @@ void PlaySceneUI::Render() {
 	x = UI_WORLD_POSX;
 	y = CGame::GetInstance()->GetBackBufferHeight() - UI_BACKGROUND_HEIGHT + UI_WORLD_POSY;
 	CSprites::GetInstance()->Get(UI_SPRITE_NUMBER_OFFSET + 1)->DrawOnScreen(x + UI_SPRITE_NUMBER_WIDTH * 0.5f, y + UI_SPRITE_NUMBER_HEIGHT * 0.5f);
+
+	//PMeter
+	float unit = MARIO_PMETER_MAX * 1.0f / 7;
+	x = UI_PMETER_POSX;
+	y = CGame::GetInstance()->GetBackBufferHeight() - UI_BACKGROUND_HEIGHT + UI_PMETER_POSY;
+	CMario* mario = dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer());
+	if (mario != NULL) {
+		int count = (int)(mario->GetPMeter() / unit);
+		for (int i = 0; i < count; i++) {
+			if (i == 6) {
+				CAnimations::GetInstance()->Get(UI_ANIMATION_PMETER_MAX)->RenderOnScreen(x + UI_SPRITE_PMETER_ARROW_WIDTH * 6 + UI_SPRITE_PMETER_MAX_WIDTH * 0.5f, y + UI_SPRITE_PMETER_MAX_HEIGHT * 0.5f, 500);
+			}
+			else
+				CSprites::GetInstance()->Get(UI_SPRITE_PMETER_ARROW)->DrawOnScreen(x + UI_SPRITE_PMETER_ARROW_WIDTH * i + UI_SPRITE_PMETER_ARROW_WIDTH * 0.5f, y + UI_SPRITE_PMETER_ARROW_HEIGHT * 0.5f);
+		}
+	}
+	
 }

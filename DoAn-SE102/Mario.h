@@ -38,7 +38,10 @@
 
 #define MARIO_JUMP_DEFLECT_SPEED 0.4f
 
-#define MARIO_PMETER_MAX 1500
+#define MARIO_PMETER_MAX 100
+#define MARIO_PMETER_INCREASE_SPEED 0.1f
+#define MARIO_PMETER_DECREASE_SPEED 0.025f
+#define MARIO_PMETER_TIME 5000
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
@@ -76,8 +79,10 @@ class CMario : public CMovableGameObject
 	ULONGLONG jumpTime;
 	ULONGLONG lastJumpTime;
 
-	LONGLONG pMeter;
-	LONGLONG pMeterCheckpoint;
+	//LONGLONG pMeter;
+	//LONGLONG pMeterCheckpoint;
+	float pMeter;
+	bool isPMeterMax;
 
 	LPANIMATION aniToRender;
 
@@ -88,6 +93,7 @@ class CMario : public CMovableGameObject
 	ULONGLONG death_start;
 	ULONGLONG turning_start;	//Used for Mario's turning animations while holding shell
 	ULONGLONG kick_shell_start;	//Used for Mario's kicking shell animations
+	ULONGLONG pMeterMax_start;	//Used for Mario's raccoon form when pMeter is at maximum
 
 public:
 
@@ -101,7 +107,8 @@ public:
 		lastJumpTime = -1;
 		jumpTime = MARIO_JUMP_TIME;
 		pMeter = 0;
-		pMeterCheckpoint = game->GetTickCount();
+		//pMeterCheckpoint = game->GetTickCount();
+		isPMeterMax = false;
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 		maxFallSpeed = -1;
 		width = MARIO_BIG_BBOX_WIDTH;
@@ -130,6 +137,8 @@ public:
 
 	void SetLevel(MarioLevel level) { this->level = level; }
 	MarioLevel GetLevel() { return level; }
+
+	float GetPMeter() { return pMeter; }
 
 	int IsCollidable() { return state != MarioState::DIE; }
 	int IsBlocking() { return 0; }

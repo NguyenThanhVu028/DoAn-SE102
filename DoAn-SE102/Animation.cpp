@@ -47,6 +47,37 @@ void CAnimation::Render(float x, float y, DWORD flickering_time)
 	frames[currentFrame]->GetSprite()->Draw(x, y);
 }
 
+void CAnimation::RenderOnScreen(float x, float y, DWORD flickering_time) {
+	ULONGLONG now = CGame::GetInstance()->GetTickCount();
+
+	//Flickering effect (used when Mario is untouchable)
+	if (flickering_time == 0) isFlickering = false;
+	else if (now - lastFlickeringTime > flickering_time) {
+		isFlickering = (isFlickering) ? false : true;
+		lastFlickeringTime = now;
+	}
+
+	if (currentFrame == -1)
+	{
+		currentFrame = 0;
+		lastFrameTime = now;
+	}
+	else
+	{
+		DWORD t = frames[currentFrame]->GetTime();
+		if (now - lastFrameTime > t)
+		{
+			//if (now - lastFrameTime < t + flickering_time) return;
+			currentFrame++;
+			lastFrameTime = now;
+			if (currentFrame == frames.size()) currentFrame = 0;
+		}
+
+	}
+	if (isFlickering) return;
+	frames[currentFrame]->GetSprite()->DrawOnScreen(x, y);
+}
+
 void CAnimation::RenderByDuration(float x, float y, DWORD flickering_time) {
 	ULONGLONG now = CGame::GetInstance()->GetTickCount();
 
