@@ -8,7 +8,7 @@ CGameObjectsManager* CGameObjectsManager::GetInstance() {
 }
 
 void CGameObjectsManager::Update(DWORD dt) {
-	int score; CGame::GetInstance()->GetScore(score);
+	//int score= CGame::GetInstance()->GetScore();
 	if (!CGame::GetInstance()->IsFrozen()) {
 		for (auto i : staticObjects) i->Update(dt);
 		for (auto i : movableObjects) i->Update(dt);

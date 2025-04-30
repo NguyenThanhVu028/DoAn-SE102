@@ -249,26 +249,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddSpawner(o);
 	}
 	break;
-	//case OBJECT_TYPE_PORTAL:
-	//{
-	//	float r = (float)atof(tokens[3].c_str());
-	//	float b = (float)atof(tokens[4].c_str());
-	//	int scene_id = atoi(tokens[5].c_str());
-	//	obj = new CPortal(x, y, r, b, scene_id);
-	//}
-	//break;
-
-
-	//default:
-	//	DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
-	//	return;
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
 	}
-
-	//// General object setup
-	//obj->SetPosition(x, y);
-
-
-	//objects.push_back(obj);
 }
 
 void CPlayScene::_ParseSection_PROPERTIES(string line)
@@ -287,6 +271,9 @@ void CPlayScene::_ParseSection_PROPERTIES(string line)
 		break;
 	case SCENE_PROPERTY_HEIGHT:
 		mapHeight = (float)atof(tokens[1].c_str());
+		break;
+	case SCENE_PROPERTY_TIMER:
+		CGame::GetInstance()->SetMaxTime((int)atoi(tokens[1].c_str()));
 		break;
 	}
 }
@@ -330,6 +317,7 @@ void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
 
+
 	ifstream f;
 	f.open(sceneFilePath);
 
@@ -359,6 +347,7 @@ void CPlayScene::Load()
 	}
 
 	f.close();
+	CGame::GetInstance()->ResetTimer();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
@@ -391,7 +380,7 @@ void CPlayScene::Update(DWORD dt)
 	//Remove objects that are deleted
 	PurgeDeletedObjects();
 
-	UIManager::Update(dt);
+	if (!CGame::GetInstance()->IsFrozen()) UIManager::Update(dt);
 }
 
 void CPlayScene::Render()

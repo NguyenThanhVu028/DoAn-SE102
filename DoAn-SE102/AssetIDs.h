@@ -34,6 +34,7 @@
 #pragma region Scene properties
 #define SCENE_PROPERTY_LENGTH 1
 #define SCENE_PROPERTY_HEIGHT 2
+#define SCENE_PROPERTY_TIMER 3
 #pragma endregion
 
 

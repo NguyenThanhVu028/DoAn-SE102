@@ -557,3 +557,15 @@ CGame* CGame::GetInstance()
 	return __instance;
 }
 
+void CGame::ResetTimer() {
+	game_start = GetTickCount();
+}
+
+void CGame::SetMaxTime(LONG t) {
+	maxTime = t;
+}
+
+LONG CGame::GetSecondsRemain() {
+	if (maxTime == -1 || GetTickCount() - game_start >= maxTime) return 0;
+	return (maxTime - (GetTickCount() - game_start)) / 1000;
+}

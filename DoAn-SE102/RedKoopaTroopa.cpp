@@ -6,6 +6,7 @@ void CRedKoopaTroopa::Render() {
 }
 
 void CRedKoopaTroopa::Update(DWORD dt) {
+	if (isKilled || !isEnabled) return;
 	CKoopaTroopa::Update(dt);
 
 	edgeSensor->x = x; edgeSensor->y = y + KOOPA_TROOPA_SHELL_HEIGHT * 0.5f - edgeSensor->height * 0.5f;

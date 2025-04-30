@@ -2,11 +2,33 @@
 #include "UI.h"
 #define UI_BACKGROUND_HEIGHT 46
 
+#define UI_TIMER_POSX 136
+#define UI_TIMER_POSY 18
+
+#define UI_COIN_POSX 144
+#define UI_COIN_POSY 10
+
+#define UI_SCORE_POSX 63
+#define UI_SCORE_POSY 18
+
+#define UI_LIVES_POSX 41
+#define UI_LIVES_POSY 18
+
+#define UI_WORLD_POSX 49
+#define UI_WORLD_POSY 10
+
 //spriteID
 #define UI_SPRITE_BACKGROUND 100001
+#define UI_SPRITE_NUMBER_OFFSET 100010
+#define UI_SPRITE_NUMBER_WIDTH 8
+#define UI_SPRITE_NUMBER_HEIGHT 7
+#define UI_SPRITE_PMETER_ARROW_WIDTH 8
+#define UI_SPRITE_PMETER_ARROW 100021
+#define UI_SPRITE_PMETER_MAX 100022
 
 class PlaySceneUI : public UI
 {
+	LONG secondsRemain;
 public: 
 	void Update(DWORD dt);
 	void Render();

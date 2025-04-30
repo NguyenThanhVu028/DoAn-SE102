@@ -51,6 +51,10 @@ class CGame
 
 	int coin = 0;
 	int score = 0;
+	int lives = 4;
+
+	ULONGLONG game_start;
+	LONG maxTime = -1;
 
 	bool isFrozen = false;
 
@@ -116,12 +120,20 @@ public:
 	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
 
 	void SetCoin(int x) { coin = x; }
-	void GetCoin(int& x) { x = coin; }
+	int GetCoin() { return coin; }
 	void IncreaseCoin(int x) { coin += x; }
 
 	void SetScore(int x) { score = x; }
-	void GetScore(int& x) { x = score; }
+	int GetScore() { return score; }
 	void IncreaseScore(int x) { score += x; }
+
+	void SetLives(int x) { lives = x; }
+	int GetLives() { return lives; }
+	void IncreaseLives(int x) { lives += x; }
+
+	void ResetTimer();
+	void SetMaxTime(LONG t);
+	LONG GetSecondsRemain();
 
 	void FreezeGame() { if (isFrozen) return; isFrozen = true; tickFreeze = GetTickCount64(); };
 	void UnFreezeGame() { if (!isFrozen) return; isFrozen = false; tickOffset += GetTickCount64() - tickFreeze; };
