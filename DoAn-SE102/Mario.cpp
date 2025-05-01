@@ -25,6 +25,10 @@ void CMario::Update(DWORD dt) {
 		return;
 	}
 
+	if (CGame::GetInstance()->GetTickCount() - spin_start > MARIO_SPIN_TIME) {
+		isSpinning = 0; tail->SetEnable(false);
+	}
+
 	if (GetTickCount64() - level_start < level_duration) return;
 	else CGame::GetInstance()->UnFreezeGame();
 
@@ -67,10 +71,30 @@ void CMario::Update(DWORD dt) {
 	if (vy < maxVy) vy = maxVy;
 	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 
-	//Cheking collision for Mairo's head
+	//Check collision for Mairo's head
 	head->x = x; head->y = y - height + head->height * 0.5f;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
+
+	//Check collision for Mario's tail
+	ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
+	if (spinTimer < MARIO_SPIN_TIME) {
+		float unit = MARIO_SPIN_TIME / 5;
+		int temp = (int)(spinTimer / unit);
+		float tempX = x;
+		tail->SetEnable(false);
+		if (temp == 0 || temp == 4) {
+			tempX = x + (isSpinning == 1) ? 8 : -8;
+			tail->SetEnable(true);
+		}
+		if (temp == 2) {
+			tempX = x + (isSpinning == 1) ? -8 : 8;
+			tail->SetEnable(true);
+		}
+		tail->x = tempX; tail->y = y;
+		tail->ProcessCollision(dt);
+	}
+
 
 	//Check collision
 	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
@@ -92,6 +116,7 @@ void CMario::Update(DWORD dt) {
 		}
 	}
 		//If Mario is not jumping or falling
+	//DebugOutTitle(L"Vx maxVx: %f %f", vx, maxVx);
 	if (isGrounded) {
 		if (abs(vx) >= MARIO_RUN_SPEED && abs(maxVx) >= MARIO_RUN_SPEED){
 			if (pMeter < MARIO_PMETER_MAX) {
@@ -107,9 +132,12 @@ void CMario::Update(DWORD dt) {
 		}
 	}
 	else {
-		if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) && pMeter != MARIO_PMETER_MAX) {
-			if(pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
-			if (pMeter < 0) pMeter = 0;
+		if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
+			if (!abs(maxVx) >= MARIO_RUN_SPEED || pMeter != MARIO_PMETER_MAX) {
+				if(pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+				if (pMeter < 0) pMeter = 0;
+			}
+
 		}
 	}
 }
@@ -136,7 +164,33 @@ void CMario::Render() {
 		break;
 	}
 	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start > MARIO_TURN_TIME) shell->RealRender();
-	if(aniToRender != NULL) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
+	if (aniToRender != NULL) {
+		if (isNeedResetAni) {
+			isNeedResetAni = false;
+			aniToRender->Reset();
+		}
+		if(level != MarioLevel::RACCOON) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
+		else {
+			//int offSet = 0;
+			ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
+			if (spinTimer > MARIO_SPIN_TIME) {
+				//offSet = (nx == 1) ? -4 : 5;
+				aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
+			}
+			else {
+				//float unit = MARIO_SPIN_TIME / 5;
+				//int temp = (int)(spinTimer / unit);
+				//if (temp == 0 || temp == 4) {
+				//	offSet = (isSpinning == 1) ? -4 : 5;
+				//}
+				//if (temp == 2) {
+				//	offSet = (isSpinning == 1) ? 5 : -4;
+				//}
+				aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
+			}
+		}
+
+	}
 	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) shell->RealRender();
 }
 
@@ -429,6 +483,12 @@ void CMario::GetAnimationBIG() {
 
 void CMario::GetAnimationRACCOON() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_RIGHT);
+	if (isSpinning != 0) {
+		if(isSpinning == -1) aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_SPIN_LEFT);
+		else if(isSpinning == 1) aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_SPIN_RIGHT);
+		aniToRender->SetDuration(MARIO_SPIN_TIME);
+		return;
+	}
 	if (shell != NULL) {	//If Mario is holding a shell
 		if (CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) {
 			aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_TURN_SHELL);
@@ -646,6 +706,7 @@ void CMario::SetState(MarioState state) {
 			else ax = MARIO_DECEL_X;
 		}
 		else {
+			maxVx = 0;
 			if (vx > 0) ax = -MARIO_DECEL_X * 0.2f;
 			else ax = MARIO_DECEL_X * 0.2f;
 		}
@@ -712,11 +773,13 @@ void CMario::SetState(MarioState state) {
 		if (level == MarioLevel::SMALL) return;
 		this->state = state;
 		break;
-	case MarioState::NOT_RUN:
-		//pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) * 0.5;
-		//if (pMeter < 0) pMeter = 0;
-		//pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
-		break;
+	case MarioState::SPIN:
+		if (!level == MarioLevel::RACCOON) return;
+		if (CGame::GetInstance()->GetTickCount() - spin_start > MARIO_SPIN_TIME) {
+			spin_start = CGame::GetInstance()->GetTickCount();
+			isSpinning = (nx == 1) ? 1 : -1;
+			isNeedResetAni = true;
+		}
 	}
 }
 void CMario::OnNoCollision(DWORD dt) {

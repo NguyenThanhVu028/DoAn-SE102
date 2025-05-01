@@ -2,7 +2,7 @@
 #include "debug.h"
 #include "Game.h"
 
-void CAnimation::Add(int spriteId, DWORD time)
+void CAnimation::Add(int spriteId, DWORD time, float offSetX, float offSetY)
 {
 	int t = time;
 	if (time == 0) t = this->defaultTime;
@@ -11,7 +11,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 	if (sprite == NULL)
 		DebugOut(L"[ERROR] Sprite ID %d not found!\n", spriteId);
 
-	LPANIMATION_FRAME frame = new CAnimationFrame(sprite, t);
+	LPANIMATION_FRAME frame = new CAnimationFrame(sprite, t, offSetX, offSetY);
 	frames.push_back(frame);
 }
 
@@ -44,7 +44,8 @@ void CAnimation::Render(float x, float y, DWORD flickering_time)
 
 	}
 	if (isFlickering) return;
-	frames[currentFrame]->GetSprite()->Draw(x, y);
+	float offSetX = frames[currentFrame]->GetOffSetX(), offSetY = frames[currentFrame]->GetOffSetY();
+	frames[currentFrame]->GetSprite()->Draw(x + offSetX, y + offSetY);
 }
 
 void CAnimation::RenderOnScreen(float x, float y, DWORD flickering_time) {
@@ -75,7 +76,8 @@ void CAnimation::RenderOnScreen(float x, float y, DWORD flickering_time) {
 
 	}
 	if (isFlickering) return;
-	frames[currentFrame]->GetSprite()->DrawOnScreen(x, y);
+	float offSetX = frames[currentFrame]->GetOffSetX(), offSetY = frames[currentFrame]->GetOffSetY();
+	frames[currentFrame]->GetSprite()->DrawOnScreen(x + offSetX, y + offSetY);
 }
 
 void CAnimation::RenderByDuration(float x, float y, DWORD flickering_time) {
@@ -106,7 +108,8 @@ void CAnimation::RenderByDuration(float x, float y, DWORD flickering_time) {
 
 	}
 	if (isFlickering) { return; }
-	frames[currentFrame]->GetSprite()->Draw(x, y);
+	float offSetX = frames[currentFrame]->GetOffSetX(), offSetY = frames[currentFrame]->GetOffSetY();
+	frames[currentFrame]->GetSprite()->Draw(x + offSetX, y + offSetY);
 }
 
 void CAnimation::Render1Frame(float x, float y) {
@@ -116,7 +119,8 @@ void CAnimation::Render1Frame(float x, float y) {
 		currentFrame = 0;
 	}
 	lastFrameTime = now;
-	frames[currentFrame]->GetSprite()->Draw(x, y);
+	float offSetX = frames[currentFrame]->GetOffSetX(), offSetY = frames[currentFrame]->GetOffSetY();
+	frames[currentFrame]->GetSprite()->Draw(x + offSetX, y + offSetY);
 }
 
 void CAnimation::Reset() {

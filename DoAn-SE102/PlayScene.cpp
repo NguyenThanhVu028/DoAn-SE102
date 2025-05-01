@@ -72,18 +72,20 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+	if (tokens.size() < 5) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
 	LPANIMATION ani = new CAnimation();
 
 	int ani_id = atoi(tokens[0].c_str());
-	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+	for (int i = 1; i < tokens.size(); i += 4)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i+1].c_str());
-		ani->Add(sprite_id, frame_time);
+		int frame_time = atoi(tokens[i + 1].c_str());
+		float offSetX = atof(tokens[i + 2].c_str());
+		float offSetY = atof(tokens[i + 3].c_str());
+		ani->Add(sprite_id, frame_time, offSetX, offSetY);
 	}
 
 	CAnimations::GetInstance()->Add(ani_id, ani);

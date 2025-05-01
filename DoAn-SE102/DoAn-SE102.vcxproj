@@ -162,6 +162,7 @@
     <ClInclude Include="MarioAniIds.h" />
     <ClInclude Include="MarioHead.h" />
     <ClInclude Include="MarioKeyEventHandler.h" />
+    <ClInclude Include="MarioTail.h" />
     <ClInclude Include="MovableGameObject.h" />
     <ClInclude Include="MultiTilesBlock.h" />
     <ClInclude Include="Mushroom.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MarioHead.cpp" />
     <ClCompile Include="MarioKeyEventHandler.cpp" />
+    <ClCompile Include="MarioTail.cpp" />
     <ClCompile Include="MovableGameObject.cpp" />
     <ClCompile Include="MultiTilesBlock.cpp" />
     <ClCompile Include="Mushroom.cpp" />

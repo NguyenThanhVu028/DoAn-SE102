@@ -51,6 +51,5 @@
 #CARD FRAME
 40071	650	106	675	131	10
 
-# ani_id	sprite1_id	time1	sprite2_id	time2	...
+# ani_id	sprite1_id	time1	offX1	offY1	sprite2_id	time2	...
 #[ANIMATIONS]
-#10000	20001	1000

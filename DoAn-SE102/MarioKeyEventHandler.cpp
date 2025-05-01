@@ -46,6 +46,7 @@ void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_A:
 		mario->OnPressRunButton();
+		mario->SetState(MarioState::SPIN);
 		break;
 	}
 }

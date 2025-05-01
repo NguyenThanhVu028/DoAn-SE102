@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "MarioAniIds.h"
 #include "MarioHead.h"
+#include "MarioTail.h"
 #include "KoopaTroopa.h"
 
 #define MARIO_UNTOUCHABLE_TIME 2700
@@ -14,6 +15,7 @@
 #define MARIO_DEATH_TIME 5000
 #define MARIO_TURN_TIME 200
 #define MARIO_KICK_SHELL_TIME 200
+#define MARIO_SPIN_TIME 500
 
 #define MARIO_WALK_SPEED 0.07f
 #define MARIO_RUN_SPEED 0.18f
@@ -56,12 +58,13 @@
 #define MARIO_SHELL_POSITION_OFFSET_SMALL_Y 4
 #define MARIO_SHELL_POSITION_OFFSET_BIG_Y 6
 
-enum MarioState { NONE, DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT, HOLDING };
+enum MarioState { NONE, DIE, IDLE, SIT, JUMP, RELEASE_JUMP, WALK_LEFT, WALK_RIGHT, RUN_LEFT, RUN_RIGHT, NOT_RUN, JUMP_WALK_RIGHT, JUMP_WALK_LEFT, HOLDING, SPIN };
 enum MarioLevel { SMALL, BIG, RACCOON };
 
 class CMario : public CMovableGameObject
 {
 	CMarioHead* head;
+	CMarioTail* tail;
 	CKoopaTroopa* shell;
 
 	MarioState state;
@@ -79,10 +82,11 @@ class CMario : public CMovableGameObject
 	ULONGLONG jumpTime;
 	ULONGLONG lastJumpTime;
 
-	//LONGLONG pMeter;
-	//LONGLONG pMeterCheckpoint;
 	float pMeter;
 	bool isPMeterMax;
+
+	int isSpinning;
+	bool isNeedResetAni;
 
 	LPANIMATION aniToRender;
 
@@ -94,6 +98,7 @@ class CMario : public CMovableGameObject
 	ULONGLONG turning_start;	//Used for Mario's turning animations while holding shell
 	ULONGLONG kick_shell_start;	//Used for Mario's kicking shell animations
 	ULONGLONG pMeterMax_start;	//Used for Mario's raccoon form when pMeter is at maximum
+	ULONGLONG spin_start;
 
 public:
 
@@ -107,7 +112,6 @@ public:
 		lastJumpTime = -1;
 		jumpTime = MARIO_JUMP_TIME;
 		pMeter = 0;
-		//pMeterCheckpoint = game->GetTickCount();
 		isPMeterMax = false;
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 		maxFallSpeed = -1;
@@ -121,8 +125,11 @@ public:
 		isRunButtonPressed = false;
 		turning_start = game->GetTickCount();
 		head = new CMarioHead(x, y - height * 0.5f);
+		tail = new CMarioTail(x, y);
 		head->width = width;
 		shell = NULL;
+		isSpinning = 0;
+		isNeedResetAni = false;
 	}
 
 	void Update(DWORD dt);
@@ -165,5 +172,7 @@ public:
 	bool IsHoldingShell() { return shell != NULL; }
 	void ResetTurningTimer();
 	void AdjustShellPosition();
+
+	CMarioTail* GetTail() { return tail; }
 };
 

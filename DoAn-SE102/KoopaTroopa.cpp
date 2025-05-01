@@ -39,7 +39,10 @@ void CKoopaTroopa::Update(DWORD dt) {
 		return;
 	}
 
-	if (CGame::GetInstance()->GetTickCount() - charging_start > KOOPA_TROOPA_CHARGING_TIME && state == KoopaTroopaState::SHELL_IDLE) SetState(KoopaTroopaState::OUTSIDE);
+	if (CGame::GetInstance()->GetTickCount() - charging_start > KOOPA_TROOPA_CHARGING_TIME && state == KoopaTroopaState::SHELL_IDLE) {
+		SetState(KoopaTroopaState::OUTSIDE);
+		SetDirection(KoopaTroopaShellDirection::NORMAL);
+	}
 
 	vy += ay * dt;
 

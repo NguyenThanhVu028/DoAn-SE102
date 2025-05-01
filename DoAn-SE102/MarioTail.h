@@ -1,20 +1,22 @@
 #pragma once
-//#include "Mario.h"
 #include "MovableGameObject.h"
-#include "debug.h"
 #include <vector>
-class CMarioHead : public CMovableGameObject
+
+#define MARIO_TAIL_WIDTH 8
+#define MARIO_TAIL_HEIGHT 2
+
+class CMarioTail : public CMovableGameObject
 {
 	friend class CMario;
-	float width, height;
-	std::vector<LPCOLLISIONEVENT> hitBlocks;		//Check if Mario's head hit any thing (only check if e->ny > 0)
+	std::vector<LPCOLLISIONEVENT> hitBlocks;
+	bool isEnabled;
 public:
-	CMarioHead(float x, float y, float width = 14, float height = 2) : CMovableGameObject(x, y){
-		this->width = width; this->height = height;
-		hitBlocks.clear();
+	CMarioTail(float x, float y) : CMovableGameObject(x, y) {
+		isEnabled = false;
 	}
+	void SetEnable(bool t) { isEnabled = t; }
 	void SetPosition(float x, float y) {}
-	void Render(){}
+	void Render() {}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int IsCollidable() { return 1; };
 	void OnNoCollision(DWORD dt) {};
