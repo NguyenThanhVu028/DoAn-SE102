@@ -21,12 +21,7 @@ public:
 	CRedKoopaTroopa(float x, float y, int nx) : CKoopaTroopa(x, y, nx) {
 		edgeSensor = new CEdgeSensor(x, y - height * 0.5f - 1);
 	}
-
-	void Render();
 	void RealRender();
 	void Update(DWORD dt);
-	void OnCollisionWith(LPCOLLISIONEVENT e);
-
-	KoopaTroopaState GetState() { return state; }
 };
 

@@ -47,6 +47,7 @@ Resources\Data\UI\playscene_ui.txt
 #	71 = Goomba spawner
 #	72 = Red Goomba spawner
 #	73 = Red KoopaTroopa spawner
+#	74 = Green KoopaTroopa spawner
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
@@ -329,6 +330,10 @@ Resources\Data\UI\playscene_ui.txt
 71	887	153.9	0
 72	953	153.9	0
 73	587	127	1
+74	1337	67	0	1
+74	1386	67	0	1
+74	1434	67	0	1
+74	1482	162	0	0
 
 
 #COIN

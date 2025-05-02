@@ -136,6 +136,7 @@ void CKoopaTroopa::OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e) {
 
 void CKoopaTroopa::OnCollisionWithShell(LPCOLLISIONEVENT e) {
 	SetState(KoopaTroopaState::K_DIE_KICKED);
+	SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
 	float oX, oY;
 	e->obj->GetPosition(oX, oY);
 	vx = (oX < x) ? KOOPA_TROOPA_DIE_MOVE_SPEED : -KOOPA_TROOPA_DIE_MOVE_SPEED;

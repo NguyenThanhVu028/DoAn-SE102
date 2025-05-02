@@ -244,10 +244,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_SPAWNER_RED_KOOPA_TROOPA:
 	{
-		if (tokens.size() < 3) return;
+		if (tokens.size() < 4) return;
 		int direction = (int)atoi(tokens[3].c_str());
 
 		auto o = new CRedKoopaTroopaSpawner(x, y, direction);
+		CGameObjectsManager::GetInstance()->AddSpawner(o);
+	}
+	break;
+	case OBJECT_TYPE_SPAWNER_GREEN_KOOPA_TROOPA:
+	{
+		if (tokens.size() < 5) return;
+		int direction = (int)atoi(tokens[3].c_str());
+		bool hasWing = (bool)atoi(tokens[4].c_str());
+
+		auto o = new CGreenKoopaTroopaSpawner(x, y, direction, hasWing);
 		CGameObjectsManager::GetInstance()->AddSpawner(o);
 	}
 	break;

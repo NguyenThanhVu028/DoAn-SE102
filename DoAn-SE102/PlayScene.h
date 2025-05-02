@@ -16,6 +16,7 @@
 #include "GoombaSpawner.h"
 #include "RedGoombaSpawner.h"
 #include "RedKoopaTroopaSpawner.h"
+#include "GreenKoopaTroopaSpawner.h"
 #include "UIManager.h"
 
 

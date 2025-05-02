@@ -1,10 +1,6 @@
 #include "RedKoopaTroopa.h"
 #include "GameObjectsManager.h"
 
-void CRedKoopaTroopa::Render() {
-	CKoopaTroopa::Render();
-}
-
 void CRedKoopaTroopa::Update(DWORD dt) {
 	if (isKilled || !isEnabled) return;
 	CKoopaTroopa::Update(dt);
@@ -47,8 +43,4 @@ void CRedKoopaTroopa::RealRender() {
 	}
 	aniToRender = CAnimations::GetInstance()->Get(Id);
 	aniToRender->Render(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
-}
-
-void CRedKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
-	CKoopaTroopa::OnCollisionWith(e);
 }

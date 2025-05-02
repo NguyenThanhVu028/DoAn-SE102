@@ -152,6 +152,8 @@
     <ClInclude Include="GameObjectsManager.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GoombaSpawner.h" />
+    <ClInclude Include="GreenKoopaTroopa.h" />
+    <ClInclude Include="GreenKoopaTroopaSpawner.h" />
     <ClInclude Include="HardBlock.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="KoopaTroopa.h" />
@@ -209,6 +211,8 @@
     <ClCompile Include="GameObjectsManager.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GoombaSpawner.cpp" />
+    <ClCompile Include="GreenKoopaTroopa.cpp" />
+    <ClCompile Include="GreenKoopaTroopaSpawner.cpp" />
     <ClCompile Include="HardBlock.cpp" />
     <ClCompile Include="KoopaTroopa.cpp" />
     <ClCompile Include="Leaf.cpp" />

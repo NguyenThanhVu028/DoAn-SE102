@@ -172,28 +172,17 @@ void CMario::Render() {
 		}
 		if(level != MarioLevel::RACCOON) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
 		else {
-			//int offSet = 0;
 			ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
 			if (spinTimer > MARIO_SPIN_TIME) {
-				//offSet = (nx == 1) ? -4 : 5;
 				aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
 			}
 			else {
-				//float unit = MARIO_SPIN_TIME / 5;
-				//int temp = (int)(spinTimer / unit);
-				//if (temp == 0 || temp == 4) {
-				//	offSet = (isSpinning == 1) ? -4 : 5;
-				//}
-				//if (temp == 2) {
-				//	offSet = (isSpinning == 1) ? 5 : -4;
-				//}
 				aniToRender->RenderByDuration(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
 			}
 		}
 
 	}
 	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) shell->RealRender();
-	if (tail != NULL) tail->Render();
 }
 
 void CMario::GetAnimationSMALL() {
