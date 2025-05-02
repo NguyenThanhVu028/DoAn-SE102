@@ -19,6 +19,7 @@ public:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) {}
 	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e) {}
 	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e) {}
+	virtual void OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {}
 	virtual int IsBlocking() { return 0; }
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 

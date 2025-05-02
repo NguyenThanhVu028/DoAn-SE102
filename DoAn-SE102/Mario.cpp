@@ -78,20 +78,21 @@ void CMario::Update(DWORD dt) {
 
 	//Check collision for Mario's tail
 	ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
-	if (spinTimer < MARIO_SPIN_TIME) {
+	if (spinTimer < MARIO_SPIN_TIME && level == MarioLevel::RACCOON) {
 		float unit = MARIO_SPIN_TIME / 5;
 		int temp = (int)(spinTimer / unit);
 		float tempX = x;
 		tail->SetEnable(false);
 		if (temp == 0 || temp == 4) {
-			tempX = x + (isSpinning == 1) ? 8 : -8;
+			tempX += (isSpinning == 1) ? -MARIO_TAIL_POSITION_OFFSET_X : MARIO_TAIL_POSITION_OFFSET_X;
 			tail->SetEnable(true);
 		}
 		if (temp == 2) {
-			tempX = x + (isSpinning == 1) ? -8 : 8;
+			tempX += (isSpinning == 1) ? MARIO_TAIL_POSITION_OFFSET_X : -MARIO_TAIL_POSITION_OFFSET_X;
 			tail->SetEnable(true);
 		}
-		tail->x = tempX; tail->y = y;
+		DebugOutTitle(L"Tail x, y %f %f %f", x, tempX, y);
+		tail->x = tempX; tail->y = y - MARIO_TAIL_POSITION_OFFSET_Y;
 		tail->ProcessCollision(dt);
 	}
 
@@ -192,6 +193,7 @@ void CMario::Render() {
 
 	}
 	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) shell->RealRender();
+	if (tail != NULL) tail->Render();
 }
 
 void CMario::GetAnimationSMALL() {
@@ -774,7 +776,7 @@ void CMario::SetState(MarioState state) {
 		this->state = state;
 		break;
 	case MarioState::SPIN:
-		if (!level == MarioLevel::RACCOON) return;
+		if (level != MarioLevel::RACCOON) return;
 		if (CGame::GetInstance()->GetTickCount() - spin_start > MARIO_SPIN_TIME) {
 			spin_start = CGame::GetInstance()->GetTickCount();
 			isSpinning = (nx == 1) ? 1 : -1;

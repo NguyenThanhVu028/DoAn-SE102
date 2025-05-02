@@ -9,40 +9,46 @@ void CMarioTail::GetBoundingBox(float& left, float& top, float& right, float& bo
 }
 
 void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e) {
+	if (dynamic_cast<CEnemy*>(e->obj)) {
+		if (dynamic_cast<CEnemy*>(e->obj)->IsDead() || !dynamic_cast<CEnemy*>(e->obj)->IsEnabled()) return;
+	}
 	LPCOLLISIONEVENT newEvent = new CCollisionEvent(0, 0, 0);
 	*newEvent = *e;
-	hitBlocks.push_back(newEvent);
+	hitObjects.push_back(newEvent);
 }
 
-void CMarioTail::ClearHitBlocks() {
-	for (auto i : hitBlocks) delete i;
-	hitBlocks.clear();
+void CMarioTail::ClearHitObjects() {
+	for (auto i : hitObjects) delete i;
+	hitObjects.clear();
 }
 
-void CMarioTail::ProcessHitBlocks() {
-	LPGAMEOBJECT hitBlock = NULL;
+void CMarioTail::ProcessHitObjects() {
+	LPGAMEOBJECT hitObject = NULL;
 	LPCOLLISIONEVENT e = NULL;
-	for (auto i : hitBlocks) {
-		if (hitBlock == NULL) {
-			hitBlock = i->obj;
+	for (auto i : hitObjects) {
+		if (hitObject == NULL) {
+			hitObject = i->obj;
 			e = i;
 		}
 		else {
 			float bL, bT, bR, bB;
 			i->obj->GetBoundingBox(bL, bT, bR, bB);
 			if (y >= bT && y <= bB) {
-				hitBlock = i->obj;
+				hitObject = i->obj;
 				e = i;
 			}
 		}
 	}
-	if (hitBlock != NULL)
-		hitBlock->OnCollisionWith(e);
+	if (hitObject != NULL) {
+		if (dynamic_cast<CEnemy*>(hitObject)) dynamic_cast<CEnemy*>(hitObject)->OnCollisionWithMarioTail(e);
+		else hitObject->OnCollisionWith(e);
+	}
+		
 }
 
 void CMarioTail::ProcessCollision(DWORD dt) {
 	if (!isEnabled) return;
-	ClearHitBlocks();
+	ClearHitObjects();
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1, 0, -1);
-	ProcessHitBlocks();
+	ProcessHitObjects();
 }

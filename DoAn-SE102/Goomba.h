@@ -46,6 +46,7 @@ public:
 
 	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithMarioTail(LPCOLLISIONEVENT e);
 
 	virtual bool IsUntouchable() { return false; }
 

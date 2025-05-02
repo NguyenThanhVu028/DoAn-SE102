@@ -53,8 +53,11 @@ void CGoomba::Update(DWORD dt) {
 	}
 	if (!isEnabled) return;
 	vy += ay * dt;
-	if (state != GoombaState::UPSIDE_DOWN) CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
-	else CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 0);
+	if (state == GoombaState::UPSIDE_DOWN) {
+		x += vx * dt;
+		y += vy * dt;
+	}
+	if(!IsDead()) CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
 }
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
@@ -67,7 +70,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CMario*>(e->src_obj)) {
 		OnCollisionWithMario(e);
 	}
-	if (dynamic_cast<CGoomba*>(e->obj) && dynamic_cast<CGoomba*>(e->src_obj) && !dynamic_cast<CRedGoomba*>(e->obj)) {
+	if (dynamic_cast<CGoomba*>(e->obj) && dynamic_cast<CGoomba*>(e->src_obj) && !dynamic_cast<CRedGoomba*>(e->obj) && !dynamic_cast<CGoomba*>(e->obj)->IsDead()) {
 		if (e->obj != this && dynamic_cast<CGoomba*>(e->obj)->IsEnabled()) {
 			float oX, oY;
 			e->obj->GetPosition(oX, oY);
@@ -89,6 +92,12 @@ void CGoomba::OnCollisionWithMario(LPCOLLISIONEVENT e) {
 	if (e->ny < 0) SetState(GoombaState::FLATTENED);
 }
 void CGoomba::OnCollisionWithShell(LPCOLLISIONEVENT e) {
+	float sX, sY;
+	e->src_obj->GetPosition(sX, sY);
+	int nx = (sX < x) ? -1 : 1;
+	SetState(GoombaState::UPSIDE_DOWN, nx);
+}
+void CGoomba::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
 	float sX, sY;
 	e->src_obj->GetPosition(sX, sY);
 	int nx = (sX < x) ? -1 : 1;
