@@ -182,6 +182,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
 	}
+	case OBJECT_TYPE_CLOUD_PLATFORM:
+	{
+		if (tokens.size() < 7) break;
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int width = (int)atoi(tokens[5].c_str());
+		int height = (int)atoi(tokens[6].c_str());
+
+		obj = new CCloudPlatform(x, y,
+			cell_width, cell_height,
+			width, height);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
+	}
 	case OBJECT_TYPE_PIPE:
 	{
 		if (tokens.size() < 8) break;
@@ -371,23 +385,33 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (CGameObjectsManager::GetInstance()->GetPlayer() == NULL) return;
 	CGame *game = CGame::GetInstance();
+	CMario* mario = dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer());
 
 	// Update camera to follow mario
-	//float cx, cy;
-	//CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(cx, cy);
-	//cx -= game->GetBackBufferWidth() / 2;
-	//cy -= game->GetBackBufferHeight() / 2;
 
 	float cX, cY; game->GetCamPos(cX, cY);
-	float pX, pY; CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(pX, pY);
+	float pX, pY; mario->GetPosition(pX, pY);
 
-	if (pX > cX + game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE * 0.5f);
-	else if (pX < cX + game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE * 0.5f);
+	if (pX > cX + game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f);
+	else if (pX < cX + game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f);
+
+	if (!mario->IsPMeterMax()) {
+		if (cY < 0) {
+			if (pY > cY + game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
+			else if (pY < cY + game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
+		}
+	}
+	else {
+		if (pY > cY + game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
+		else if (pY < cY + game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
+	}
 
 	if (cX < 0) cX = 0;
 	if (cX > mapLength - CGame::GetInstance()->GetBackBufferWidth()) cX = mapLength - CGame::GetInstance()->GetBackBufferWidth();
+	if (cY > 0) cY = 0;
+	if (cY < -mapHeight) cY = -mapHeight;
 
-	CGame::GetInstance()->SetCamPos(cX, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cX, cY);
 
 	//Remove objects that are deleted
 	PurgeDeletedObjects();

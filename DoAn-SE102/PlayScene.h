@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "GameObjectsManager.h"
 #include "SolidPlatform.h"
+#include "CloudPlatform.h"
 #include "QuestionBlock.h"
 #include "CoinQuestionBlock.h"
 #include "LevelUpQuestionBlock.h"

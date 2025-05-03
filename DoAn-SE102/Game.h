@@ -18,7 +18,8 @@ using namespace std;
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
 
-#define CAMERA_FOLLOW_DISTANCE 15
+#define CAMERA_FOLLOW_DISTANCE_X 15
+#define CAMERA_FOLLOW_DISTANCE_Y 50
 
 /*
 	Our simple game framework

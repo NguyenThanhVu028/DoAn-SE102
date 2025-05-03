@@ -87,7 +87,6 @@ public:
 		else return 0;
 	}
 	void Render();
-
 	bool AllowOverlap() { return true; }
 };
 

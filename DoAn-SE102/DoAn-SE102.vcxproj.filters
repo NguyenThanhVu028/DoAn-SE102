@@ -282,6 +282,9 @@
     <ClInclude Include="GreenKoopaTroopa.h">
       <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="CloudPlatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -439,6 +442,9 @@
     </ClCompile>
     <ClCompile Include="GreenKoopaTroopa.cpp">
       <Filter>Source Files\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudPlatform.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
