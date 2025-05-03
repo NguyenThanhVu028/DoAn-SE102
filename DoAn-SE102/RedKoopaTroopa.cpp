@@ -32,7 +32,7 @@ void CRedKoopaTroopa::RealRender() {
 		Id = (vx > 0) ? RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT : RED_KOOPA_TROOPA_ANIMATION_WALK_LEFT;
 		break;
 	case KoopaTroopaState::SHELL_IDLE:
-		if (CGame::GetInstance()->GetTickCount() - charging_start < KOOPA_TROOPA_CHARGING_TIME * 0.75f)
+		if (CGame::GetInstance()->GetTickCount() - charging_start < KOOPA_TROOPA_CHARGING_TIME * KOOPA_TROOPA_CHARGING_TIME_PROPORTION)
 			Id = (shellDirection == KoopaTroopaShellDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_IDLE : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_IDLE;
 		else if (CGame::GetInstance()->GetTickCount() - charging_start <= KOOPA_TROOPA_CHARGING_TIME)
 			Id = (shellDirection == KoopaTroopaShellDirection::NORMAL) ? RED_KOOPA_TROOPA_ANIMATION_SHELL_CHARGING : RED_KOOPA_TROOPA_ANIMATION_SHELL_UPSIDEDOWN_CHARGING;
@@ -42,5 +42,12 @@ void CRedKoopaTroopa::RealRender() {
 		break;
 	}
 	aniToRender = CAnimations::GetInstance()->Get(Id);
-	aniToRender->Render(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
+	float offSet = 0;
+	ULONGLONG chargingTimer = CGame::GetInstance()->GetTickCount() - charging_start;
+	if (chargingTimer < KOOPA_TROOPA_CHARGING_TIME && chargingTimer > KOOPA_TROOPA_CHARGING_TIME * KOOPA_TROOPA_CHARGING_TIME_PROPORTION) {
+		ULONGLONG unit = KOOPA_TROOPA_CHARGING_TIME * (1.0f - KOOPA_TROOPA_CHARGING_TIME_PROPORTION) / KOOPA_TROOPA_SHAKING_FREQUENCY;
+		int temp = (chargingTimer - KOOPA_TROOPA_CHARGING_TIME * KOOPA_TROOPA_CHARGING_TIME_PROPORTION) / unit;
+		offSet = (temp % 2 == 0)? KOOPA_TROOPA_SHAKING_INTENSITY : -KOOPA_TROOPA_SHAKING_INTENSITY;
+	}
+	aniToRender->Render(x + offSet, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
 }
