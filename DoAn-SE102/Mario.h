@@ -16,6 +16,7 @@
 #define MARIO_TURN_TIME 200
 #define MARIO_KICK_SHELL_TIME 200
 #define MARIO_SPIN_TIME 300
+#define MARIO_SLOW_FALLING_TIME 300
 
 #define MARIO_WALK_SPEED 0.07f
 #define MARIO_RUN_SPEED 0.18f
@@ -36,7 +37,7 @@
 #define MARIO_JUMP_ACCEL 0.001f
 
 #define MARIO_GRAVITY 0.001f
-#define MARIO_MAX_FAlL_SPEED 0.1f
+#define MARIO_SLOW_FAlL_SPEED 0.05f
 
 #define MARIO_JUMP_DEFLECT_SPEED 0.4f
 
@@ -102,6 +103,7 @@ class CMario : public CMovableGameObject
 	ULONGLONG kick_shell_start;	//Used for Mario's kicking shell animations
 	ULONGLONG pMeterMax_start;	//Used for Mario's raccoon form when pMeter is at maximum
 	ULONGLONG spin_start;
+	ULONGLONG slowFalling_start;
 
 public:
 

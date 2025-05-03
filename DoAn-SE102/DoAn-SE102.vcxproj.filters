@@ -276,11 +276,11 @@
     <ClInclude Include="MarioTail.h">
       <Filter>Header Files\Entities\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="GreenKoopaTroopa.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GreenKoopaTroopaSpawner.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenKoopaTroopa.h">
+      <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -434,11 +434,11 @@
     <ClCompile Include="MarioTail.cpp">
       <Filter>Source Files\Entities\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="GreenKoopaTroopa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GreenKoopaTroopaSpawner.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenKoopaTroopa.cpp">
+      <Filter>Source Files\Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

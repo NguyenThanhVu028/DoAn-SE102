@@ -148,7 +148,8 @@ bool CKoopaTroopa::IsDead() {
 
 void CKoopaTroopa::SetState(KoopaTroopaState state) {
 	height = KOOPA_TROOPA_SHELL_HEIGHT;
-	untouchable_start = CGame::GetInstance()->GetTickCount();
+	if(state != KoopaTroopaState::OUTSIDE) untouchable_start = CGame::GetInstance()->GetTickCount();
+	else untouchable_start = CGame::GetInstance()->GetTickCount() - KOOPA_TROOPA_UNTOUCHABLE_TIME * 0.25f;
 	switch (state) {
 	case KoopaTroopaState::OUTSIDE:
 		vx = (nx == 1) ? KOOPA_TROOPA_MOVE_SPEED : -KOOPA_TROOPA_MOVE_SPEED;
