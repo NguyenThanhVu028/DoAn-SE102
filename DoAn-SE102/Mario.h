@@ -17,6 +17,7 @@
 #define MARIO_KICK_SHELL_TIME 200
 #define MARIO_SPIN_TIME 300
 #define MARIO_SLOW_FALLING_TIME 300
+#define MARIO_FLY_TIME 75
 
 #define MARIO_WALK_SPEED 0.07f
 #define MARIO_RUN_SPEED 0.18f
@@ -37,6 +38,7 @@
 #define MARIO_JUMP_ACCEL 0.001f
 
 #define MARIO_GRAVITY 0.001f
+#define MARIO_FALL_SPEED 0.5f
 #define MARIO_SLOW_FAlL_SPEED 0.05f
 
 #define MARIO_JUMP_DEFLECT_SPEED 0.4f
@@ -104,6 +106,7 @@ class CMario : public CMovableGameObject
 	ULONGLONG pMeterMax_start;	//Used for Mario's raccoon form when pMeter is at maximum
 	ULONGLONG spin_start;
 	ULONGLONG slowFalling_start;
+	ULONGLONG fly_start;
 
 public:
 
@@ -119,7 +122,7 @@ public:
 		pMeter = 0;
 		isPMeterMax = false;
 		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
-		maxFallSpeed = -1;
+		maxFallSpeed = MARIO_FALL_SPEED;
 		width = MARIO_BIG_BBOX_WIDTH;
 		height = MARIO_SMALL_BBOX_HEIGHT;
 		maxVx = 0;

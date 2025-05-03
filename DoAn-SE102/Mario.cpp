@@ -38,7 +38,7 @@ void CMario::Update(DWORD dt) {
 	else height = MARIO_BIG_BBOX_HEIGHT;
 
 	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
-	if (CGame::GetInstance()->GetTickCount() - slowFalling_start > MARIO_SLOW_FALLING_TIME) maxFallSpeed = -1;
+	if (CGame::GetInstance()->GetTickCount() - slowFalling_start > MARIO_SLOW_FALLING_TIME) maxFallSpeed = MARIO_FALL_SPEED;
 
 	if (shell != NULL) {
 		if (!shell->IsIdling()) {
@@ -541,6 +541,10 @@ void CMario::GetAnimationRACCOON() {
 	}
 	if (!isGrounded) {
 		if (nx == 1) {
+			if (CGame::GetInstance()->GetTickCount() - fly_start < MARIO_FLY_TIME) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FLY_RIGHT);
+				return;
+			}
 			if (pMeter == MARIO_PMETER_MAX) {
 				if (vy < 0) {																//Mario is jumping up
 					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_MAXSPEED_RIGHT);
@@ -565,6 +569,10 @@ void CMario::GetAnimationRACCOON() {
 			}
 		}
 		else if (nx == -1) {
+			if (CGame::GetInstance()->GetTickCount() - fly_start < MARIO_FLY_TIME) {
+				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FLY_LEFT);
+				return;
+			}
 			if (pMeter == MARIO_PMETER_MAX) {
 				if (vy < 0) {																//Mario is jumping up
 					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_MAXSPEED_LEFT);
@@ -677,7 +685,11 @@ void CMario::SetState(MarioState state) {
 		}
 		else {
 			if (level == MarioLevel::RACCOON) {
-				if (vy > 0) {
+				if (isPMeterMax) {
+					vy = -MARIO_JUMP_SPEED;
+					fly_start = CGame::GetInstance()->GetTickCount();
+				}
+				else if (vy > 0) {
 					slowFalling_start = CGame::GetInstance()->GetTickCount();
 					maxFallSpeed = MARIO_SLOW_FAlL_SPEED;
 				}
