@@ -72,6 +72,9 @@ void PlaySceneUI::Render() {
 		int count = (int)(mario->GetPMeter() / unit);
 		for (int i = 0; i < count; i++) {
 			if (i == 6) {
+				DWORD flickering;
+				if (mario->IsPMeterMax()) flickering = UI_PMETER_MAX_ANIMATION_FAST_FLICKERING;
+				else flickering = UI_PMETER_MAX_ANIMATION_SLOW_FLICKERING;
 				CAnimations::GetInstance()->Get(UI_ANIMATION_PMETER_MAX)->RenderOnScreen(x + UI_SPRITE_PMETER_ARROW_WIDTH * 6 + UI_SPRITE_PMETER_MAX_WIDTH * 0.5f, y + UI_SPRITE_PMETER_MAX_HEIGHT * 0.5f, 500);
 			}
 			else

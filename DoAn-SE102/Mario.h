@@ -149,6 +149,7 @@ public:
 	MarioLevel GetLevel() { return level; }
 
 	float GetPMeter() { return pMeter; }
+	bool IsPMeterMax() { return isPMeterMax; }
 
 	int IsCollidable() { return state != MarioState::DIE; }
 	int IsBlocking() { return 0; }
