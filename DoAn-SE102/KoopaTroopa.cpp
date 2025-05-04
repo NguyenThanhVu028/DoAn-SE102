@@ -67,7 +67,7 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 		OnCollisionWithOtherEnemy(e);
 	}
 	else if (dynamic_cast<CQuestionBlock*>(e->obj)) {
-		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
+		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld && state != KoopaTroopaState::OUTSIDE) {
 			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
 			SetState(KoopaTroopaState::K_DIE); return;
 		}
@@ -75,7 +75,7 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 			dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
 	}
 	else {
-		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
+		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld && state != KoopaTroopaState::OUTSIDE) {
 			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
 			SetState(KoopaTroopaState::K_DIE);
 		}
@@ -148,8 +148,9 @@ bool CKoopaTroopa::IsDead() {
 
 void CKoopaTroopa::SetState(KoopaTroopaState state) {
 	height = KOOPA_TROOPA_SHELL_HEIGHT;
+	this->state = state;
 	if(state != KoopaTroopaState::OUTSIDE) untouchable_start = CGame::GetInstance()->GetTickCount();
-	else untouchable_start = CGame::GetInstance()->GetTickCount() - KOOPA_TROOPA_UNTOUCHABLE_TIME * 0.25f;
+	//else untouchable_start = CGame::GetInstance()->GetTickCount() - KOOPA_TROOPA_UNTOUCHABLE_TIME * 0.0005f;
 	switch (state) {
 	case KoopaTroopaState::OUTSIDE:
 		vx = (nx == 1) ? KOOPA_TROOPA_MOVE_SPEED : -KOOPA_TROOPA_MOVE_SPEED;
@@ -171,7 +172,6 @@ void CKoopaTroopa::SetState(KoopaTroopaState state) {
 		vy = -KOOPA_TROOPA_DIE_JUMP_SPEED;
 		break;
 	}
-	this->state = state;
 }
 
 void CKoopaTroopa::SetDirection(int nx) {

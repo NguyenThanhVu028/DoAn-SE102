@@ -16,12 +16,6 @@ void CRedKoopaTroopa::Update(DWORD dt) {
 
 void CRedKoopaTroopa::RealRender() {
 	if (aniToRender == NULL) aniToRender = CAnimations::GetInstance()->Get(RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT);
-
-	if (CGame::GetInstance()->IsFrozen()) {
-		aniToRender->Render1Frame(x, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
-		return;
-	}
-
 	int Id = RED_KOOPA_TROOPA_ANIMATION_WALK_RIGHT;
 	switch (state) {
 	case KoopaTroopaState::K_DIE:
@@ -49,5 +43,8 @@ void CRedKoopaTroopa::RealRender() {
 		int temp = (chargingTimer - KOOPA_TROOPA_CHARGING_TIME * KOOPA_TROOPA_CHARGING_TIME_PROPORTION) / unit;
 		offSet = (temp % 2 == 0)? KOOPA_TROOPA_SHAKING_INTENSITY : -KOOPA_TROOPA_SHAKING_INTENSITY;
 	}
-	aniToRender->Render(x + offSet, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
+	if (CGame::GetInstance()->IsFrozen()) {
+		aniToRender->Render1Frame(x + offSet, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
+	}
+	else aniToRender->Render(x + offSet, y - (height - KOOPA_TROOPA_SHELL_HEIGHT) * 0.5f + 2);
 }

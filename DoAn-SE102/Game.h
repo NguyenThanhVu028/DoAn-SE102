@@ -19,11 +19,8 @@ using namespace std;
 #define KEYBOARD_STATE_SIZE 256
 
 #define CAMERA_FOLLOW_DISTANCE_X 15
-#define CAMERA_FOLLOW_DISTANCE_Y 50
+#define CAMERA_FOLLOW_DISTANCE_Y 15
 
-/*
-	Our simple game framework
-*/
 class CGame
 {
 	static CGame* __instance;

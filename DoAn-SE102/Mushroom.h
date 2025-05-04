@@ -2,8 +2,8 @@
 #include "LevelUpItem.h"
 #include "debug.h"
 
-#define MUSHROOM_WIDTH 16
-#define MUSHROOM_HEIGHT 16
+#define MUSHROOM_WIDTH 14
+#define MUSHROOM_HEIGHT 14
 
 #define MUSHROOM_MOVING_SPEED 0.05f
 #define MUSHROOM_RISING_SPEED -0.02f
