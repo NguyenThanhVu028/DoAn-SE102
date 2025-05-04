@@ -136,6 +136,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Brick.h" />
     <ClInclude Include="CloudPlatform.h" />
     <ClInclude Include="CoinEffect.h" />
     <ClInclude Include="CoinQuestionBlock.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="CloudPlatform.cpp" />
     <ClCompile Include="CoinEffect.cpp" />
     <ClCompile Include="CoinQuestionBlock.cpp" />

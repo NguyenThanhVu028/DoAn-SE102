@@ -73,7 +73,7 @@ void CMario::Update(DWORD dt) {
 	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 
 	//Check collision for Mairo's head
-	head->x = x; head->y = y - height + head->height * 0.5f;
+	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
 

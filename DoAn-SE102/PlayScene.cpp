@@ -237,6 +237,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
 	}
+	case OBJECT_TYPE_EMPTY_BRICKBLOCK:
+		obj = new CBrick(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
+
 	case OBJECT_TYPE_SPAWNER_GOOMBA:
 	{
 		if (tokens.size() < 3) return;
@@ -395,7 +400,7 @@ void CPlayScene::Update(DWORD dt)
 	if (pX > cX + game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f);
 	else if (pX < cX + game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f);
 
-	if (!mario->IsPMeterMax()) {
+	if (mario->GetPMeter() != MARIO_PMETER_MAX) {
 		if (cY < 0) {
 			if (pY > cY + game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
 			else if (pY < cY + game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f);

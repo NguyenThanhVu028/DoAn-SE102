@@ -12,6 +12,7 @@
 #include "HardBlock.h"
 #include "ColorBlock.h"
 #include "Pipe.h"
+#include "Brick.h"
 #include "NormalPiranhaPlantPipe.h"
 #include "FirePiranhaPlantPipe.h"
 #include "GoombaSpawner.h"

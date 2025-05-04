@@ -2,14 +2,7 @@
 
 void CCoinQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (!IsInteractable()) return;
-	auto game = CGame::GetInstance();
-	float cX, cY;
-	int screenWidth = game->GetBackBufferWidth(), screenHeight = game->GetBackBufferHeight();
-	game->GetCamPos(cX, cY);
-	if (x < cX || x > cX + screenWidth || y < cY || y > cY + screenHeight) {
-		bounce_time_start = CGame::GetInstance()->GetTickCount();
-		return;
-	}
+	//CQuestionBlock::OnCollisionWith(e);
 	if (dynamic_cast<CMarioHead*>(e->src_obj)) {
 		if (e->ny > 0) {
 			bounce_time_start = CGame::GetInstance()->GetTickCount();
