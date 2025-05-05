@@ -569,3 +569,11 @@ LONG CGame::GetSecondsRemain() {
 	if (maxTime == -1 || GetTickCount() - game_start >= maxTime) return 0;
 	return (maxTime - (GetTickCount() - game_start)) / 1000;
 }
+
+void CGame::StartPButton() {
+	pButton_start = GetTickCount();
+}
+
+void CGame::EndPButton() {
+	pButton_start = GetTickCount() - PBUTTON_TIME - 10;
+}

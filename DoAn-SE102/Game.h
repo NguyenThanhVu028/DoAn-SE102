@@ -18,6 +18,8 @@ using namespace std;
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
 
+#define PBUTTON_TIME 10000
+
 #define CAMERA_FOLLOW_DISTANCE_X 15
 #define CAMERA_FOLLOW_DISTANCE_Y 15
 
@@ -58,6 +60,8 @@ class CGame
 
 	ULONGLONG tickOffset = 0;
 	ULONGLONG tickFreeze = 0;
+
+	ULONGLONG pButton_start = 0;
 
 	HINSTANCE hInstance;
 
@@ -132,6 +136,10 @@ public:
 	void ResetTimer();
 	void SetMaxTime(LONG t);
 	LONG GetSecondsRemain();
+
+	void StartPButton();
+	void EndPButton();
+	bool IsPButtonStarted() { return (GetTickCount() - pButton_start < PBUTTON_TIME); }
 
 	void FreezeGame() { if (isFrozen) return; isFrozen = true; tickFreeze = GetTickCount64(); };
 	void UnFreezeGame() { if (!isFrozen) return; isFrozen = false; tickOffset += GetTickCount64() - tickFreeze; };

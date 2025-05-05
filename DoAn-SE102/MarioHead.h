@@ -8,10 +8,12 @@ class CMarioHead : public CMovableGameObject
 	friend class CMario;
 	float width, height;
 	std::vector<LPCOLLISIONEVENT> hitBlocks;		//Check if Mario's head hit any thing (only check if e->ny > 0)
+	bool isBlocked;
 public:
 	CMarioHead(float x, float y, float width = 14, float height = 2) : CMovableGameObject(x, y){
 		this->width = width; this->height = height;
 		hitBlocks.clear();
+		isBlocked = false;
 	}
 	void SetPosition(float x, float y) {}
 	void Render(){}

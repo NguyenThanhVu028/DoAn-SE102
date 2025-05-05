@@ -379,6 +379,7 @@ void CPlayScene::Load()
 
 	f.close();
 	CGame::GetInstance()->ResetTimer();
+	CGame::GetInstance()->EndPButton();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }

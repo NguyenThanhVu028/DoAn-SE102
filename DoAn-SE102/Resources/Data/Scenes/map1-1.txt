@@ -382,7 +382,7 @@ Resources\Data\Entities\coin.txt
 74	1482	162	0	0
 
 #BRICK
-81	100	146
+81	150	120
 
 #COIN
 #4	100	120

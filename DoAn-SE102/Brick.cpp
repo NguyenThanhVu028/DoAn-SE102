@@ -1,6 +1,7 @@
 #include "Brick.h"
 #include "MarioHead.h"
 #include "GameObjectsManager.h"
+#include "Mario.h"
 void CBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - BRICK_WIDTH * 0.5f;
 	top = y - BRICK_HEIGHT * 0.5f;
@@ -15,7 +16,7 @@ void CBrick::Render() {
 
 	int aniId;
 	if (!isAvailable) aniId = BRICK_ANIMATION_UNAVAILABLE;
-	else if (CGame::GetInstance()->GetTickCount() - pButton_start < PBUTTON_TIME) aniId = COIN_ANIMATION_STILL;
+	else if (CGame::GetInstance()->IsPButtonStarted()) aniId = COIN_ANIMATION_STILL;
 	else aniId = BRICK_ANIMATION_AVAILABLE;
 
 	float tempX = x, tempY = y;
@@ -32,9 +33,34 @@ void CBrick::Render() {
 }
 
 void CBrick::OnCollisionWith(LPCOLLISIONEVENT e) {
-	if (dynamic_cast<CMarioHead*>(e->src_obj)) {
-		if (e->ny > 0) {
-			bounce_time_start = CGame::GetInstance()->GetTickCount();
+	if (!IsInteractable()) return;
+	if (!IsBlocking()) {
+		if (dynamic_cast<CMario*>(e->src_obj)) {
+			CGame::GetInstance()->IncreaseCoin(1);
+			Delete();
 		}
+	}
+	else {
+		if (dynamic_cast<CMarioHead*>(e->src_obj)) {
+			if (e->ny > 0) {
+				bounce_time_start = CGame::GetInstance()->GetTickCount();
+				SpecialEffect(e);
+				return;
+			}
+		}
+		if (dynamic_cast<CMarioTail*>(e->src_obj)) {
+			bounce_time_start = CGame::GetInstance()->GetTickCount();
+			SpecialEffect(e);
+		}
+	}
+}
+
+void CBrick::SpecialEffect(LPCOLLISIONEVENT e) {
+	if (dynamic_cast<CMarioHead*>(e->src_obj)) {
+		CMario* mario = dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer());
+		if (mario->GetLevel() != MarioLevel::SMALL) Delete();
+	}
+	if (dynamic_cast<CMarioTail*>(e->src_obj)) {
+		Delete();
 	}
 }

@@ -4,7 +4,7 @@
 #include <vector>
 
 #define MARIO_TAIL_WIDTH 11
-#define MARIO_TAIL_HEIGHT 6
+#define MARIO_TAIL_HEIGHT 4
 
 class CMarioTail : public CMovableGameObject
 {

@@ -13,6 +13,7 @@ void CMarioHead::OnCollisionWith(LPCOLLISIONEVENT e) {
 	//if (dynamic_cast<CQuestionBlock*>(e->obj)) {
 	//	dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
 	//}
+	if (e->obj->IsBlocking() && e->ny > 0) isBlocked = true;
 	if (e->ny > 0) {
 		LPCOLLISIONEVENT newEvent = new CCollisionEvent(0, 0, 0);
 		*newEvent = *e;
@@ -50,6 +51,7 @@ void CMarioHead::ProcessHitBlocks() {
 
 void CMarioHead::ProcessCollision(DWORD dt) {
 	ClearHitBlocks();
+	isBlocked = false;
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 1, 0, -1);
 	ProcessHitBlocks();
 }

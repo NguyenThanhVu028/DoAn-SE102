@@ -6,6 +6,7 @@
 #include "Goomba.h"
 #include "KoopaTroopa.h"
 #include "PiranhaPlant.h"
+#include "Brick.h"
 
 void CMario::Update(DWORD dt) {
 
@@ -76,6 +77,9 @@ void CMario::Update(DWORD dt) {
 	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
+	if (head->isBlocked) {
+		vy = 0; ay = MARIO_GRAVITY;
+	}
 
 	//Check collision for Mario's tail
 	ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
@@ -180,6 +184,7 @@ void CMario::Render() {
 
 	}
 	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) shell->RealRender();
+	if (tail != NULL) tail->Render();
 }
 
 void CMario::GetAnimationSMALL() {
@@ -811,6 +816,7 @@ void CMario::OnNoCollision(DWORD dt) {
 }
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (e->ny != 0 && e->obj->IsBlocking()) {
+		//DebugOutTitle(L"tick: %d", CGame::GetInstance()->GetTickCount());
 		vy = 0; ay = MARIO_GRAVITY;
 		if (e->ny < 0) {
 			//isGrounded = true;
@@ -833,6 +839,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CEnemy*>(e->obj) || dynamic_cast<CEnemy*>(e->src_obj)) {
 		OncollisionWithEnemy(e);
 	}
+	if(dynamic_cast<CBrick*>(e->obj)) e->obj->OnCollisionWith(e);
 }
 void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CGoomba*>(e->obj)) {
