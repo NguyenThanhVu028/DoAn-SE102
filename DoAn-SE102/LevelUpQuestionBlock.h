@@ -12,6 +12,6 @@ public:
 	CLevelUpQuestionBlock(float x, float y) : CQuestionBlock(x, y) { hasSummonedItem = false; nx = 1; }
 	void Render();
 	void Update(DWORD dt);
-	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void SpecialEffect(LPCOLLISIONEVENT e);
 };
 

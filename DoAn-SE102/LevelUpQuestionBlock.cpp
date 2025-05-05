@@ -1,25 +1,19 @@
 #include "LevelUpQuestionBlock.h"
 #include "Goomba.h"
 
-void CLevelUpQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
-	if (!IsInteractable()) return;
-	//CQuestionBlock::OnCollisionWith(e);
+void CLevelUpQuestionBlock::SpecialEffect(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CMarioHead*>(e->src_obj)) {
-		if (e->ny > 0) {
-			float pX, pY;
-			dynamic_cast<CMarioHead*>(e->src_obj)->GetPosition(pX, pY);
-			if (pX < x) nx = 1;
-			else nx = -1;
-			bounce_time_start = CGame::GetInstance()->GetTickCount();
-			isAvailable = false;
-		}
+		float pX, pY;
+		dynamic_cast<CMarioHead*>(e->src_obj)->GetPosition(pX, pY);
+		if (pX < x) nx = 1;
+		else nx = -1;
+		isAvailable = false;
 	}
 	if (dynamic_cast<CKoopaTroopa*>(e->src_obj)) {
 		float pX, pY;
 		e->src_obj->GetPosition(pX, pY);
 		if (pX < x) nx = 1;
 		else nx = -1;
-		bounce_time_start = CGame::GetInstance()->GetTickCount();
 		isAvailable = false;
 	}
 }

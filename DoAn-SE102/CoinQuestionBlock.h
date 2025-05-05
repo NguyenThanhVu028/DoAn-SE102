@@ -4,6 +4,6 @@ class CCoinQuestionBlock : public CQuestionBlock
 {
 public:
 	CCoinQuestionBlock(float x, float y) : CQuestionBlock(x, y){}
-	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void SpecialEffect(LPCOLLISIONEVENT e);
 };
 

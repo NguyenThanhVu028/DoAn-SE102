@@ -241,7 +241,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
-
+	case OBJECT_TYPE_COIN:
+		obj = new CCoin(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
 	case OBJECT_TYPE_SPAWNER_GOOMBA:
 	{
 		if (tokens.size() < 3) return;
@@ -379,7 +382,7 @@ void CPlayScene::Load()
 
 	f.close();
 	CGame::GetInstance()->ResetTimer();
-	CGame::GetInstance()->EndPButton();
+	CGame::GetInstance()->StartPButton();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }

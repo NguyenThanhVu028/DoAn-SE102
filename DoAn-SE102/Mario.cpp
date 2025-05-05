@@ -7,6 +7,7 @@
 #include "KoopaTroopa.h"
 #include "PiranhaPlant.h"
 #include "Brick.h"
+#include "Coin.h"
 
 void CMario::Update(DWORD dt) {
 
@@ -184,7 +185,7 @@ void CMario::Render() {
 
 	}
 	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) shell->RealRender();
-	if (tail != NULL) tail->Render();
+	//if (tail != NULL) tail->Render();
 }
 
 void CMario::GetAnimationSMALL() {
@@ -839,7 +840,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CEnemy*>(e->obj) || dynamic_cast<CEnemy*>(e->src_obj)) {
 		OncollisionWithEnemy(e);
 	}
-	if(dynamic_cast<CBrick*>(e->obj)) e->obj->OnCollisionWith(e);
+	if(dynamic_cast<CBrick*>(e->obj) || 
+		dynamic_cast<CCoin*>(e->obj)) 
+		e->obj->OnCollisionWith(e);
 }
 void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CGoomba*>(e->obj)) {
