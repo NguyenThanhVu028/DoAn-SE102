@@ -17,7 +17,8 @@ void CScoreEffect::Render() {
 void CScoreEffect::ReEnable() {
 	vy = SCORE_EFFECT_START_VY;
 	LPGAME game = CGame::GetInstance();
-	game->IncreaseScore(value);
+	if (value != -1) game->IncreaseScore(value);
+	else game->IncreaseLives(1);
 	CEffect::ReEnable();
 }
 
@@ -47,6 +48,9 @@ void CScoreEffect::SetValue(int x) {
 		break;
 	case 8000:
 		ani = CAnimations::GetInstance()->Get(SCORE_EFFECT_VALUE_8000);
+		break;
+	case -1:
+		ani = CAnimations::GetInstance()->Get(SCORE_EFFECT_VALUE_VP);
 		break;
 	default:
 		ani = CAnimations::GetInstance()->Get(SCORE_EFFECT_VALUE_100);

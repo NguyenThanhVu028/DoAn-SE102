@@ -21,7 +21,7 @@ using namespace std;
 #define PBUTTON_TIME 10000
 
 #define CAMERA_FOLLOW_DISTANCE_X 15
-#define CAMERA_FOLLOW_DISTANCE_Y 15
+#define CAMERA_FOLLOW_DISTANCE_Y 30
 
 class CGame
 {

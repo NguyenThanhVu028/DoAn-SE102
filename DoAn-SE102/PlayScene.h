@@ -14,6 +14,7 @@
 #include "Pipe.h"
 #include "Brick.h"
 #include "PButtonBrick.h"
+#include "GreenMushroomBrick.h"
 #include "Coin.h"
 #include "NormalPiranhaPlantPipe.h"
 #include "FirePiranhaPlantPipe.h"

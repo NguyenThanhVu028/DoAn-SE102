@@ -9,6 +9,7 @@
 #include "Brick.h"
 #include "Coin.h"
 #include "PButton.h"
+#include "GreenMushroom.h"
 
 void CMario::Update(DWORD dt) {
 
@@ -875,8 +876,9 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e) {
 
 }
 void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
-	((CLevelUpItem*)e->src_obj)->Delete();
 	OnLevelUp();
+	((CLevelUpItem*)e->src_obj)->Delete();
+	
 }
 void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
 	if ((dynamic_cast<CKoopaTroopa*>(e->obj)->IsDead())) return;

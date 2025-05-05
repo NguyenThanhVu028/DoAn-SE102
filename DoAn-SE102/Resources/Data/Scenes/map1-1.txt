@@ -55,6 +55,7 @@ Resources\Data\Entities\p_button.txt
 #	74 = Green KoopaTroopa spawner
 #	81 = Empty Brick Block
 #	82 = PButton Brick
+#	83 = Green Mushroom Brick
 #	91 = Coin
 # See OBJECT_TYPE constants in AssetIDs.h
 
@@ -386,7 +387,7 @@ Resources\Data\Entities\p_button.txt
 73	2105	133	1
 
 #BRICK
-81	150	120
+83	1440	-110
 
 81	1952	162
 81	1968	162

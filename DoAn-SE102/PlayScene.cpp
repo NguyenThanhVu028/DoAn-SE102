@@ -245,6 +245,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPButtonBrick(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
+	case OBJECT_TYPE_GREEN_MUSHROOM_BRICKBLOCK:
+		obj = new CGreenMushroomBrick(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
 	case OBJECT_TYPE_COIN:
 		obj = new CCoin(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
@@ -386,7 +390,7 @@ void CPlayScene::Load()
 
 	f.close();
 	CGame::GetInstance()->ResetTimer();
-	CGame::GetInstance()->StartPButton();
+	CGame::GetInstance()->EndPButton();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }

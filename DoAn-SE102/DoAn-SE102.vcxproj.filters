@@ -283,18 +283,24 @@
       <Filter>Header Files\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="CloudPlatform.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="Brick.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="Coin.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="PButton.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="PButtonBrick.h">
+      <Filter>Header Files\Entities\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenMushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenMushroomBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -455,19 +461,25 @@
     <ClCompile Include="GreenKoopaTroopa.cpp">
       <Filter>Source Files\Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="CloudPlatform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Brick.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudPlatform.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="Coin.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="PButton.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="PButtonBrick.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenMushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenMushroomBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

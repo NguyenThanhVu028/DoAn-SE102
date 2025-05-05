@@ -16,6 +16,7 @@
 
 class CMushroom : public CLevelUpItem
 {
+protected:
 	bool isOverlapped;
 	bool isRising;
 	float tempVx;
@@ -31,10 +32,10 @@ public:
 		isRising = true;
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void Render();
+	virtual void Render();
 	void Update(DWORD dt);
 	void OnNoCollision(DWORD dt);
-	void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	bool IsRising();
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
