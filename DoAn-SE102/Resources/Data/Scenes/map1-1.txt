@@ -17,6 +17,7 @@ Resources\Data\UI\playscene_ui.txt
 Resources\Data\Entities\cloud_platform.txt
 Resources\Data\Entities\brick.txt
 Resources\Data\Entities\coin.txt
+Resources\Data\Entities\p_button.txt
 
 #coin.txt
 #cloud.txt
@@ -53,6 +54,8 @@ Resources\Data\Entities\coin.txt
 #	73 = Red KoopaTroopa spawner
 #	74 = Green KoopaTroopa spawner
 #	81 = Empty Brick Block
+#	82 = PButton Brick
+#	91 = Coin
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
@@ -380,6 +383,7 @@ Resources\Data\Entities\coin.txt
 74	1386	67	0	1
 74	1434	67	0	1
 74	1482	162	0	0
+73	2105	133	1
 
 #BRICK
 81	150	120
@@ -401,6 +405,7 @@ Resources\Data\Entities\coin.txt
 81	1984	130
 81	2000	130
 81	2016	130
+82	2032	130
 
 81	2096	162
 81	2112	162

@@ -14,6 +14,7 @@
 
 class CBrick : public CGameObject
 {
+protected:
 	LONGLONG bounce_time_start;
 	bool isAvailable;
 public:

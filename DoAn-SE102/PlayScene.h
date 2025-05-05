@@ -13,6 +13,7 @@
 #include "ColorBlock.h"
 #include "Pipe.h"
 #include "Brick.h"
+#include "PButtonBrick.h"
 #include "Coin.h"
 #include "NormalPiranhaPlantPipe.h"
 #include "FirePiranhaPlantPipe.h"

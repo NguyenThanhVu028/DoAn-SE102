@@ -241,6 +241,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
+	case OBJECT_TYPE_PBUTTON_BRICKBLOCK:
+		obj = new CPButtonBrick(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
 	case OBJECT_TYPE_COIN:
 		obj = new CCoin(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);

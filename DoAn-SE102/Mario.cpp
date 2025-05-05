@@ -8,6 +8,7 @@
 #include "PiranhaPlant.h"
 #include "Brick.h"
 #include "Coin.h"
+#include "PButton.h"
 
 void CMario::Update(DWORD dt) {
 
@@ -97,7 +98,6 @@ void CMario::Update(DWORD dt) {
 			tempX += (isSpinning == 1) ? MARIO_TAIL_POSITION_OFFSET_X : -MARIO_TAIL_POSITION_OFFSET_X;
 			tail->SetEnable(true);
 		}
-		DebugOutTitle(L"Tail x, y %f %f %f", x, tempX, y);
 		tail->x = tempX; tail->y = y - MARIO_TAIL_POSITION_OFFSET_Y;
 		tail->ProcessCollision(dt);
 	}
@@ -841,7 +841,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 		OncollisionWithEnemy(e);
 	}
 	if(dynamic_cast<CBrick*>(e->obj) || 
-		dynamic_cast<CCoin*>(e->obj)) 
+		dynamic_cast<CCoin*>(e->obj) ||
+		dynamic_cast<CPButton*>(e->obj))
 		e->obj->OnCollisionWith(e);
 }
 void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {

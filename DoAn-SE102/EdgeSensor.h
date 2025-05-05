@@ -8,7 +8,7 @@ class CEdgeSensor : public CMovableGameObject
 	bool rightEdge, leftEdge;
 	std::vector<LPCOLLISIONEVENT> touchedBlocks;		//Check if Mario's head hit any thing (only check if e->ny < 0)
 public:
-	CEdgeSensor(float x, float y, float width = 16, float height = 2) : CMovableGameObject(x, y) {
+	CEdgeSensor(float x, float y, float width = 4, float height = 2) : CMovableGameObject(x, y) {
 		this->width = width; this->height = height;
 		touchedBlocks.clear();
 	}
