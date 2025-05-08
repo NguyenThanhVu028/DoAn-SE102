@@ -1,5 +1,6 @@
 #include "GameObjectsManager.h"
 #include "debug.h"
+#include "DebrisEffect.h"
 CGameObjectsManager* CGameObjectsManager::__instance = NULL;
 
 CGameObjectsManager* CGameObjectsManager::GetInstance() {
@@ -14,6 +15,7 @@ void CGameObjectsManager::Update(DWORD dt) {
 		for (auto i : movableObjects) i->Update(dt);
 		for (auto i : coinEffects) i->Update(dt);
 		for (auto i : scoreEffects) i->Update(dt);
+		for (auto i : debrisEffects) i->Update(dt);
 		for (auto i : fireBalls) i->Update(dt);
 		for (auto i : spawners) i->Update(dt);
 	}
@@ -25,6 +27,7 @@ void CGameObjectsManager::Render() {
 	for (auto i : movableObjects) i->Render();
 	for (auto i : coinEffects) i->Render();
 	for (auto i : scoreEffects) i->Render();
+	for (auto i : debrisEffects) i->Render();
 	for (auto i : fireBalls) i->Render();
 	player->Render();
 }
@@ -39,6 +42,9 @@ void CGameObjectsManager::Clear() {
 	coinEffects.clear();
 
 	for (auto i : scoreEffects) delete i;
+	scoreEffects.clear();
+
+	for (auto i : debrisEffects) delete i;
 	scoreEffects.clear();
 
 	for (auto i : fireBalls) delete i;
@@ -136,6 +142,37 @@ LPEFFECT CGameObjectsManager::GetScoreEffect(float x, float y, int value) {
 	scoreEffects.push_back(newEffect);
 	//newEffect->ReEnable();
 	return newEffect;
+}
+
+LPEFFECT CGameObjectsManager::GetDebrisEffect(float x, float y) {
+	for (int i = 1; i <= 4; i++) {
+		CEffect* newDebris = NULL;
+		for (auto i : debrisEffects) {
+			if (!i->IsEnabled()) {
+				i->SetPosition(x, y);
+				newDebris = i; break;
+			}
+		}
+		if (newDebris == NULL) {
+			newDebris = new CDebrisEffect(x, y, 0, 0);
+			debrisEffects.push_back(newDebris);
+		}
+		if(i%2 == 0) dynamic_cast<CDebrisEffect*>(newDebris)->SetDirection(1);
+		else dynamic_cast<CDebrisEffect*>(newDebris)->SetDirection(-1);
+		if(i<=2) dynamic_cast<CDebrisEffect*>(newDebris)->SetLevel(1);
+		else dynamic_cast<CDebrisEffect*>(newDebris)->SetLevel(0);
+		newDebris->ReEnable();
+	}
+	return NULL;
+	//for (CEffect* i : scoreEffects) {
+	//	if (!i->IsEnabled()) {
+	//		i->SetPosition(x, y);
+	//		i->ReEnable(); return i;
+	//	}
+	//}
+	//CDebrisEffect* newEffect = new CDebrisEffect(x, y);
+	//debrisEffects.push_back(newEffect);
+	//return newEffect;
 }
 
 LPFIREBALL CGameObjectsManager::GetFireBall(float x, float y, float angle) {

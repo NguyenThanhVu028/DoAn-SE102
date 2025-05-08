@@ -30,6 +30,8 @@ class CGameObjectsManager
 
 	vector<LPSPAWNER> spawners;
 
+	vector<LPEFFECT> debrisEffects;
+
 public:
 	CGameObjectsManager() {
 		Clear();
@@ -41,6 +43,7 @@ public:
 
 	LPEFFECT GetCoinEffect(float x, float y, int value);
 	LPEFFECT GetScoreEffect(float x, float y, int value);
+	LPEFFECT GetDebrisEffect(float x, float y);
 	LPFIREBALL GetFireBall(float x, float y, float angle = 10);
 
 

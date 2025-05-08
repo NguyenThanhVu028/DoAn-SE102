@@ -64,15 +64,15 @@ void CMario::Update(DWORD dt) {
 	//Update Maio's velocity
 	UpdateVelocity(dt);
 
+	//Check collision
+	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
+
 	//Check collision for Mairo's head
 	CheckHeadCollision(dt);
 
 	//Check collision for Mario's tail
 	CheckTailCollision(dt);
-
-	//Check collision
-	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
-	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
 
 	//Update position for the shell being held
 	AdjustShellPosition();
@@ -80,7 +80,7 @@ void CMario::Update(DWORD dt) {
 	//Update PMeter
 	UpdatePMeter(dt);
 
-	DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, maxVx, maxVy);
+	//DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, maxVx, maxVy);
 }
 void CMario::CheckHeadCollision(DWORD dt) {
 	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;

@@ -357,6 +357,7 @@ Resources\Data\Entities\p_button.txt
 
 #QUESTION BLOCK
 #20	120	114
+81	120	114
 
 21	176	114
 21	192	114
@@ -368,7 +369,7 @@ Resources\Data\Entities\p_button.txt
 
 22	656	146
 
-21	704	114
+21	704	130
 
 22	1472	130
 

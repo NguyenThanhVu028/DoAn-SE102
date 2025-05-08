@@ -16,7 +16,7 @@ public:
 		ReEnable();
 		this->duration = duration;
 	}
-	virtual void Update(DWORD dt){}
+	virtual void Update(DWORD dt);
 	virtual void Render() = 0;
 	virtual void ReEnable();
 	bool IsEnabled() { return isEnabled; }

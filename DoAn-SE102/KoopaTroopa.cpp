@@ -4,9 +4,10 @@
 
 void CKoopaTroopa::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - KOOPA_TROOPA_WIDTH * 0.5f;
-	top = y - KOOPA_TROOPA_SHELL_HEIGHT * 0.5f;
-	right = x + KOOPA_TROOPA_WIDTH * 0.5f;
 	bottom = y + KOOPA_TROOPA_SHELL_HEIGHT * 0.5f;
+	top = y - KOOPA_TROOPA_SHELL_HEIGHT * 0.5f + 1;
+	right = left + KOOPA_TROOPA_WIDTH;
+	
 }
 
 void CKoopaTroopa::Render() {
@@ -66,19 +67,13 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 	else if (dynamic_cast<CEnemy*>(e->obj)) {
 		OnCollisionWithOtherEnemy(e);
 	}
-	else if (dynamic_cast<CQuestionBlock*>(e->obj)) {
-		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld && state != KoopaTroopaState::OUTSIDE) {
-			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
-			SetState(KoopaTroopaState::K_DIE); return;
-		}
-		if (state == KoopaTroopaState::SHELL_MOVING) 
-			dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
-	}
 	else {
 		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld && state != KoopaTroopaState::OUTSIDE) {
 			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
 			SetState(KoopaTroopaState::K_DIE);
 		}
+		if (state == KoopaTroopaState::SHELL_MOVING) 
+			e->obj->OnCollisionWith(e);
 	}
 }
 
