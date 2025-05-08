@@ -412,15 +412,17 @@ void CPlayScene::Update(DWORD dt)
 	if (pX > cX + game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f);
 	else if (pX < cX + game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f);
 
-	if (mario->GetPMeter() != MARIO_PMETER_MAX) {
-		if (cY < 0) {
-			if (pY > cY + game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
-			else if (pY < cY + game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
+	if (mario->GetState() != MarioState::DIE) {
+		if (mario->GetPMeter() != MARIO_PMETER_MAX) {
+			if (cY < 0) {
+				if (pY > cY + game->GetBackBufferHeight() * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f);
+				else if (pY < cY + game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y) cY = pY - (game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y);
+			}
 		}
-	}
-	else {
-		if (pY > cY + game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f + CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
-		else if (pY < cY + game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y * 0.5f);
+		else {
+			if (pY > cY + game->GetBackBufferHeight() * 0.5f) cY = pY - (game->GetBackBufferHeight() * 0.5f);
+			else if (pY < cY + game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y) cY = pY - (game->GetBackBufferHeight() * 0.5f - CAMERA_FOLLOW_DISTANCE_Y);
+		}
 	}
 
 	if (cX < 0) cX = 0;

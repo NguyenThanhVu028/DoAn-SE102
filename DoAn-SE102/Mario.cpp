@@ -12,7 +12,6 @@
 #include "GreenMushroom.h"
 
 void CMario::Update(DWORD dt) {
-
 	if (state == MarioState::DIE) {
 		if (CGame::GetInstance()->GetTickCount() - death_start < MARIO_DEATH_TIME * 0.2f) {
 			maxVx = 0;
@@ -41,7 +40,18 @@ void CMario::Update(DWORD dt) {
 	if (level == MarioLevel::SMALL || (state == MarioState::SIT && shell == NULL)) height = MARIO_SMALL_BBOX_HEIGHT;
 	else height = MARIO_BIG_BBOX_HEIGHT;
 
-	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) ay = MARIO_GRAVITY;
+	if (CGame::GetInstance()->GetTickCount() - lastJumpTime > jumpTime) {
+		if (level == MarioLevel::RACCOON) {
+			if (pMeter == MARIO_PMETER_MAX) {
+				if (CGame::GetInstance()->GetTickCount() - fly_start > MARIO_FLY_TIME) ay = MARIO_GRAVITY;
+			}
+			else {
+				ay = MARIO_GRAVITY;
+			}
+			
+		}
+		else ay = MARIO_GRAVITY;
+	}
 	if (CGame::GetInstance()->GetTickCount() - slowFalling_start > MARIO_SLOW_FALLING_TIME) maxFallSpeed = MARIO_FALL_SPEED;
 
 	if (shell != NULL) {
@@ -51,40 +61,36 @@ void CMario::Update(DWORD dt) {
 		}
 	}
 
-	float prevVx = vx;
-	vx += ax * dt;
-	vy += ay * dt;
-
-	//Velocity correction
-	if (maxVx != 0) {
-		if (maxVx * vx > 0) {
-			if (abs(vx) > abs(maxVx)) {
-				if (abs(prevVx) < abs(maxVx)) vx = maxVx;
-				else {
-					vx = prevVx + ((maxVx > 0) ? -1 : 1) * MARIO_DECEL_X * 2 * dt;
-					if (abs(vx) < abs(maxVx)) vx = maxVx;
-				}
-			}
-		}
-		else {
-			vx = prevVx + ((maxVx > 0) ? 1 : -1) * MARIO_BRAKE_DECEL * dt;
-		}
-	}
-	else {
-		if (prevVx == 0 || prevVx * vx < 0) vx = 0;
-	}
-	if (vy < maxVy) vy = maxVy;
-	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
+	//Update Maio's velocity
+	UpdateVelocity(dt);
 
 	//Check collision for Mairo's head
+	CheckHeadCollision(dt);
+
+	//Check collision for Mario's tail
+	CheckTailCollision(dt);
+
+	//Check collision
+	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
+	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
+
+	//Update position for the shell being held
+	AdjustShellPosition();
+
+	//Update PMeter
+	UpdatePMeter(dt);
+
+	DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, maxVx, maxVy);
+}
+void CMario::CheckHeadCollision(DWORD dt) {
 	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
 	if (head->isBlocked) {
 		vy = 0; ay = MARIO_GRAVITY;
 	}
-
-	//Check collision for Mario's tail
+}
+void CMario::CheckTailCollision(DWORD dt) {
 	ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
 	if (spinTimer < MARIO_SPIN_TIME && level == MarioLevel::RACCOON) {
 		float unit = MARIO_SPIN_TIME / 5;
@@ -102,32 +108,22 @@ void CMario::Update(DWORD dt) {
 		tail->x = tempX; tail->y = y - MARIO_TAIL_POSITION_OFFSET_Y;
 		tail->ProcessCollision(dt);
 	}
-
-
-	//Check collision
-	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
-	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
-
-	//Update position for the shell being held
-	AdjustShellPosition();
-
-	//Update PMeter
-		//Check timer for Raccoon form
-	if (level == MarioLevel::RACCOON) {
-		if (CGame::GetInstance()->GetTickCount() - pMeterMax_start > MARIO_PMETER_TIME && isPMeterMax) {
+}
+void CMario::UpdatePMeter(DWORD dt) {
+	//Check timer for Raccoon form
+	if (CGame::GetInstance()->GetTickCount() - pMeterMax_start > MARIO_PMETER_TIME) {
+		if (level == MarioLevel::RACCOON && isPMeterMax) {
 			pMeter = 0;
+			if (abs(vx) > MARIO_RUN_SPEED) vx = nx * MARIO_RUN_SPEED;
 			isPMeterMax = false;
 		}
+		else if (level != MarioLevel::RACCOON && isGrounded) isPMeterMax = false;
 	}
-		//If Mario is not jumping or falling
-	//DebugOutTitle(L"Vx maxVx: %f %f", vx, maxVx);
-	if (isGrounded) {
-		if (abs(vx) >= MARIO_RUN_SPEED && abs(maxVx) >= MARIO_RUN_SPEED){
-			if (pMeter < MARIO_PMETER_MAX) {
-				pMeter += MARIO_PMETER_INCREASE_SPEED * dt;
-				if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
-			}
-		}
+	//Increase pMeter if velocity is greater than run speed
+	if (abs(vx) > MARIO_RUN_SPEED && vx * nx > 0) {
+		float ratioVx = (abs(vx) - MARIO_RUN_SPEED) * 1.0f / (MARIO_RUN_MAXSPEED - MARIO_RUN_SPEED);
+		float ratioPMeter = pMeter * 1.0f / MARIO_PMETER_MAX;
+		if (ratioVx >= ratioPMeter) pMeter = ratioVx * MARIO_PMETER_MAX;
 		else {
 			if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
 				if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
@@ -136,14 +132,93 @@ void CMario::Update(DWORD dt) {
 		}
 	}
 	else {
+		//Dont decrease if Mario is in raccoon form and pMeter is maximized
 		if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
-			if (!abs(maxVx) >= MARIO_RUN_SPEED || pMeter != MARIO_PMETER_MAX) {
-				if(pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
-				if (pMeter < 0) pMeter = 0;
-			}
+			if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+			if (pMeter < 0) pMeter = 0;
+		}
+		else pMeter = MARIO_PMETER_MAX;
+		//if (!(!isGrounded && isPMeterMax)) {
+		//	if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
+		//		if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+		//		if (pMeter < 0) pMeter = 0;
+		//	}
+		//}
+	}
+	//If Mario is not jumping or falling
+	//if (isGrounded) {
+	//	if(CGame::GetInstance()->GetTickCount() - pMeterMax_start > MARIO_PMETER_TIME) isPMeterMax = false;
+	//	if (abs(vx) > MARIO_RUN_SPEED && vx * nx > 0) {
+	//		float ratioVx = (abs(vx) - MARIO_RUN_SPEED) * 1.0f / (MARIO_RUN_MAXSPEED - MARIO_RUN_SPEED);
+	//		float ratioPMeter = pMeter * 1.0f / MARIO_PMETER_MAX;
+	//		if (ratioVx >= ratioPMeter) pMeter = ratioVx * MARIO_PMETER_MAX;
+	//		else {
+	//			if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
+	//				if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+	//				if (pMeter < 0) pMeter = 0;
+	//			}
+	//		}
+	//	}
+	//	else {
+	//		if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
+	//			if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+	//			if (pMeter < 0) pMeter = 0;
+	//		}
+	//	}
+	//	//if (abs(vx) >= MARIO_RUN_SPEED && abs(maxVx) >= MARIO_RUN_SPEED) {
+	//	//	if (pMeter < MARIO_PMETER_MAX) {
+	//	//		pMeter += MARIO_PMETER_INCREASE_SPEED * dt;
+	//	//		if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
+	//	//	}
+	//	//}
+	//	//else {
+	//	//	if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) && !(level != MarioLevel::RACCOON && isPMeterMax)) {
+	//	//		if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+	//	//		if (pMeter < 0) pMeter = 0;
+	//	//	}
+	//	//}
 
+	//}
+	//else {
+	//	if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) && !(level != MarioLevel::RACCOON && isPMeterMax)) {
+	//		if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
+	//		if (pMeter < 0) pMeter = 0;
+	//		if (!abs(maxVx) >= MARIO_RUN_SPEED || pMeter != MARIO_PMETER_MAX) {
+	//		}
+	//	}
+	//}
+}
+void CMario::UpdateVelocity(DWORD dt) {
+	vy += ay * dt;
+	if (maxVx != 0) {
+		if (abs(vx) <= MARIO_RUN_SPEED) ax = nx * MARIO_WALK_ACCEL_X;
+		else ax = nx * MARIO_RUN_ACCEL_X;
+		float prevVx = vx;
+		vx += ax * dt;
+
+		if (maxVx * prevVx > 0) {
+			if (abs(vx) > abs(maxVx)) {
+				if (abs(prevVx) < abs(maxVx)) vx = maxVx;
+				else {
+					vx = prevVx + -1 * nx * MARIO_DECEL_X * 2 * dt;
+					if (abs(vx) < abs(maxVx)) vx = maxVx;
+				}
+			}
+		}
+		else {
+			vx = prevVx + /*((maxVx > 0) ? 1 : -1)*/ nx * MARIO_BRAKE_DECEL * dt;
 		}
 	}
+	else {
+		if (vx > 0) ax = -MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
+		else if (vx < 0) ax = MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
+		else ax = 0;
+		float prevVx = vx;
+		vx += ax * dt;
+		if (prevVx == 0 || prevVx * vx < 0) vx = 0;
+	}
+	if (vy < maxVy) vy = maxVy;
+	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 }
 void CMario::Render() {
 	if (state == MarioState::DIE) {
@@ -176,7 +251,8 @@ void CMario::Render() {
 		if(level != MarioLevel::RACCOON) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
 		else {
 			ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
-			if (spinTimer > MARIO_SPIN_TIME) {
+			ULONGLONG flyTimer = CGame::GetInstance()->GetTickCount() - fly_start;
+			if (spinTimer > MARIO_SPIN_TIME && flyTimer > MARIO_FLY_TIME) {
 				aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f, flicker_time);
 			}
 			else {
@@ -188,7 +264,6 @@ void CMario::Render() {
 	if (shell != NULL && CGame::GetInstance()->GetTickCount() - turning_start < MARIO_TURN_TIME) shell->RealRender();
 	//if (tail != NULL) tail->Render();
 }
-
 void CMario::GetAnimationSMALL() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
 	if (shell != NULL) {	//If Mario is holding a shell
@@ -217,7 +292,7 @@ void CMario::GetAnimationSMALL() {
 			}
 		}
 		if (nx == 1) {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_SHELL_RIGHT);
 				return;
 			}
@@ -231,7 +306,7 @@ void CMario::GetAnimationSMALL() {
 			}
 		}
 		else {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_SHELL_LEFT);
 				return;
 			}
@@ -253,9 +328,10 @@ void CMario::GetAnimationSMALL() {
 		else aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_KICK_SHELL_LEFT);
 		return;
 	}
+	//DebugOutTitle(L"pmeter vx %f %f", pMeter, vx);
 	if (!isGrounded) {		//If Mario is falling
 		if (nx == 1) {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_RIGHT);
 				return;
 			}
@@ -265,7 +341,7 @@ void CMario::GetAnimationSMALL() {
 			}
 		}
 		else if (nx == -1) {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_JUMP_MAXSPEED_LEFT);
 				return;
 			}
@@ -289,7 +365,7 @@ void CMario::GetAnimationSMALL() {
 			return;
 		}
 		else {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_RIGHT);
 				return; 
 			}
@@ -309,7 +385,7 @@ void CMario::GetAnimationSMALL() {
 			return;
 		}
 		else {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_RUN_MAXSPEED_LEFT);
 				return;
 			}
@@ -324,7 +400,6 @@ void CMario::GetAnimationSMALL() {
 		}
 	}
 }
-
 void CMario::GetAnimationBIG() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_IDLE_RIGHT);
 	if (shell != NULL) {	//If Mario is holding a shell
@@ -353,7 +428,7 @@ void CMario::GetAnimationBIG() {
 			}
 		}
 		if (nx == 1) {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_SHELL_RIGHT);
 				return;
 			}
@@ -367,7 +442,7 @@ void CMario::GetAnimationBIG() {
 			}
 		}
 		else {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_SHELL_LEFT);
 				return;
 			}
@@ -391,7 +466,7 @@ void CMario::GetAnimationBIG() {
 	}
 	if (!isGrounded) {
 		if (nx == 1) {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_MAXSPEED_RIGHT);
 				return;
 			}
@@ -406,7 +481,7 @@ void CMario::GetAnimationBIG() {
 			}
 		}
 		else if (nx == -1) {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_MAXSPEED_LEFT);
 				return;
 			}
@@ -440,7 +515,7 @@ void CMario::GetAnimationBIG() {
 			return;
 		}
 		else {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_RIGHT);
 				return;
 			}
@@ -460,7 +535,7 @@ void CMario::GetAnimationBIG() {
 			return;
 		}
 		else {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_RUN_MAXSPEED_LEFT);
 				return;
 			}
@@ -475,7 +550,6 @@ void CMario::GetAnimationBIG() {
 		}
 	}
 }
-
 void CMario::GetAnimationRACCOON() {
 	aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_IDLE_RIGHT);
 	if (isSpinning != 0) {
@@ -510,7 +584,7 @@ void CMario::GetAnimationRACCOON() {
 			}
 		}
 		if (nx == 1) {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_MAXSPEED_SHELL_RIGHT);
 				return;
 			}
@@ -524,7 +598,7 @@ void CMario::GetAnimationRACCOON() {
 			}
 		}
 		else {
-			if (pMeter == MARIO_PMETER_MAX) {
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_RUN_MAXSPEED_SHELL_LEFT);
 				return;
 			}
@@ -550,6 +624,7 @@ void CMario::GetAnimationRACCOON() {
 		if (nx == 1) {
 			if (CGame::GetInstance()->GetTickCount() - fly_start < MARIO_FLY_TIME) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FLY_RIGHT);
+				aniToRender->SetDuration(MARIO_FLY_TIME);
 				return;
 			}
 			if (pMeter == MARIO_PMETER_MAX) {
@@ -565,6 +640,15 @@ void CMario::GetAnimationRACCOON() {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_QUACK_TAIL_RIGHT);
 				return;
 			}
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_MAXSPEED_RIGHT);
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FALL_MAXSPEED_RIGHT);
+				}
+				return;
+			}
 			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
 				if (vy < 0) {																//Mario is jumping up
 					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_RIGHT);
@@ -578,6 +662,7 @@ void CMario::GetAnimationRACCOON() {
 		else if (nx == -1) {
 			if (CGame::GetInstance()->GetTickCount() - fly_start < MARIO_FLY_TIME) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FLY_LEFT);
+				aniToRender->SetDuration(MARIO_FLY_TIME);
 				return;
 			}
 			if (pMeter == MARIO_PMETER_MAX) {
@@ -591,6 +676,15 @@ void CMario::GetAnimationRACCOON() {
 			}
 			if (CGame::GetInstance()->GetTickCount() - slowFalling_start < MARIO_SLOW_FALLING_TIME * 0.5f) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_QUACK_TAIL_LEFT);
+				return;
+			}
+			if (abs(vx) == MARIO_RUN_MAXSPEED) {
+				if (vy < 0) {																//Mario is jumping up
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_JUMP_MAXSPEED_LEFT);
+				}
+				else {																		//Mario is falling
+					aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FALL_MAXSPEED_LEFT);
+				}
 				return;
 			}
 			if (abs(vx) < abs(MARIO_RUN_MAXSPEED)) {
@@ -673,27 +767,28 @@ void CMario::SetState(MarioState state) {
 		break;
 	case MarioState::JUMP:
 		if (isGrounded == true) {
-			//Adjust jump time based on player's speed
+			//If PMater is at maximum and press jump button
+			if (pMeter == MARIO_PMETER_MAX) {
+				if (!isPMeterMax) {
+					isPMeterMax = true;
+					if (level == MarioLevel::RACCOON) pMeterMax_start = CGame::GetInstance()->GetTickCount();
+				}
+			}
+			//Adjust jumping time based on current speed
 			if (abs(vx) < MARIO_WALK_SPEED * 0.3f) jumpTime = MARIO_JUMP_TIME;
 			else if (abs(vx) <= MARIO_WALK_SPEED) jumpTime = MARIO_JUMP_WALK_TIME;
 			else if (abs(vx) <= MARIO_RUN_SPEED) jumpTime = MARIO_JUMP_RUN_TIME;
 			else if (abs(vx) <= MARIO_RUN_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
-			vy = -MARIO_JUMP_SPEED * 0.5f;
-			ay = -MARIO_JUMP_ACCEL;
-			ax = 0;
+			vy = -MARIO_JUMP_SPEED;
+			ay = 0;
 			maxVy = -MARIO_JUMP_SPEED;
 			lastJumpTime = CGame::GetInstance()->GetTickCount();
-
-			//If PMater is at maximum and press jump button
-			if (level == MarioLevel::RACCOON && pMeter == MARIO_PMETER_MAX && !isPMeterMax) {
-				isPMeterMax = true;
-				pMeterMax_start = CGame::GetInstance()->GetTickCount();
-			}
 		}
 		else {
 			if (level == MarioLevel::RACCOON) {
-				if (isPMeterMax) {
-					vy = -MARIO_JUMP_SPEED;
+				if (CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) {
+					if(vy > -MARIO_FLY_SPEED) vy = -MARIO_FLY_SPEED;
+					ay = 0;
 					fly_start = CGame::GetInstance()->GetTickCount();
 				}
 				else if (vy > 0) {
@@ -703,99 +798,60 @@ void CMario::SetState(MarioState state) {
 			}
 		}
 		break;
-	//case MarioState::JUMP_WALK_LEFT:
-	//	if (isGrounded == true) {
-	//		//vx = -MARIO_WALKING_SPEED;
-	//		ax = 0;
-	//		vy = -MARIO_JUMP_SPEED / 2;
-	//		ay = -MARIO_JUMP_ACCEL;
-	//		maxVy = -MARIO_JUMP_SPEED;
-	//		lastJumpTime = GetTickCount64();
-	//	}
-	//	break;
-	//case MarioState::JUMP_WALK_RIGHT:
-	//	if (isGrounded == true) {
-	//		//vx = MARIO_WALKING_SPEED;
-	//		ax = 0;
-	//		vy = -MARIO_JUMP_SPEED / 2;
-	//		ay = -MARIO_JUMP_ACCEL;
-	//		maxVy = -MARIO_JUMP_SPEED;
-	//		lastJumpTime = GetTickCount64();
-	//	}
-	//	break;
 	case MarioState::RELEASE_JUMP:
-		if (vy < 0) {
-			ay = MARIO_GRAVITY;
+		if (level == MarioLevel::RACCOON) {
+			if(CGame::GetInstance()->GetTickCount() - fly_start > MARIO_FLY_TIME)
+				ay = MARIO_GRAVITY;
 		}
+		else ay = MARIO_GRAVITY;
 		break;
 	case MarioState::IDLE:
 		if (isGrounded) {
 			maxVx = 0;
-			if (vx > 0) ax = -MARIO_DECEL_X;
-			else ax = MARIO_DECEL_X;
 		}
 		else {
-			maxVx = 0;
-			if (vx > 0) ax = -MARIO_DECEL_X * 0.2f;
-			else ax = MARIO_DECEL_X * 0.2f;
+			if (!(pMeter == MARIO_PMETER_MAX)) {
+				if (abs(maxVx) > MARIO_RUN_SPEED) maxVx = nx * MARIO_RUN_SPEED;
+			}
 		}
 		this->state = state;
 		break;
 	case MarioState::WALK_LEFT:
 		if (nx == 1) ResetTurningTimer();
 		nx = -1;
-		maxVx = -MARIO_WALK_SPEED;
-		ax = -MARIO_WALK_ACCEL_X;
+		if (isGrounded) maxVx = -MARIO_WALK_SPEED;
+		else {
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = -MARIO_RUN_MAXSPEED;
+			else maxVx = -MARIO_WALK_SPEED;
+		}
 		break;
 	case MarioState::WALK_RIGHT:
 		if (nx == -1) ResetTurningTimer();
 		nx = 1;
-		maxVx = MARIO_WALK_SPEED;
-		ax = MARIO_WALK_ACCEL_X;
+		if (isGrounded) maxVx = MARIO_WALK_SPEED;
+		else {
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = MARIO_RUN_MAXSPEED;
+			else maxVx = MARIO_WALK_SPEED;
+		}
 		break;
 	case MarioState::RUN_LEFT:
 		if(nx == 1) ResetTurningTimer();
 		nx = -1;
-		//if (!isGrounded) {
-		//	if(vx > 0) ax = -MARIO_RUNNING_ACCEL_X;
-		//}
-		//else                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-
-		ax = -MARIO_RUN_ACCEL_X;
-		//if (isGrounded && vx < -MARIO_WALK_SPEED) {
-		//	pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
-		//	if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
-		//}
-		//else {
-		//	if (pMeter < MARIO_PMETER_MAX || vx > -MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
-		//	if (pMeter < 0) pMeter = 0;
-		//}
-		//pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
-
-		if (pMeter >= MARIO_PMETER_MAX) maxVx = -MARIO_RUN_MAXSPEED;
-		else maxVx = -MARIO_RUN_SPEED;
+		if(isGrounded) maxVx = -MARIO_RUN_MAXSPEED;
+		else {
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = -MARIO_RUN_MAXSPEED;
+			else maxVx = -MARIO_RUN_SPEED;
+		}
 
 		break;
 	case MarioState::RUN_RIGHT:
 		if(nx == -1) ResetTurningTimer();
 		nx = 1;
-		/*if (!isGrounded) {
-			if(vx < 0) ax = MARIO_RUNNING_ACCEL_X;
+		if (isGrounded) maxVx = MARIO_RUN_MAXSPEED;
+		else {
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = MARIO_RUN_MAXSPEED;
+			else maxVx = MARIO_RUN_SPEED;
 		}
-		else*/ 
-		ax = MARIO_RUN_ACCEL_X;
-		//if (isGrounded && vx > MARIO_WALK_SPEED) {
-		//	pMeter += CGame::GetInstance()->GetTickCount() - pMeterCheckpoint;
-		//	if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
-		//}
-		//else {
-		//	if (pMeter < MARIO_PMETER_MAX || vx < MARIO_WALK_SPEED) pMeter -= (CGame::GetInstance()->GetTickCount() - pMeterCheckpoint) / 2;
-		//	if (pMeter < 0) pMeter = 0;
-		//}
-		//pMeterCheckpoint = CGame::GetInstance()->GetTickCount();
-
-		if (pMeter >= MARIO_PMETER_MAX) maxVx = MARIO_RUN_MAXSPEED;
-		else maxVx = MARIO_RUN_SPEED;
 
 		break;
 	case MarioState::SIT:
@@ -933,7 +989,6 @@ void CMario::OnLevelUp() {
 	level = (MarioLevel)(level + 1);
 	CGame::GetInstance()->FreezeGame();
 }
-
 void CMario::OnLevelDown() {
 	if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
 	if (level == MarioLevel::SMALL) {

@@ -15,17 +15,17 @@
 #define MARIO_DEATH_TIME 5000
 #define MARIO_TURN_TIME 200
 #define MARIO_KICK_SHELL_TIME 200
-#define MARIO_SPIN_TIME 300
+#define MARIO_SPIN_TIME 275
 #define MARIO_SLOW_FALLING_TIME 300
-#define MARIO_FLY_TIME 75
+#define MARIO_FLY_TIME 175
 
-#define MARIO_WALK_SPEED 0.07f
-#define MARIO_RUN_SPEED 0.18f
-#define MARIO_RUN_MAXSPEED 0.21f
+#define MARIO_WALK_SPEED 0.1f
+#define MARIO_RUN_SPEED 0.15f
+#define MARIO_RUN_MAXSPEED 0.2f
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
-#define MARIO_WALK_ACCEL_X 0.000125f
-#define MARIO_RUN_ACCEL_X 0.000125f
+#define MARIO_WALK_ACCEL_X 0.00015f
+#define MARIO_RUN_ACCEL_X 0.000075f
 
 #define MARIO_DECEL_X 0.00015f
 #define MARIO_BRAKE_DECEL MARIO_DECEL_X * 2.5f
@@ -37,14 +37,16 @@
 #define MARIO_JUMP_SPEED 0.22f
 #define MARIO_JUMP_ACCEL 0.001f
 
+#define MARIO_FLY_SPEED MARIO_JUMP_SPEED * 0.5f
+
 #define MARIO_GRAVITY 0.001f
-#define MARIO_FALL_SPEED 0.5f
+#define MARIO_FALL_SPEED 0.4f
 #define MARIO_SLOW_FAlL_SPEED 0.05f
 
 #define MARIO_JUMP_DEFLECT_SPEED 0.4f
 
 #define MARIO_PMETER_MAX 100
-#define MARIO_PMETER_INCREASE_SPEED 0.1f
+//#define MARIO_PMETER_INCREASE_SPEED 0.125f
 #define MARIO_PMETER_DECREASE_SPEED 0.025f
 #define MARIO_PMETER_TIME 5000
 
@@ -183,5 +185,10 @@ public:
 	void AdjustShellPosition();
 
 	CMarioTail* GetTail() { return tail; }
+	
+	void CheckHeadCollision(DWORD dt);
+	void CheckTailCollision(DWORD dt);
+	void UpdatePMeter(DWORD dt);
+	void UpdateVelocity(DWORD dt);
 };
 
