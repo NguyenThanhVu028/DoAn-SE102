@@ -20,8 +20,8 @@ void CDebrisEffect::Update(DWORD dt) {
 }
 void CDebrisEffect::Render() {
 	if (!isEnabled) return;
-	if (CGame::GetInstance()->IsFrozen()) CAnimations::GetInstance()->Get(DEBRIS_EFFECT_ANIMATION)->Render1Frame(x, y);
-	else CAnimations::GetInstance()->Get(DEBRIS_EFFECT_ANIMATION)->Render(x, y);
+	if (CGame::GetInstance()->IsFrozen()) ani->Render1Frame(x, y);
+	else ani->Render(x, y);
 }
 void CDebrisEffect::ReEnable() {
 	vx = (direction == 1) ? DEBRIS_VX : -DEBRIS_VX;

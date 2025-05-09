@@ -80,7 +80,7 @@ void CMario::Update(DWORD dt) {
 	//Update PMeter
 	UpdatePMeter(dt);
 
-	DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, targetVx, maxVy);
+	//DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, targetVx, maxVy);
 }
 void CMario::CheckHeadCollision(DWORD dt) {
 	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;

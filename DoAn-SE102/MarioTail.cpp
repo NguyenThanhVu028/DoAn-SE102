@@ -1,5 +1,6 @@
 #include "MarioTail.h"
 #include "GameObjectsManager.h"
+#include "debug.h"
 
 void CMarioTail::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - MARIO_TAIL_WIDTH * 0.5f;
@@ -10,7 +11,9 @@ void CMarioTail::GetBoundingBox(float& left, float& top, float& right, float& bo
 
 void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CEnemy*>(e->obj)) {
-		if (dynamic_cast<CEnemy*>(e->obj)->IsDead() || !dynamic_cast<CEnemy*>(e->obj)->IsEnabled()) return;
+		if (dynamic_cast<CEnemy*>(e->obj)->IsDead() || !dynamic_cast<CEnemy*>(e->obj)->IsEnabled()) {
+			return;
+		}
 	}
 	LPCOLLISIONEVENT newEvent = new CCollisionEvent(0, 0, 0);
 	*newEvent = *e;
@@ -23,26 +26,30 @@ void CMarioTail::ClearHitObjects() {
 }
 
 void CMarioTail::ProcessHitObjects() {
-	LPGAMEOBJECT hitObject = NULL;
-	LPCOLLISIONEVENT e = NULL;
+	//LPGAMEOBJECT hitObject = NULL;
+	//LPCOLLISIONEVENT e = NULL;
 	for (auto i : hitObjects) {
-		if (hitObject == NULL) {
-			hitObject = i->obj;
-			e = i;
+		//if (hitObject == NULL) {
+		//	hitObject = i->obj;
+		//	e = i;
+		//}
+		//else {
+		//	float bL, bT, bR, bB;
+		//	i->obj->GetBoundingBox(bL, bT, bR, bB);
+		//	if (y >= bT && y <= bB) {
+		//		hitObject = i->obj;
+		//		e = i;
+		//	}
+		//}
+		if (dynamic_cast<CEnemy*>(i->obj)) {
+			DebugOutTitle(L"Tail %d", CGame::GetInstance()->GetTickCount());
+			dynamic_cast<CEnemy*>(i->obj)->OnCollisionWithMarioTail(i);
 		}
-		else {
-			float bL, bT, bR, bB;
-			i->obj->GetBoundingBox(bL, bT, bR, bB);
-			if (y >= bT && y <= bB) {
-				hitObject = i->obj;
-				e = i;
-			}
-		}
+		else i->obj->OnCollisionWith(i);
 	}
-	if (hitObject != NULL) {
-		if (dynamic_cast<CEnemy*>(hitObject)) dynamic_cast<CEnemy*>(hitObject)->OnCollisionWithMarioTail(e);
-		else hitObject->OnCollisionWith(e);
-	}
+	//if (hitObject != NULL) {
+
+	//}
 		
 }
 

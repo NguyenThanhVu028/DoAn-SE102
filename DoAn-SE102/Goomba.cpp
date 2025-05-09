@@ -96,12 +96,14 @@ void CGoomba::OnCollisionWithShell(LPCOLLISIONEVENT e) {
 	e->src_obj->GetPosition(sX, sY);
 	int nx = (sX < x) ? -1 : 1;
 	SetState(GoombaState::UPSIDE_DOWN, nx);
+	CGameObjectsManager::GetInstance()->GetWhackEffect(x, y);
 }
 void CGoomba::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
 	float sX, sY;
 	e->src_obj->GetPosition(sX, sY);
 	int nx = (sX < x) ? -1 : 1;
 	SetState(GoombaState::UPSIDE_DOWN, nx);
+	CGameObjectsManager::GetInstance()->GetWhackEffect(x, y);
 }
 
 void CGoomba::OnNoCollision(DWORD dt) {

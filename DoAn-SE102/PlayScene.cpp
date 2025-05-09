@@ -15,7 +15,7 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
-	mapLength = mapHeight = 0;
+	mapLength = mapHeight;
 	background = new CBackground();
 	background->Clear();
 	CGameObjectsManager::GetInstance()->Clear();

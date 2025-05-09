@@ -6,6 +6,9 @@
 #include "Effect.h"
 #include "CoinEffect.h"
 #include "ScoreEffect.h"
+#include "DebrisEffect.h"
+#include "WhackEffect.h"
+#include "SmokeEffect.h"
 #include "FireBall.h"
 #include "Spawner.h"
 class CGameObjectsManager
@@ -32,6 +35,10 @@ class CGameObjectsManager
 
 	vector<LPEFFECT> debrisEffects;
 
+	vector<LPEFFECT> whackEffects;
+
+	vector<LPEFFECT> smokeEffects;
+
 public:
 	CGameObjectsManager() {
 		Clear();
@@ -44,6 +51,8 @@ public:
 	LPEFFECT GetCoinEffect(float x, float y, int value);
 	LPEFFECT GetScoreEffect(float x, float y, int value);
 	LPEFFECT GetDebrisEffect(float x, float y);
+	LPEFFECT GetWhackEffect(float x, float y);
+	LPEFFECT GetSmokeEffect(float x, float y);
 	LPFIREBALL GetFireBall(float x, float y, float angle = 10);
 
 

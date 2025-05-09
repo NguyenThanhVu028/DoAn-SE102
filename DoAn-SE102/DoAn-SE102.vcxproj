@@ -190,6 +190,7 @@
     <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ScoreEffect.h" />
+    <ClInclude Include="SmokeEffect.h" />
     <ClInclude Include="SolidPlatform.h" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Sprite.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="WhackEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
@@ -254,6 +256,7 @@
     <ClCompile Include="RedKoopaTroopaSpawner.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="ScoreEffect.cpp" />
+    <ClCompile Include="SmokeEffect.cpp" />
     <ClCompile Include="SolidPlatform.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -261,6 +264,7 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="WhackEffect.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

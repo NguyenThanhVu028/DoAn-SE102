@@ -64,32 +64,10 @@ void CGreenKoopaTroopa::Update(DWORD dt) {
 }
 
 void CGreenKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
+	CKoopaTroopa::OnCollisionWith(e);
 	if (e->ny != 0 && e->obj->IsBlocking()) {
 		if (e->ny < 0 && hasWing) vy = -GREEN_KOOPATROOPA_JUMP_SPEED;
 		else vy = 0;
-	}
-	if (e->nx != 0 && e->obj->IsBlocking()) {
-		vx = -vx;
-	}
-	if (dynamic_cast<CMario*>(e->src_obj)) {
-		OnCollisionWithMario(e);
-	}
-	else if (dynamic_cast<CEnemy*>(e->obj)) {
-		OnCollisionWithOtherEnemy(e);
-	}
-	else if (dynamic_cast<CQuestionBlock*>(e->obj)) {
-		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
-			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
-			SetState(KoopaTroopaState::K_DIE); return;
-		}
-		if (state == KoopaTroopaState::SHELL_MOVING)
-			dynamic_cast<CQuestionBlock*>(e->obj)->OnCollisionWith(e);
-	}
-	else {
-		if (e->isOverlap && !e->obj->AllowOverlap() && !isHeld) {
-			SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
-			SetState(KoopaTroopaState::K_DIE);
-		}
 	}
 }
 

@@ -54,6 +54,7 @@ public:
 	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e);
+	void OnCollisionWithMarioTail(LPCOLLISIONEVENT e);
 	virtual bool IsDead();
 	virtual void SetEnable(bool t);
 

@@ -26,7 +26,7 @@ public:
 	virtual void OnNoCollision(DWORD dt) {};
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e);
-
+	void OnCollisionWithMarioTail(LPCOLLISIONEVENT e);
 	void SetActive(bool t) { isActive = t; }
 	bool IsRising();
 

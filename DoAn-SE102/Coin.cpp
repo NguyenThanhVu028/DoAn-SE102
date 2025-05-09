@@ -42,13 +42,23 @@ void CCoin::OnCollisionWith(LPCOLLISIONEVENT e) {
 			if (e->ny > 0) {
 				bounce_time_start = CGame::GetInstance()->GetTickCount();
 				CMario* mario = dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer());
-				if (mario->GetLevel() != MarioLevel::SMALL) Delete();
+				if (mario->GetLevel() != MarioLevel::SMALL) {
+					CGameObjectsManager::GetInstance()->GetDebrisEffect(x, y);
+					Delete();
+				}
 				return;
 			}
 		}
 		if (dynamic_cast<CMarioTail*>(e->src_obj)) {
-			bounce_time_start = CGame::GetInstance()->GetTickCount();
+			//bounce_time_start = CGame::GetInstance()->GetTickCount();
+			CGameObjectsManager::GetInstance()->GetDebrisEffect(x, y);
 			Delete();
+		}
+		if (dynamic_cast<CKoopaTroopa*>(e->src_obj)) {
+			if (dynamic_cast<CKoopaTroopa*>(e->src_obj)->IsMoving() && e->nx != 0) {
+				CGameObjectsManager::GetInstance()->GetDebrisEffect(x, y);
+				Delete();
+			}
 		}
 	}
 }

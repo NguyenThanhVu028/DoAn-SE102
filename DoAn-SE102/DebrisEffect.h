@@ -1,5 +1,6 @@
 #pragma once
 #include "Effect.h"
+#include "Animations.h"
 #define DEBRIS_DEFAULT_DURATION 300
 #define DEBRIS_VX 0.07f
 #define DEBRIS_START_VY_LV0 -0.25f
@@ -19,6 +20,7 @@ class CDebrisEffect : public CEffect
 	float vx, vy;
 public:
 	CDebrisEffect(float x, float y, int direction, int level, ULONGLONG duration = DEBRIS_DEFAULT_DURATION) : CEffect(x, y, duration){
+		ani = CAnimations::GetInstance()->Get(DEBRIS_EFFECT_ANIMATION);
 		this->direction = direction;
 		this->level = level;
 		vx = (direction == 1) ? DEBRIS_VX : -DEBRIS_VX;

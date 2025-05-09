@@ -44,7 +44,7 @@ void CKoopaTroopa::Update(DWORD dt) {
 		SetState(KoopaTroopaState::OUTSIDE);
 		SetDirection(KoopaTroopaShellDirection::NORMAL);
 	}
-
+	if (state == KoopaTroopaState::SHELL_IDLE && vy == 0) vx = 0;
 	vy += ay * dt;
 
 }
@@ -124,7 +124,7 @@ void CKoopaTroopa::OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e) {
 			else e->src_obj->GetPosition(oX, oY);
 			vx = (oX < x) ? KOOPA_TROOPA_DIE_MOVE_SPEED : -KOOPA_TROOPA_DIE_MOVE_SPEED;
 		}
-		if(e->obj != this )dynamic_cast<CEnemy*>(e->obj)->OnCollisionWithShell(e);
+		if(e->obj != this)dynamic_cast<CEnemy*>(e->obj)->OnCollisionWithShell(e);
 	}
 
 }
@@ -135,6 +135,18 @@ void CKoopaTroopa::OnCollisionWithShell(LPCOLLISIONEVENT e) {
 	float oX, oY;
 	e->obj->GetPosition(oX, oY);
 	vx = (oX < x) ? KOOPA_TROOPA_DIE_MOVE_SPEED : -KOOPA_TROOPA_DIE_MOVE_SPEED;
+	CGameObjectsManager::GetInstance()->GetWhackEffect(x, y);
+
+}
+
+void CKoopaTroopa::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
+	SetState(KoopaTroopaState::SHELL_IDLE);
+	SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
+	float oX, oY;
+	CGameObjectsManager::GetInstance()->GetPlayer()->GetPosition(oX, oY);
+	vx = (oX < x) ? KOOPA_TROOPA_MOVE_SPEED * 1.5f : -KOOPA_TROOPA_MOVE_SPEED * 1.5f;
+	vy = -KOOPA_TROOPA_DIE_JUMP_SPEED;
+	CGameObjectsManager::GetInstance()->GetWhackEffect(x, y);
 }
 
 bool CKoopaTroopa::IsDead() {
@@ -153,6 +165,7 @@ void CKoopaTroopa::SetState(KoopaTroopaState state) {
 		vy = 0;
 		ay = KOOPA_TROOPA_GRAVITY;
 		height = KOOPA_TROOPA_HEIGHT;
+		shellDirection = KoopaTroopaShellDirection::NORMAL;
 		break;
 	case KoopaTroopaState::SHELL_IDLE:
 		isHeld = false;

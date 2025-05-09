@@ -60,7 +60,7 @@ Resources\Data\Entities\p_button.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	120	150
+0	25	150
 
 #COLOR BLOCK
 #type	x	y	cWidth	cHeight	width	height	color
@@ -357,7 +357,7 @@ Resources\Data\Entities\p_button.txt
 
 #QUESTION BLOCK
 #20	120	114
-81	120	114
+#81	120	114
 
 21	176	114
 21	192	114

@@ -1,6 +1,5 @@
 #include "GameObjectsManager.h"
 #include "debug.h"
-#include "DebrisEffect.h"
 CGameObjectsManager* CGameObjectsManager::__instance = NULL;
 
 CGameObjectsManager* CGameObjectsManager::GetInstance() {
@@ -16,6 +15,8 @@ void CGameObjectsManager::Update(DWORD dt) {
 		for (auto i : coinEffects) i->Update(dt);
 		for (auto i : scoreEffects) i->Update(dt);
 		for (auto i : debrisEffects) i->Update(dt);
+		for (auto i : whackEffects) i->Update(dt);
+		for (auto i : smokeEffects) i->Update(dt);
 		for (auto i : fireBalls) i->Update(dt);
 		for (auto i : spawners) i->Update(dt);
 	}
@@ -28,6 +29,8 @@ void CGameObjectsManager::Render() {
 	for (auto i : coinEffects) i->Render();
 	for (auto i : scoreEffects) i->Render();
 	for (auto i : debrisEffects) i->Render();
+	for (auto i : whackEffects) i->Render();
+	for (auto i : smokeEffects) i->Render();
 	for (auto i : fireBalls) i->Render();
 	player->Render();
 }
@@ -45,7 +48,13 @@ void CGameObjectsManager::Clear() {
 	scoreEffects.clear();
 
 	for (auto i : debrisEffects) delete i;
-	scoreEffects.clear();
+	debrisEffects.clear();
+
+	for (auto i : whackEffects) delete i;
+	whackEffects.clear();
+
+	for (auto i : smokeEffects) delete i;
+	smokeEffects.clear();
 
 	for (auto i : fireBalls) delete i;
 	fireBalls.clear();
@@ -164,15 +173,31 @@ LPEFFECT CGameObjectsManager::GetDebrisEffect(float x, float y) {
 		newDebris->ReEnable();
 	}
 	return NULL;
-	//for (CEffect* i : scoreEffects) {
-	//	if (!i->IsEnabled()) {
-	//		i->SetPosition(x, y);
-	//		i->ReEnable(); return i;
-	//	}
-	//}
-	//CDebrisEffect* newEffect = new CDebrisEffect(x, y);
-	//debrisEffects.push_back(newEffect);
-	//return newEffect;
+}
+
+LPEFFECT CGameObjectsManager::GetWhackEffect(float x, float y) {
+	for (CEffect* i : whackEffects) {
+		if (!i->IsEnabled()) {
+			i->SetPosition(x, y);
+			i->ReEnable(); return i;
+		}
+	}
+	CWhackEffect* newEffect = new CWhackEffect(x, y);
+	whackEffects.push_back(newEffect);
+	//newEffect->ReEnable();
+	return newEffect;
+}
+
+LPEFFECT CGameObjectsManager::GetSmokeEffect(float x, float y) {
+	for (CEffect* i : smokeEffects) {
+		if (!i->IsEnabled()) {
+			i->SetPosition(x, y);
+			i->ReEnable(); return i;
+		}
+	}
+	CSmokeEffect* newEffect = new CSmokeEffect(x, y);
+	smokeEffects.push_back(newEffect);
+	return newEffect;
 }
 
 LPFIREBALL CGameObjectsManager::GetFireBall(float x, float y, float angle) {

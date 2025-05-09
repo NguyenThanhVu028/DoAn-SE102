@@ -24,6 +24,13 @@ void CPiranhaPlant::Update(DWORD dt) {
 		}
 	}
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 1, 0);
+	//Check collision with Tail
+	if (!isKilled) {
+		vector<LPGAMEOBJECT>* tempList = new vector<LPGAMEOBJECT>();
+		CMario* player = dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer());
+		(*tempList).push_back(player->GetTail());
+		CCollision::GetInstance()->Process(this, dt, tempList);
+	}
 }
 
 void CPiranhaPlant::OnCollisionWith(LPCOLLISIONEVENT e) {
@@ -33,6 +40,9 @@ void CPiranhaPlant::OnCollisionWith(LPCOLLISIONEVENT e) {
 	}
 	if (dynamic_cast<CKoopaTroopa*>(e->obj)) {
 		OnCollisionWithShell(e);
+	}
+	if (dynamic_cast<CMarioTail*>(e->obj)) {
+		OnCollisionWithMarioTail(e);
 	}
 };
 
@@ -58,7 +68,20 @@ bool CPiranhaPlant::IsDead()
 }
 
 void CPiranhaPlant::OnCollisionWithShell(LPCOLLISIONEVENT e) {
-	if(dynamic_cast<CKoopaTroopa*>(e->obj)->IsHeld() || dynamic_cast<CKoopaTroopa*>(e->obj)->IsMoving())
+	if (dynamic_cast<CKoopaTroopa*>(e->obj)->IsHeld() || dynamic_cast<CKoopaTroopa*>(e->obj)->IsMoving()) {
 		isKilled = true;
+		float oX, oY;
+		e->obj->GetPosition(oX, oY);
+		CGameObjectsManager::GetInstance()->GetWhackEffect((x + oX) * 0.5f, (y + oY) * 0.5f);
+		CGameObjectsManager::GetInstance()->GetSmokeEffect(x, y);
+	}
 	dynamic_cast<CKoopaTroopa*>(e->obj)->OnCollisionWithOtherEnemy(e);
+}
+
+void CPiranhaPlant::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
+	isKilled = true;
+	float oX, oY;
+	e->obj->GetPosition(oX, oY);
+	CGameObjectsManager::GetInstance()->GetWhackEffect((x + oX) * 0.5f, (y + oY) * 0.5f);
+	CGameObjectsManager::GetInstance()->GetSmokeEffect(x, y);
 }
