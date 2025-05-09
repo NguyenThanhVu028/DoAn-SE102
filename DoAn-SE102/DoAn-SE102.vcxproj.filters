@@ -482,11 +482,11 @@
     <ClCompile Include="GreenMushroom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GreenMushroomBrick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DebrisEffect.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenMushroomBrick.cpp">
+      <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

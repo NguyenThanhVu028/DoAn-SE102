@@ -1,6 +1,7 @@
 #include "GreenMushroomBrick.h"
 #include "MarioHead.h"
 #include "MarioTail.h"
+#include "KoopaTroopa.h"
 
 void CGreenMushroomBrick::Update(DWORD dt) {
 	if (item != NULL) {
@@ -37,5 +38,14 @@ void CGreenMushroomBrick::SpecialEffect(LPCOLLISIONEVENT e) {
 		if (pX < x) nx = 1;
 		else nx = -1;
 		isAvailable = false;
+	}
+	if (dynamic_cast<CKoopaTroopa*>(e->src_obj)) {
+		if (dynamic_cast<CKoopaTroopa*>(e->src_obj)->IsMoving() && e->nx != 0) {
+			float pX, pY;
+			e->src_obj->GetPosition(pX, pY);
+			if (pX < x) nx = 1;
+			else nx = -1;
+			isAvailable = false;
+		}
 	}
 }

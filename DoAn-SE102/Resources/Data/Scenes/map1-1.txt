@@ -369,7 +369,7 @@ Resources\Data\Entities\p_button.txt
 
 22	656	146
 
-21	704	130
+21	704	114
 
 22	1472	130
 

@@ -19,23 +19,23 @@
 #define MARIO_SLOW_FALLING_TIME 300
 #define MARIO_FLY_TIME 175
 
-#define MARIO_WALK_SPEED 0.1f
+#define MARIO_WALK_SPEED 0.075f
 #define MARIO_RUN_SPEED 0.15f
 #define MARIO_RUN_MAXSPEED 0.2f
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
-#define MARIO_WALK_ACCEL_X 0.00015f
+#define MARIO_WALK_ACCEL_X 0.0002f
 #define MARIO_RUN_ACCEL_X 0.000075f
 
 #define MARIO_DECEL_X 0.00015f
 #define MARIO_BRAKE_DECEL MARIO_DECEL_X * 2.5f
 
-#define MARIO_JUMP_TIME 220
+#define MARIO_JUMP_TIME 230
 #define MARIO_JUMP_WALK_TIME 250
 #define MARIO_JUMP_RUN_TIME 275
 #define MARIO_JUMP_RUN_MAXSPEED_TIME 300
 #define MARIO_JUMP_SPEED 0.22f
-#define MARIO_JUMP_ACCEL 0.001f
+#define MARIO_JUMP_ACCEL 0.0025f
 
 #define MARIO_FLY_SPEED MARIO_JUMP_SPEED * 0.5f
 
@@ -46,7 +46,6 @@
 #define MARIO_JUMP_DEFLECT_SPEED 0.4f
 
 #define MARIO_PMETER_MAX 100
-//#define MARIO_PMETER_INCREASE_SPEED 0.125f
 #define MARIO_PMETER_DECREASE_SPEED 0.025f
 #define MARIO_PMETER_TIME 5000
 
@@ -81,7 +80,7 @@ class CMario : public CMovableGameObject
 	float width;
 	float height;
 
-	float maxVx;
+	float targetVx;
 	float maxVy;
 	float maxFallSpeed;
 	bool isGrounded;
@@ -114,32 +113,52 @@ public:
 
 	CMario(float x, float y) : CMovableGameObject(x, y) {
 		auto game = CGame::GetInstance();
+
+		//Basic properties
 		state = MarioState::IDLE;
 		level = MarioLevel::SMALL;
-		ay = MARIO_GRAVITY;
-		maxVy = -MARIO_JUMP_SPEED;
-		isGrounded = false;
-		lastJumpTime = -1;
-		jumpTime = MARIO_JUMP_TIME;
-		pMeter = 0;
-		isPMeterMax = false;
-		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
-		maxFallSpeed = MARIO_FALL_SPEED;
 		width = MARIO_BIG_BBOX_WIDTH;
 		height = MARIO_SMALL_BBOX_HEIGHT;
-		maxVx = 0;
-		untouchable_start = game->GetTickCount() - MARIO_UNTOUCHABLE_TIME - 10;
-		level_start = game->GetTickCount() - MARIO_LEVEL_LONG_TIME - 10;
+
+		//Velocity
+		targetVx = 0;					//Mario target velocity, the game will calculate acceleration based on target velocity and current velocity
+		ay = MARIO_GRAVITY;
+		maxVy = -MARIO_JUMP_SPEED;
+		maxFallSpeed = MARIO_FALL_SPEED;
+		
+		//Actions
+		isGrounded = false;
+		lastJumpTime = game->GetTickCount() - MARIO_JUMP_TIME - 10;
+		jumpTime = MARIO_JUMP_TIME;
+		isSpinning = 0;
 		level_duration = 0;
-		flicker_time = 0;
 		isRunButtonPressed = false;
-		turning_start = game->GetTickCount();
+
+		//PMeter
+		pMeter = 0;
+		isPMeterMax = false;
+
+		//Aniamtions
+		aniToRender = CAnimations::GetInstance()->Get(MARIO_SMALL_ANIMATION_IDLE_RIGHT);
+		flicker_time = 0;
+		isNeedResetAni = false;
+		
+		//Mario's body parts
 		head = new CMarioHead(x, y - height * 0.5f);
 		tail = new CMarioTail(x, y);
 		head->width = width;
 		shell = NULL;
-		isSpinning = 0;
-		isNeedResetAni = false;
+
+		//Timer
+		untouchable_start = game->GetTickCount() - MARIO_UNTOUCHABLE_TIME - 10;
+		level_start = game->GetTickCount() - MARIO_LEVEL_LONG_TIME - 10;
+		death_start = game->GetTickCount() - MARIO_DEATH_TIME - 10;
+		fly_start = game->GetTickCount() - MARIO_FLY_TIME - 10;
+		kick_shell_start = game->GetTickCount() - MARIO_KICK_SHELL_TIME - 10;
+		pMeterMax_start = game->GetTickCount() - MARIO_PMETER_TIME - 10;
+		slowFalling_start = game->GetTickCount() - MARIO_SLOW_FALLING_TIME;
+		spin_start = game->GetTickCount() - MARIO_SPIN_TIME;
+		turning_start = game->GetTickCount() - MARIO_TURN_TIME - 10;
 	}
 
 	void Update(DWORD dt);

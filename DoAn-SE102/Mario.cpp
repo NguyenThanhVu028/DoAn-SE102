@@ -14,7 +14,7 @@
 void CMario::Update(DWORD dt) {
 	if (state == MarioState::DIE) {
 		if (CGame::GetInstance()->GetTickCount() - death_start < MARIO_DEATH_TIME * 0.2f) {
-			maxVx = 0;
+			targetVx = 0;
 			vx = 0;
 			maxVy = -1.0f;
 			vy = -0.4f;
@@ -80,7 +80,7 @@ void CMario::Update(DWORD dt) {
 	//Update PMeter
 	UpdatePMeter(dt);
 
-	//DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, maxVx, maxVy);
+	DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, targetVx, maxVy);
 }
 void CMario::CheckHeadCollision(DWORD dt) {
 	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;
@@ -190,23 +190,24 @@ void CMario::UpdatePMeter(DWORD dt) {
 }
 void CMario::UpdateVelocity(DWORD dt) {
 	vy += ay * dt;
-	if (maxVx != 0) {
+	if (targetVx != 0) {
+		//Choose suitable acceleration based on Mario's current speed
 		if (abs(vx) <= MARIO_RUN_SPEED) ax = nx * MARIO_WALK_ACCEL_X;
 		else ax = nx * MARIO_RUN_ACCEL_X;
 		float prevVx = vx;
 		vx += ax * dt;
 
-		if (maxVx * prevVx > 0) {
-			if (abs(vx) > abs(maxVx)) {
-				if (abs(prevVx) < abs(maxVx)) vx = maxVx;
+		if (targetVx * prevVx > 0) {
+			if (abs(vx) > abs(targetVx)) {
+				if (abs(prevVx) < abs(targetVx)) vx = targetVx;
 				else {
 					vx = prevVx + -1 * nx * MARIO_DECEL_X * 2 * dt;
-					if (abs(vx) < abs(maxVx)) vx = maxVx;
+					if (abs(vx) < abs(targetVx)) vx = targetVx;
 				}
 			}
 		}
 		else {
-			vx = prevVx + /*((maxVx > 0) ? 1 : -1)*/ nx * MARIO_BRAKE_DECEL * dt;
+			vx = prevVx + nx * MARIO_BRAKE_DECEL * dt;
 		}
 	}
 	else {
@@ -779,8 +780,8 @@ void CMario::SetState(MarioState state) {
 			else if (abs(vx) <= MARIO_WALK_SPEED) jumpTime = MARIO_JUMP_WALK_TIME;
 			else if (abs(vx) <= MARIO_RUN_SPEED) jumpTime = MARIO_JUMP_RUN_TIME;
 			else if (abs(vx) <= MARIO_RUN_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
-			vy = -MARIO_JUMP_SPEED;
-			ay = 0;
+			//vy = -MARIO_JUMP_SPEED;
+			ay = -MARIO_JUMP_ACCEL;
 			maxVy = -MARIO_JUMP_SPEED;
 			lastJumpTime = CGame::GetInstance()->GetTickCount();
 		}
@@ -807,11 +808,12 @@ void CMario::SetState(MarioState state) {
 		break;
 	case MarioState::IDLE:
 		if (isGrounded) {
-			maxVx = 0;
+			targetVx = 0;
 		}
 		else {
 			if (!(pMeter == MARIO_PMETER_MAX)) {
-				if (abs(maxVx) > MARIO_RUN_SPEED) maxVx = nx * MARIO_RUN_SPEED;
+				if (abs(vx) > MARIO_RUN_SPEED) targetVx = nx * MARIO_RUN_SPEED;
+				else targetVx = 0;
 			}
 		}
 		this->state = state;
@@ -819,38 +821,38 @@ void CMario::SetState(MarioState state) {
 	case MarioState::WALK_LEFT:
 		if (nx == 1) ResetTurningTimer();
 		nx = -1;
-		if (isGrounded) maxVx = -MARIO_WALK_SPEED;
+		if (isGrounded) targetVx = -MARIO_WALK_SPEED;
 		else {
-			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = -MARIO_RUN_MAXSPEED;
-			else maxVx = -MARIO_WALK_SPEED;
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) targetVx = -MARIO_RUN_MAXSPEED;
+			else targetVx = -MARIO_WALK_SPEED;
 		}
 		break;
 	case MarioState::WALK_RIGHT:
 		if (nx == -1) ResetTurningTimer();
 		nx = 1;
-		if (isGrounded) maxVx = MARIO_WALK_SPEED;
+		if (isGrounded) targetVx = MARIO_WALK_SPEED;
 		else {
-			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = MARIO_RUN_MAXSPEED;
-			else maxVx = MARIO_WALK_SPEED;
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) targetVx = MARIO_RUN_MAXSPEED;
+			else targetVx = MARIO_WALK_SPEED;
 		}
 		break;
 	case MarioState::RUN_LEFT:
 		if(nx == 1) ResetTurningTimer();
 		nx = -1;
-		if(isGrounded) maxVx = -MARIO_RUN_MAXSPEED;
+		if(isGrounded) targetVx = -MARIO_RUN_MAXSPEED;
 		else {
-			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = -MARIO_RUN_MAXSPEED;
-			else maxVx = -MARIO_RUN_SPEED;
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) targetVx = -MARIO_RUN_MAXSPEED;
+			else targetVx = -MARIO_RUN_SPEED;
 		}
 
 		break;
 	case MarioState::RUN_RIGHT:
 		if(nx == -1) ResetTurningTimer();
 		nx = 1;
-		if (isGrounded) maxVx = MARIO_RUN_MAXSPEED;
+		if (isGrounded) targetVx = MARIO_RUN_MAXSPEED;
 		else {
-			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) maxVx = MARIO_RUN_MAXSPEED;
-			else maxVx = MARIO_RUN_SPEED;
+			if (pMeter == MARIO_PMETER_MAX && !(level == MarioLevel::RACCOON && isPMeterMax)) targetVx = MARIO_RUN_MAXSPEED;
+			else targetVx = MARIO_RUN_SPEED;
 		}
 
 		break;
