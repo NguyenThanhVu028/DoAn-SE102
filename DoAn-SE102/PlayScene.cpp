@@ -404,10 +404,28 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	CMario* mario = dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer());
 
-	// Update camera to follow mario
-
-	float cX, cY; game->GetCamPos(cX, cY);
+	//Check boundary
 	float pX, pY; mario->GetPosition(pX, pY);
+	float vX, vY; mario->GetSpeed(vX, vY);
+	float cX, cY; game->GetCamPos(cX, cY);
+
+	if (pX < 20) {
+		pX = 20; vX = 0;
+	}
+	if (pX > mapLength - 20) {
+		pX = mapLength - 20; vX = 0;
+	}
+	if (pY < cY - 32) {
+		pY = cY - 32; vY = 0;
+	}
+	if (pY > cY + CGame::GetInstance()->GetBackBufferHeight()) {
+		mario->SetState(MarioState::DIE);
+		CGame::GetInstance()->FreezeGame();
+	}
+	mario->SetPosition(pX, pY);
+	mario->SetSpeed(vX, vY);
+
+	// Update camera to follow mario
 
 	if (pX > cX + game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f + CAMERA_FOLLOW_DISTANCE_X * 0.5f);
 	else if (pX < cX + game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f) cX = pX - (game->GetBackBufferWidth() * 0.5f - CAMERA_FOLLOW_DISTANCE_X * 0.5f);
