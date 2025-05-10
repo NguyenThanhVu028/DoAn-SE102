@@ -42,7 +42,7 @@ void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MarioState::JUMP);
 		break;
 	case DIK_P:
-		CGame::GetInstance()->FreezeGame();
+		mario->SetLevel(MarioLevel::RACCOON);
 		break;
 	case DIK_A:
 		mario->OnPressRunButton();

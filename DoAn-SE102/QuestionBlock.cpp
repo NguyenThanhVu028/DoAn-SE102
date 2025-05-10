@@ -1,4 +1,5 @@
 #include "QuestionBlock.h"
+#include "MarioTail.h"
 void CQuestionBlock::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - QUESTIONBLOCK_WIDTH * 0.5f;
 	top = y - QUESTIONBLOCK_HEIGHT * 0.5f;
@@ -41,6 +42,10 @@ void CQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e) {
 		}
 	}
 	if (dynamic_cast<CKoopaTroopa*>(e->src_obj)) {
+		bounce_time_start = CGame::GetInstance()->GetTickCount();
+		SpecialEffect(e);
+	}
+	if (dynamic_cast<CMarioTail*>(e->src_obj)) {
 		bounce_time_start = CGame::GetInstance()->GetTickCount();
 		SpecialEffect(e);
 	}

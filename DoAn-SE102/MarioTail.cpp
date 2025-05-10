@@ -26,31 +26,12 @@ void CMarioTail::ClearHitObjects() {
 }
 
 void CMarioTail::ProcessHitObjects() {
-	//LPGAMEOBJECT hitObject = NULL;
-	//LPCOLLISIONEVENT e = NULL;
 	for (auto i : hitObjects) {
-		//if (hitObject == NULL) {
-		//	hitObject = i->obj;
-		//	e = i;
-		//}
-		//else {
-		//	float bL, bT, bR, bB;
-		//	i->obj->GetBoundingBox(bL, bT, bR, bB);
-		//	if (y >= bT && y <= bB) {
-		//		hitObject = i->obj;
-		//		e = i;
-		//	}
-		//}
 		if (dynamic_cast<CEnemy*>(i->obj)) {
-			DebugOutTitle(L"Tail %d", CGame::GetInstance()->GetTickCount());
 			dynamic_cast<CEnemy*>(i->obj)->OnCollisionWithMarioTail(i);
 		}
 		else i->obj->OnCollisionWith(i);
 	}
-	//if (hitObject != NULL) {
-
-	//}
-		
 }
 
 void CMarioTail::ProcessCollision(DWORD dt) {

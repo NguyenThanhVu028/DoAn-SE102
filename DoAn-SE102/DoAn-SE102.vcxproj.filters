@@ -306,11 +306,11 @@
     <ClInclude Include="GreenMushroomBrick.h">
       <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
-    <ClInclude Include="WhackEffect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SmokeEffect.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="WhackEffect.h">
+      <Filter>Header Files\Entities\Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -495,10 +495,10 @@
       <Filter>Source Files\Entities\LevelUpItems</Filter>
     </ClCompile>
     <ClCompile Include="WhackEffect.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Effects</Filter>
     </ClCompile>
     <ClCompile Include="SmokeEffect.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Effects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

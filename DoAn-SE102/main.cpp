@@ -10,12 +10,6 @@
 #include "Animation.h"
 #include "Animations.h"
 
-//#include "Mario.h"
-//#include "Brick.h"
-//#include "Goomba.h"
-//#include "Coin.h"
-//#include "Platform.h"
-
 #include "SampleKeyEventHandler.h"
 
 #include "AssetIDs.h"

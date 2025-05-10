@@ -13,7 +13,6 @@ void CGameObjectsManager::Update(DWORD dt) {
 		for (auto i : staticObjects) i->Update(dt);
 		for (auto i : movableObjects) i->Update(dt);
 		for (auto i : coinEffects) i->Update(dt);
-		for (auto i : scoreEffects) i->Update(dt);
 		for (auto i : debrisEffects) i->Update(dt);
 		for (auto i : whackEffects) i->Update(dt);
 		for (auto i : smokeEffects) i->Update(dt);
@@ -21,6 +20,7 @@ void CGameObjectsManager::Update(DWORD dt) {
 		for (auto i : spawners) i->Update(dt);
 	}
 	player->Update(dt);
+	for (auto i : scoreEffects) i->Update(dt);
 }
 void CGameObjectsManager::Render() {
 	

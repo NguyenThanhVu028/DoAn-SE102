@@ -781,6 +781,7 @@ void CMario::SetState(MarioState state) {
 			else if (abs(vx) <= MARIO_RUN_SPEED) jumpTime = MARIO_JUMP_RUN_TIME;
 			else if (abs(vx) <= MARIO_RUN_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
 			//vy = -MARIO_JUMP_SPEED;
+			vy = -MARIO_JUMP_MIN_SPEED;
 			ay = -MARIO_JUMP_ACCEL;
 			maxVy = -MARIO_JUMP_SPEED;
 			lastJumpTime = CGame::GetInstance()->GetTickCount();
@@ -936,7 +937,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
 	OnLevelUp();
 	((CLevelUpItem*)e->src_obj)->Delete();
-	
+	CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 1000);
 }
 void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
 	if ((dynamic_cast<CKoopaTroopa*>(e->obj)->IsDead())) return;

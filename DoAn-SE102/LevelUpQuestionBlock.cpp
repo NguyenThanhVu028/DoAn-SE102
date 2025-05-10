@@ -16,6 +16,13 @@ void CLevelUpQuestionBlock::SpecialEffect(LPCOLLISIONEVENT e) {
 		else nx = -1;
 		isAvailable = false;
 	}
+	if (dynamic_cast<CMarioTail*>(e->src_obj)) {
+		float pX, pY;
+		e->src_obj->GetPosition(pX, pY);
+		if (pX < x) nx = 1;
+		else nx = -1;
+		isAvailable = false;
+	}
 }
 
 void CLevelUpQuestionBlock::Render() {

@@ -103,9 +103,11 @@ void CRedGoomba::OnCollisionWithMario(LPCOLLISIONEVENT e) {
 			hasWings = false;
 			vy = 0;
 			untouchable_start = CGame::GetInstance()->GetTickCount();
+			CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 100);
 		}
 		else {
 			SetState(GoombaState::FLATTENED);
+			CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 200);
 		}
 	}
 }

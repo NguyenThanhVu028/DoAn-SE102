@@ -1,9 +1,9 @@
 #include "ScoreEffect.h"
 
 void CScoreEffect::Update(DWORD dt) {
-	if (CGame::GetInstance()->GetTickCount() - existing_start > duration) isEnabled = false;
+	if (GetTickCount64() - existing_start > duration) isEnabled = false;
 	if (!isEnabled) return;
-	float tempVy = vy * (duration - (CGame::GetInstance()->GetTickCount() - existing_start)) / duration;
+	float tempVy = vy * (duration - (GetTickCount64() - existing_start)) / duration;
 	y -= tempVy * dt;
 }
 
@@ -19,7 +19,10 @@ void CScoreEffect::ReEnable() {
 	LPGAME game = CGame::GetInstance();
 	if (value != -1) game->IncreaseScore(value);
 	else game->IncreaseLives(1);
-	CEffect::ReEnable();
+	//CEffect::ReEnable();
+	isEnabled = true;
+	if (ani != NULL) ani->Reset();
+	existing_start = GetTickCount64();
 }
 
 void CScoreEffect::SetValue(int x) {

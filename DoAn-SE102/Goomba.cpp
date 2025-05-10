@@ -89,7 +89,10 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 void CGoomba::OnCollisionWithMario(LPCOLLISIONEVENT e) {
 	if (IsDead()) return;
-	if (e->ny < 0) SetState(GoombaState::FLATTENED);
+	if (e->ny < 0) {
+		SetState(GoombaState::FLATTENED);
+		CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 100);
+	}
 }
 void CGoomba::OnCollisionWithShell(LPCOLLISIONEVENT e) {
 	float sX, sY;
