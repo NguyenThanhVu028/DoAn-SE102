@@ -313,9 +313,12 @@
       <Filter>Header Files\Entities\Effects</Filter>
     </ClInclude>
     <ClInclude Include="EnterablePipe.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="MarioEnterPipeDecoy.h">
+      <Filter>Header Files\Entities\Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackEnterablePipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -507,9 +510,12 @@
       <Filter>Source Files\Entities\Effects</Filter>
     </ClCompile>
     <ClCompile Include="EnterablePipe.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="MarioEnterPipeDecoy.cpp">
+      <Filter>Source Files\Entities\Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackEnterablePipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

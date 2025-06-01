@@ -26,7 +26,7 @@ public:
 	}
 	virtual void Update(DWORD dt) {}
 	virtual void Render() { CMultiTilesBlock::Render(); }
-	void LoadSpriteId();
+	virtual void LoadSpriteId();
 	bool AllowOverlap() { return false; }
 };
 

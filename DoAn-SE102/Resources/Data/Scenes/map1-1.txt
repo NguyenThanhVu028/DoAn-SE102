@@ -49,6 +49,8 @@ Resources\Data\Entities\p_button.txt
 #	60 = Pipe
 #	61 = Normal piranha plant pipe
 #	62 = Fire piranha plant pipe
+#	63 = Enterable Pipe
+#	64 = Black Enterable Pipe
 #	71 = Goomba spawner
 #	72 = Red Goomba spawner
 #	73 = Red KoopaTroopa spawner

@@ -89,9 +89,9 @@ void CMario::CheckHeadCollision(DWORD dt) {
 	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
-	if (head->isBlocked) {
-		vy = 0; ay = MARIO_GRAVITY;
-	}
+	//if (head->isBlocked) {
+	//	vy = 0; ay = MARIO_GRAVITY;
+	//}
 }
 void CMario::CheckTailCollision(DWORD dt) {
 	ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;

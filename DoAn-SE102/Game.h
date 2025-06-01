@@ -53,6 +53,8 @@ class CGame
 	int score = 0;
 	int lives = 4;
 
+	int mario_level = 0;
+
 	ULONGLONG game_start;
 	LONG maxTime = -1;
 
@@ -146,6 +148,9 @@ public:
 	bool IsFrozen() { return isFrozen; }
 
 	ULONGLONG GetTickCount();
+
+	int GetMarioLevel() { return mario_level; }
+	void SetMarioLevel(int level) { mario_level = level; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);

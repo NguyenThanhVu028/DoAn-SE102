@@ -18,7 +18,7 @@
 #include "Coin.h"
 #include "NormalPiranhaPlantPipe.h"
 #include "FirePiranhaPlantPipe.h"
-#include "EnterablePipe.h"
+#include "BlackEnterablePipe.h"
 #include "GoombaSpawner.h"
 #include "RedGoombaSpawner.h"
 #include "RedKoopaTroopaSpawner.h"

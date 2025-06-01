@@ -11,6 +11,7 @@
 
 class CEnterablePipe : public CPipe
 {
+protected:
 	CMarioEnterPipeDecoy* decoy = NULL;
 	bool enterSide;
 	bool type;
@@ -29,7 +30,7 @@ public:
 		if (isEnabled) {
 			CMario* mario = dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer());
 			if (decoy == NULL && mario != NULL) {
-				float spawnY = y + length * 0.5f + ((enterSide == 0) ? (-length * 0.5f + ((mario->GetLevel() == MarioLevel::SMALL)?MARIO_SMALL_BBOX_HEIGHT : MARIO_BIG_BBOX_HEIGHT)) : (length * 0.5f - ((mario->GetLevel() == MarioLevel::SMALL) ? MARIO_SMALL_BBOX_HEIGHT : MARIO_BIG_BBOX_HEIGHT)));
+				float spawnY = y + length * 0.5f * cellHeight + ((enterSide == 0) ? (-length * 0.5f * cellHeight + ((mario->GetLevel() == MarioLevel::SMALL)?MARIO_SMALL_BBOX_HEIGHT : MARIO_BIG_BBOX_HEIGHT)) : (length * 0.5f * cellHeight - ((mario->GetLevel() == MarioLevel::SMALL) ? MARIO_SMALL_BBOX_HEIGHT : MARIO_BIG_BBOX_HEIGHT)));
 				mario->SetPosition(x + cellWidth * width * 0.5f, spawnY);
 				CGame::GetInstance()->SetCamPos(x + cellWidth * width * 0.5f - CGame::GetInstance()->GetBackBufferWidth() * 0.5f, spawnY);
 				bool direction;
@@ -43,7 +44,8 @@ public:
 		}
 	}
 	void Update(DWORD dt);
-	void Render();
+	virtual void Render();
+	virtual void LoadSpriteId() {}
 	void RequestEnter(bool direction);
 };
 

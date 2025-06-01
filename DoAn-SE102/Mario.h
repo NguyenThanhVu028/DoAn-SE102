@@ -178,7 +178,7 @@ public:
 	void SetState(MarioState state);
 	MarioState GetState() { return state; }
 
-	void SetLevel(MarioLevel level) { this->level = level; }
+	void SetLevel(MarioLevel level) { this->level = level; CGame::GetInstance()->SetMarioLevel(level); }
 	MarioLevel GetLevel() { return level; }
 
 	float GetPMeter() { return pMeter; }

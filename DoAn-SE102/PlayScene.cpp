@@ -116,6 +116,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = new CMario(x,y);
+		dynamic_cast<CMario*>(obj)->SetLevel((MarioLevel)CGame::GetInstance()->GetMarioLevel());
 		CGameObjectsManager::GetInstance()->SetPlayer(obj);
 
 		DebugOut(L"[INFO] Player object has been created!\n");
@@ -251,6 +252,23 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		bool isEnabled = (int)atoi(tokens[11].c_str());
 
 		obj = new CEnterablePipe(x, y, cell_width, cell_height, length, isVertical, endSide, enterSide, type, world_id, isEnabled);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
+	}
+	case OBJECT_TYPE_BLACK_ENTERABLE_PIPE:
+	{
+		if (tokens.size() < 12) break;
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = (int)atoi(tokens[5].c_str());
+		bool isVertical = (bool)atoi(tokens[6].c_str());
+		int endSide = (int)atoi(tokens[7].c_str());
+		bool enterSide = (bool)atoi(tokens[8].c_str());
+		bool type = (int)atoi(tokens[9].c_str());
+		int world_id = (int)atoi(tokens[10].c_str());
+		bool isEnabled = (int)atoi(tokens[11].c_str());
+
+		obj = new CBlackEnterablePipe(x, y, cell_width, cell_height, length, isVertical, endSide, enterSide, type, world_id, isEnabled);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
 	}
