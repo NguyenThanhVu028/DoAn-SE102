@@ -1,5 +1,6 @@
 #include "MarioKeyEventHandler.h"
 #include "Game.h"
+#include "UIManager.h"
 
 void CMarioKeyEventHandler::KeyState(BYTE* state)
 {
@@ -24,6 +25,10 @@ void CMarioKeyEventHandler::KeyState(BYTE* state)
 	}
 	else if (game->IsKeyDown(DIK_DOWNARROW)) {
 		mario->SetState(MarioState::SIT);
+		mario->EnterPipe(1);
+	}
+	else if (game->IsKeyDown(DIK_UPARROW)) {
+		mario->EnterPipe(0);
 	}
 	else mario->SetState(MarioState::IDLE);
 
@@ -47,6 +52,16 @@ void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
 	case DIK_A:
 		mario->OnPressRunButton();
 		mario->SetState(MarioState::SPIN);
+		break;
+	case DIK_N:
+		CGame::GetInstance()->InitiateSwitchScene(1);
+		//CUIManager::GetInstance()->StartFading();
+		break;
+	case DIK_M:
+		CUIManager::GetInstance()->StartFading();
+		break;
+	case DIK_B:
+		CUIManager::GetInstance()->StartBrightening();
 		break;
 	}
 }

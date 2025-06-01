@@ -312,6 +312,12 @@
     <ClInclude Include="WhackEffect.h">
       <Filter>Header Files\Entities\Effects</Filter>
     </ClInclude>
+    <ClInclude Include="EnterablePipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioEnterPipeDecoy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -499,6 +505,12 @@
     </ClCompile>
     <ClCompile Include="SmokeEffect.cpp">
       <Filter>Source Files\Entities\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="EnterablePipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioEnterPipeDecoy.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

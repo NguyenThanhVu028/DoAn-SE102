@@ -1,16 +1,14 @@
-#include "PlaySceneUI.h"
+ #include "PlaySceneUI.h"
 #include "Sprites.h"
 #include "Game.h"
 #include "debug.h"
 #include "Mario.h"
 #include "GameObjectsManager.h"
-void PlaySceneUI::Update(DWORD dt) {
+void CPlaySceneUI::Update(DWORD dt) {
 	secondsRemain = CGame::GetInstance()->GetSecondsRemain();
 }
 
-void PlaySceneUI::Render() {
-	//DebugOutTitle(L"seconds%d", );
-
+void CPlaySceneUI::Render() {
 	//Background
 	float x = CGame::GetInstance()->GetBackBufferWidth() * 0.5f;
 	float y = CGame::GetInstance()->GetBackBufferHeight() - UI_BACKGROUND_HEIGHT * 0.5f;
@@ -81,5 +79,31 @@ void PlaySceneUI::Render() {
 				CSprites::GetInstance()->Get(UI_SPRITE_PMETER_ARROW)->DrawOnScreen(x + UI_SPRITE_PMETER_ARROW_WIDTH * i + UI_SPRITE_PMETER_ARROW_WIDTH * 0.5f, y + UI_SPRITE_PMETER_ARROW_HEIGHT * 0.5f);
 		}
 	}
-	
+
+	//Overlay
+	if (CGame::GetInstance()->GetTickCount() - fade_start < UI_FADE_TIME) {
+		darkness = (CGame::GetInstance()->GetTickCount() - fade_start) * 1.0f / UI_FADE_TIME;
+	}
+	if (CGame::GetInstance()->GetTickCount() - brighten_start < UI_FADE_TIME) {
+		darkness = 1.0f - (CGame::GetInstance()->GetTickCount() - brighten_start) * 1.0f / UI_FADE_TIME;
+	}
+	//DebugOutTitle(L"alpha %f", alpha);
+	float tempX = 0, tempY = 0;
+	while (tempY <= CGame::GetInstance()->GetBackBufferHeight()) {
+		if (tempX > CGame::GetInstance()->GetBackBufferWidth()) {
+			tempX = 0; tempY += 16;
+		}
+		CSprites::GetInstance()->Get(UI_BLACK_OVERLAY)->DrawOnScreen(tempX, tempY, darkness);
+		tempX += 16;
+	}
+}
+
+void CPlaySceneUI::StartFading() {
+	fade_start = CGame::GetInstance()->GetTickCount();
+	brighten_start = CGame::GetInstance()->GetTickCount() - UI_FADE_TIME - 10;
+}
+
+void CPlaySceneUI::StartBrightening() {
+	brighten_start = CGame::GetInstance()->GetTickCount();
+	fade_start = CGame::GetInstance()->GetTickCount() - UI_FADE_TIME - 10;
 }

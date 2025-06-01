@@ -7,6 +7,8 @@ start	0
 # type: 0: intro, 1: play scene 
 [SCENES]
 0	Resources\Data\Scenes\map1-1.txt
+1	Resources\Data\Scenes\map1-1-hidden.txt
+2	Resources\Data\Scenes\map1-1-ExitPipe.txt
 
 # id	file 
 [TEXTURES]

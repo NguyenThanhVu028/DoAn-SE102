@@ -499,6 +499,9 @@ void CGame::Load(LPCWSTR gameFile)
 
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n", gameFile);
 
+	ResetTimer();
+	EndPButton();
+
 	SwitchScene();
 }
 
@@ -523,6 +526,7 @@ void CGame::SwitchScene()
 
 void CGame::InitiateSwitchScene(int scene_id)
 {
+	DebugOutTitle(L"scen id %d", scene_id);
 	next_scene = scene_id;
 }
 

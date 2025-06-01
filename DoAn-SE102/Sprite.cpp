@@ -32,7 +32,7 @@ CSprite::CSprite(int id, int left, int top, int right, int bottom, LPTEXTURE tex
 	D3DXMatrixScaling(&this->matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f);
 }
 
-void CSprite::Draw(float x, float y)
+void CSprite::Draw(float x, float y, float alpha)
 {
 	CGame* g = CGame::GetInstance();
 	float cx, cy;
@@ -49,6 +49,7 @@ void CSprite::Draw(float x, float y)
 	D3DXMatrixTranslation(&matTranslation, x - cx, g->GetBackBufferHeight() - y + cy, 0.1f);
 
 	this->sprite.matWorld = (this->matScaling * matTranslation);
+	this->sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
 
@@ -56,7 +57,7 @@ void CSprite::Draw(float x, float y)
 	g->GetSpriteHandler()->GetViewTransform(&oldMatrix);
 }
 
-void CSprite::DrawOnScreen(float x, float y) {
+void CSprite::DrawOnScreen(float x, float y, float alpha) {
 	CGame* g = CGame::GetInstance();
 
 	D3DXMATRIX matTranslation;
@@ -67,6 +68,7 @@ void CSprite::DrawOnScreen(float x, float y) {
 	D3DXMatrixTranslation(&matTranslation, x, g->GetBackBufferHeight() - y, 0.1f);
 
 	this->sprite.matWorld = (this->matScaling * matTranslation);
+	this->sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
 

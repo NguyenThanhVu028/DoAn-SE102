@@ -1,5 +1,6 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#MAIN WORLD
 #TOP LEFT
 20011	443	154	458	169	10
 #TOP
@@ -18,6 +19,9 @@
 20018	460	171	475	186	10
 #BOTTOM RIGHT
 20019	477	171	492	186	10
+
+#HIDDEN AREA
+20161	1055	188	1070	203	10
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

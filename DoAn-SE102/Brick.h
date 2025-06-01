@@ -29,7 +29,7 @@ public:
 	//int IsCollidable() { return 1; };
 	bool IsInteractable() { return (CGame::GetInstance()->GetTickCount() - bounce_time_start > BRICK_BOUNCE_TIME) && isAvailable; }
 	bool IsBouncing() { return (CGame::GetInstance()->GetTickCount() - bounce_time_start < BRICK_BOUNCE_TIME); }
-	bool AllowOverlap() { return false; }
+	bool AllowOverlap() { return !IsBlocking(); }
 	virtual void SpecialEffect(LPCOLLISIONEVENT e);
 };
 

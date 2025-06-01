@@ -16,7 +16,7 @@ class CGameObjectsManager
 	static CGameObjectsManager* __instance;
 
 	//Player
-	LPGAMEOBJECT player;
+	LPGAMEOBJECT player = NULL;
 	
 	//Movable Objects (Enemies, items, ...)
 	vector<LPGAMEOBJECT> movableObjects;

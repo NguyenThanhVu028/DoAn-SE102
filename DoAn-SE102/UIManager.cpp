@@ -1,10 +1,16 @@
 #include "UIManager.h"
-UI* UIManager::ui_Instance = new PlaySceneUI();
+CUIManager* CUIManager::instance = NULL;
+UI* CUIManager::ui_Instance = NULL;
 
-void UIManager::Update(DWORD dt) {
+void CUIManager::Update(DWORD dt) {
 	if (ui_Instance != NULL) ui_Instance->Update(dt);
 }
 
-void UIManager::Render() {
+void CUIManager::Render() {
 	if (ui_Instance != NULL) ui_Instance->Render();
+}
+
+CUIManager* CUIManager::GetInstance() {
+	if (instance == NULL) instance = new CUIManager();
+	return instance;
 }

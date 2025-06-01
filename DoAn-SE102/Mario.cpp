@@ -10,8 +10,10 @@
 #include "Coin.h"
 #include "PButton.h"
 #include "GreenMushroom.h"
+#include "EnterablePipe.h"
 
 void CMario::Update(DWORD dt) {
+	if (isHidden) return;
 	if (state == MarioState::DIE) {
 		if (CGame::GetInstance()->GetTickCount() - death_start < MARIO_DEATH_TIME * 0.2f) {
 			targetVx = 0;
@@ -66,6 +68,7 @@ void CMario::Update(DWORD dt) {
 
 	//Check collision
 	isGrounded = false;			//Before checking for collision, Mario is considered not touching the ground
+	enterablePipe = NULL;		//Before checking for collision, Mario is considered not touching any enterable pipe
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 1, 1);
 
 	//Check collision for Mairo's head
@@ -190,38 +193,46 @@ void CMario::UpdatePMeter(DWORD dt) {
 }
 void CMario::UpdateVelocity(DWORD dt) {
 	vy += ay * dt;
-	if (targetVx != 0) {
-		//Choose suitable acceleration based on Mario's current speed
-		if (abs(vx) <= MARIO_RUN_SPEED) ax = nx * MARIO_WALK_ACCEL_X;
-		else ax = nx * MARIO_RUN_ACCEL_X;
-		float prevVx = vx;
-		vx += ax * dt;
+	//if (pushForce != 0) {
+	//	if (abs(vx) < abs(pushForce) || vx * pushForce <= 0) vx = pushForce;
+	//}
+	//else {
+	//	if(realVx != vx) vx = realVx;	
+		if (targetVx != 0) {
+			//Choose suitable acceleration based on Mario's current speed
+			if (abs(vx) <= MARIO_RUN_SPEED) ax = nx * MARIO_WALK_ACCEL_X;
+			else ax = nx * MARIO_RUN_ACCEL_X;
+			float prevVx = vx;
+			vx += ax * dt;
 
-		if (targetVx * prevVx > 0) {
-			if (abs(vx) > abs(targetVx)) {
-				if (abs(prevVx) < abs(targetVx)) vx = targetVx;
-				else {
-					vx = prevVx + -1 * nx * MARIO_DECEL_X * 2 * dt;
-					if (abs(vx) < abs(targetVx)) vx = targetVx;
-				}
+			if (targetVx * prevVx > 0) {
+					if (abs(vx) > abs(targetVx)) {
+						if (abs(prevVx) < abs(targetVx)) vx = targetVx;
+						else {
+							vx = prevVx + -1 * nx * MARIO_DECEL_X * 2 * dt;
+							if (abs(vx) < abs(targetVx)) vx = targetVx;
+						}
+					}
+			}
+			else {
+				vx = prevVx + nx * MARIO_BRAKE_DECEL * dt;
 			}
 		}
 		else {
-			vx = prevVx + nx * MARIO_BRAKE_DECEL * dt;
+			if (vx > 0) ax = -MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
+			else if (vx < 0) ax = MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
+			else ax = 0;
+			float prevVx = vx;
+			vx += ax * dt;
+			if (prevVx == 0 || prevVx * vx < 0) vx = 0;
 		}
-	}
-	else {
-		if (vx > 0) ax = -MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
-		else if (vx < 0) ax = MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
-		else ax = 0;
-		float prevVx = vx;
-		vx += ax * dt;
-		if (prevVx == 0 || prevVx * vx < 0) vx = 0;
-	}
+	//	realVx = vx;
+	//}
 	if (vy < maxVy) vy = maxVy;
 	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 }
 void CMario::Render() {
+	if (isHidden) return;
 	if (state == MarioState::DIE) {
 		if(aniToRender != NULL) aniToRender->Render(x, y - MARIO_SMALL_BBOX_HEIGHT * 0.5f);
 		return;
@@ -756,6 +767,7 @@ void CMario::GetAnimationRACCOON() {
 
 void CMario::SetState(MarioState state) {
 	if (this->state == MarioState::DIE) return;
+	if (isHidden) return;
 	switch (state) {
 	case MarioState::DIE:
 		if (shell != NULL) {
@@ -781,7 +793,7 @@ void CMario::SetState(MarioState state) {
 			else if (abs(vx) <= MARIO_RUN_SPEED) jumpTime = MARIO_JUMP_RUN_TIME;
 			else if (abs(vx) <= MARIO_RUN_MAXSPEED) jumpTime = MARIO_JUMP_RUN_MAXSPEED_TIME;
 			//vy = -MARIO_JUMP_SPEED;
-			vy = -MARIO_JUMP_MIN_SPEED;
+			//vy = -MARIO_JUMP_MIN_SPEED;
 			ay = -MARIO_JUMP_ACCEL;
 			maxVy = -MARIO_JUMP_SPEED;
 			lastJumpTime = CGame::GetInstance()->GetTickCount();
@@ -803,9 +815,22 @@ void CMario::SetState(MarioState state) {
 	case MarioState::RELEASE_JUMP:
 		if (level == MarioLevel::RACCOON) {
 			if(CGame::GetInstance()->GetTickCount() - fly_start > MARIO_FLY_TIME)
-				ay = MARIO_GRAVITY;
+				if (CGame::GetInstance()->GetTickCount() - lastJumpTime < MARIO_MIN_JUMP_TIME) {
+					jumpTime = MARIO_MIN_JUMP_TIME;
+				}
+				else ay = MARIO_GRAVITY;
+				//ay = MARIO_GRAVITY;
+			//else {
+
+			//}
+			
 		}
-		else ay = MARIO_GRAVITY;
+		else {
+			if (CGame::GetInstance()->GetTickCount() - lastJumpTime < MARIO_MIN_JUMP_TIME) {
+				jumpTime = MARIO_MIN_JUMP_TIME;
+			}
+			else ay = MARIO_GRAVITY;
+		}
 		break;
 	case MarioState::IDLE:
 		if (isGrounded) {
@@ -882,10 +907,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 		if (e->ny < 0) {
 			//isGrounded = true;
 			float ml, mt, mr, mb;
-			float objl, objt, objr , objb;
+			float objl, objt, objr, objb;
 			GetBoundingBox(ml, mt, mr, mb);
 			e->obj->GetBoundingBox(objl, objt, objr, objb);
-			if (!(mr < objl|| ml > objr)) {
+			if (!(mr < objl || ml > objr)) {
 				isGrounded = true;
 			}
 		}
@@ -904,6 +929,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 		dynamic_cast<CCoin*>(e->obj) ||
 		dynamic_cast<CPButton*>(e->obj))
 		e->obj->OnCollisionWith(e);
+	if (dynamic_cast<CEnterablePipe*>(e->obj)) enterablePipe = dynamic_cast<CEnterablePipe*>(e->obj);
 }
 void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CGoomba*>(e->obj)) {
@@ -1091,5 +1117,13 @@ void CMario::AdjustShellPosition() {
 			break;
 		}
 		shell->SetPosition(tempX, tempY);
+	}
+}
+
+void CMario::EnterPipe(bool direction) {
+	//DebugOutTitle(L"EnterPipe");
+	if (isHidden) return;
+	if (enterablePipe != NULL) {
+		if (dynamic_cast<CEnterablePipe*>(enterablePipe) != NULL) dynamic_cast<CEnterablePipe*>(enterablePipe)->RequestEnter(direction);
 	}
 }

@@ -31,11 +31,12 @@
 #define MARIO_BRAKE_DECEL MARIO_DECEL_X * 2.5f
 
 #define MARIO_JUMP_TIME 270
+#define MARIO_MIN_JUMP_TIME 100
 #define MARIO_JUMP_WALK_TIME 280
 #define MARIO_JUMP_RUN_TIME 295
 #define MARIO_JUMP_RUN_MAXSPEED_TIME 300
 #define MARIO_JUMP_SPEED 0.22f
-#define MARIO_JUMP_MIN_SPEED 0.1f
+//#define MARIO_JUMP_MIN_SPEED 0.1f
 #define MARIO_JUMP_ACCEL 0.0025f
 
 #define MARIO_FLY_SPEED MARIO_JUMP_SPEED * 0.5f
@@ -50,7 +51,7 @@
 #define MARIO_PMETER_DECREASE_SPEED 0.025f
 #define MARIO_PMETER_TIME 5000
 
-#define MARIO_SMALL_BBOX_WIDTH  13
+#define MARIO_SMALL_BBOX_WIDTH  14
 #define MARIO_SMALL_BBOX_HEIGHT 12
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -74,6 +75,7 @@ class CMario : public CMovableGameObject
 	CMarioHead* head;
 	CMarioTail* tail;
 	CKoopaTroopa* shell;
+	CGameObject* enterablePipe;
 
 	MarioState state;
 	MarioLevel level;
@@ -95,6 +97,8 @@ class CMario : public CMovableGameObject
 
 	int isSpinning;
 	bool isNeedResetAni;
+
+	bool isHidden;
 
 	LPANIMATION aniToRender;
 
@@ -120,6 +124,7 @@ public:
 		level = MarioLevel::SMALL;
 		width = MARIO_BIG_BBOX_WIDTH;
 		height = MARIO_SMALL_BBOX_HEIGHT;
+		isHidden = false;
 
 		//Velocity
 		targetVx = 0;					//Mario target velocity, the game will calculate acceleration based on target velocity and current velocity
@@ -149,6 +154,7 @@ public:
 		tail = new CMarioTail(x, y);
 		head->width = width;
 		shell = NULL;
+		enterablePipe = NULL;
 
 		//Timer
 		untouchable_start = game->GetTickCount() - MARIO_UNTOUCHABLE_TIME - 10;
@@ -199,6 +205,8 @@ public:
 	void OnPressRunButton() { isRunButtonPressed = true; }
 	void OnReleaseRunButton();
 	bool IsRunButtonPressed() { return isRunButtonPressed; }
+
+	void EnterPipe();
 	
 	bool IsHoldingShell() { return shell != NULL; }
 	void ResetTurningTimer();
@@ -210,5 +218,10 @@ public:
 	void CheckTailCollision(DWORD dt);
 	void UpdatePMeter(DWORD dt);
 	void UpdateVelocity(DWORD dt);
+
+	void Hide() { isHidden = true; }
+	void UnHide() { isHidden = false; }
+
+	void EnterPipe(bool direction);
 };
 

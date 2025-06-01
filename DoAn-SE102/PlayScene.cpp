@@ -237,6 +237,23 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
 		break;
 	}
+	case OBJECT_TYPE_ENTERABLE_PIPE:
+	{
+		if (tokens.size() < 12) break;
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = (int)atoi(tokens[5].c_str());
+		bool isVertical = (bool)atoi(tokens[6].c_str());
+		int endSide = (int)atoi(tokens[7].c_str());
+		bool enterSide = (bool)atoi(tokens[8].c_str());
+		bool type = (int)atoi(tokens[9].c_str());
+		int world_id = (int)atoi(tokens[10].c_str());
+		bool isEnabled = (int)atoi(tokens[11].c_str());
+
+		obj = new CEnterablePipe(x, y, cell_width, cell_height, length, isVertical, endSide, enterSide, type, world_id, isEnabled);
+		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
+		break;
+	}
 	case OBJECT_TYPE_EMPTY_BRICKBLOCK:
 		obj = new CBrick(x, y);
 		CGameObjectsManager::GetInstance()->AddStaticObject(obj);
@@ -389,8 +406,6 @@ void CPlayScene::Load()
 	}
 
 	f.close();
-	CGame::GetInstance()->ResetTimer();
-	CGame::GetInstance()->EndPButton();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
@@ -453,42 +468,18 @@ void CPlayScene::Update(DWORD dt)
 	//Remove objects that are deleted
 	PurgeDeletedObjects();
 
-	if (!CGame::GetInstance()->IsFrozen()) UIManager::Update(dt);
+	if (!CGame::GetInstance()->IsFrozen()) CUIManager::GetInstance()->Update(dt);
 }
 
 void CPlayScene::Render()
 {
 	background->Render();
 	CGameObjectsManager::GetInstance()->Render();
-	UIManager::Render();
+	CUIManager::GetInstance()->Render();
 }
 
-/*
-*	Clear all objects from this scene
-*/
-//void CPlayScene::Clear()
-//{
-//	vector<LPGAMEOBJECT>::iterator it;
-//	for (it = objects.begin(); it != objects.end(); it++)
-//	{
-//		delete (*it);
-//	}
-//	objects.clear();
-//}
-
-/*
-	Unload scene
-
-	TODO: Beside objects, we need to clean up sprites, animations and textures as well 
-
-*/
 void CPlayScene::Unload()
 {
-	//for (int i = 0; i < objects.size(); i++)
-	//	delete objects[i];
-
-	//objects.clear();
-	//player = NULL;
 	CGameObjectsManager::GetInstance()->Clear();
 	background->Clear();
 

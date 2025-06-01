@@ -1,10 +1,17 @@
 #pragma once
 #include "PlaySceneUI.h"
-class UIManager
+class CUIManager
 {
+	static CUIManager* instance;
 	static UI* ui_Instance;
 public:
-	static void Update(DWORD dt);
-	static void Render();
+	CUIManager() {
+		if (ui_Instance == NULL) ui_Instance = new CPlaySceneUI();
+	}
+	static CUIManager* GetInstance();
+	void Update(DWORD dt);
+	void Render();
+	void StartFading() { ui_Instance->StartFading(); }
+	void StartBrightening() { ui_Instance->StartBrightening(); }
 };
 

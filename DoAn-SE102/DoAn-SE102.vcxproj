@@ -148,6 +148,7 @@
     <ClInclude Include="EdgeSensor.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnterablePipe.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="FirePiranhaPlant.h" />
     <ClInclude Include="FirePiranhaPlantPipe.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="LevelUpQuestionBlock.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioAniIds.h" />
+    <ClInclude Include="MarioEnterPipeDecoy.h" />
     <ClInclude Include="MarioHead.h" />
     <ClInclude Include="MarioKeyEventHandler.h" />
     <ClInclude Include="MarioTail.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="EdgeSensor.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EnterablePipe.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FirePiranhaPlant.cpp" />
     <ClCompile Include="FirePiranhaPlantPipe.cpp" />
@@ -235,6 +238,7 @@
     <ClCompile Include="LevelUpQuestionBlock.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioEnterPipeDecoy.cpp" />
     <ClCompile Include="MarioHead.cpp" />
     <ClCompile Include="MarioKeyEventHandler.cpp" />
     <ClCompile Include="MarioTail.cpp" />

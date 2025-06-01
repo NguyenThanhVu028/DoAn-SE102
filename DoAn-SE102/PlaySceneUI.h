@@ -22,6 +22,8 @@
 #define UI_PMETER_MAX_ANIMATION_SLOW_FLICKERING 500
 #define UI_PMETER_MAX_ANIMATION_FAST_FLICKERING 250
 
+#define UI_FADE_TIME 500
+
 //spriteID
 #define UI_SPRITE_BACKGROUND 100001
 #define UI_SPRITE_NUMBER_OFFSET 100010
@@ -34,12 +36,19 @@
 #define UI_SPRITE_PMETER_MAX_WIDTH 16
 #define UI_SPRITE_PMETER_MAX_HEIGHT 8
 #define UI_ANIMATION_PMETER_MAX 100022
+#define UI_BLACK_OVERLAY 40031
 
-class PlaySceneUI : public UI
+class CPlaySceneUI : public UI
 {
 	LONG secondsRemain;
+	ULONGLONG fade_start;
+	ULONGLONG brighten_start;
+
+	float darkness = 0.0f;
 public: 
 	void Update(DWORD dt);
 	void Render();
+	void StartFading();
+	void StartBrightening();
 };
 
