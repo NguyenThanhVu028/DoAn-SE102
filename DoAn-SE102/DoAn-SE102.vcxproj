@@ -150,6 +150,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnterablePipe.h" />
+    <ClInclude Include="FinalReward.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="FirePiranhaPlant.h" />
     <ClInclude Include="FirePiranhaPlantPipe.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="EdgeSensor.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EnterablePipe.cpp" />
+    <ClCompile Include="FinalReward.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FirePiranhaPlant.cpp" />
     <ClCompile Include="FirePiranhaPlantPipe.cpp" />

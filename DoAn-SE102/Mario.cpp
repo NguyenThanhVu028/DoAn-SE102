@@ -11,6 +11,7 @@
 #include "PButton.h"
 #include "GreenMushroom.h"
 #include "EnterablePipe.h"
+#include "FinalReward.h"
 
 void CMario::Update(DWORD dt) {
 	if (isHidden) return;
@@ -476,7 +477,7 @@ void CMario::GetAnimationBIG() {
 		else aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_KICK_SHELL_LEFT);
 		return;
 	}
-	if (!isGrounded) {
+	if (!isGrounded && state != MarioState::SIT) {
 		if (nx == 1) {
 			if (abs(vx) == MARIO_RUN_MAXSPEED) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_BIG_ANIMATION_JUMP_MAXSPEED_RIGHT);
@@ -632,7 +633,7 @@ void CMario::GetAnimationRACCOON() {
 		else aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_KICK_SHELL_LEFT);
 		return;
 	}
-	if (!isGrounded) {
+	if (!isGrounded && state != MarioState::SIT) {
 		if (nx == 1) {
 			if (CGame::GetInstance()->GetTickCount() - fly_start < MARIO_FLY_TIME) {
 				aniToRender = CAnimations::GetInstance()->Get(MARIO_RACCOON_ANIMATION_FLY_RIGHT);
@@ -930,6 +931,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 		dynamic_cast<CPButton*>(e->obj))
 		e->obj->OnCollisionWith(e);
 	if (dynamic_cast<CEnterablePipe*>(e->obj)) enterablePipe = dynamic_cast<CEnterablePipe*>(e->obj);
+	if (dynamic_cast<CFinalReward*>(e->obj)) OnCollisionWithFinalReward(e);
 }
 void CMario::OncollisionWithEnemy(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CGoomba*>(e->obj)) {
@@ -988,6 +990,11 @@ void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
 }
 void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
 	OnLevelDown();
+}
+void CMario::OnCollisionWithFinalReward(LPCOLLISIONEVENT e) {
+	if (dynamic_cast<CFinalReward*>(e->obj)) {
+		dynamic_cast<CFinalReward*>(e->obj)->Collect();
+	}
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {

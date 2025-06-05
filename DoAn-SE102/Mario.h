@@ -196,6 +196,7 @@ public:
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e);
 	void OncollisionWithEnemy(LPCOLLISIONEVENT e);
+	void OnCollisionWithFinalReward(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 

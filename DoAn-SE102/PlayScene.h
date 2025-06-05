@@ -23,6 +23,7 @@
 #include "RedGoombaSpawner.h"
 #include "RedKoopaTroopaSpawner.h"
 #include "GreenKoopaTroopaSpawner.h"
+#include "FinalReward.h"
 #include "UIManager.h"
 
 

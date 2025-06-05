@@ -326,6 +326,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		CGameObjectsManager::GetInstance()->AddSpawner(o);
 	}
 	break;
+	case OBJECT_TYPE_FINAL_REWARD:
+	{
+		if (tokens.size() < 3) return;
+
+		CFinalReward* item = new CFinalReward(x, y);
+		CGameObjectsManager::GetInstance()->AddStaticObject(item);
+	}
+	break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
