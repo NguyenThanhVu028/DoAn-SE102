@@ -58,10 +58,7 @@ void CMarioKeyEventHandler::OnKeyDown(int KeyCode)
 		//CUIManager::GetInstance()->StartFading();
 		break;
 	case DIK_M:
-		CUIManager::GetInstance()->StartFading();
-		break;
-	case DIK_B:
-		CUIManager::GetInstance()->StartBrightening();
+		CUIManager::GetInstance()->StartEndGameSequence();
 		break;
 	}
 }

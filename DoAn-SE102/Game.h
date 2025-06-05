@@ -4,6 +4,7 @@
 #include <d3dx10.h>
 #include <unordered_map>
 #include <string>
+#include "debug.h"
 
 using namespace std;
 
@@ -59,6 +60,11 @@ class CGame
 	LONG maxTime = -1;
 
 	bool isFrozen = false;
+	bool isTimerFrozen = false;
+
+	bool isGameEnded = false;
+
+	int itemAchieved = -1;
 
 	ULONGLONG tickOffset = 0;
 	ULONGLONG tickFreeze = 0;
@@ -146,6 +152,13 @@ public:
 	void FreezeGame() { if (isFrozen) return; isFrozen = true; tickFreeze = GetTickCount64(); };
 	void UnFreezeGame() { if (!isFrozen) return; isFrozen = false; tickOffset += GetTickCount64() - tickFreeze; };
 	bool IsFrozen() { return isFrozen; }
+	void FreezeTimer() { tickFreeze = GetTickCount(); isTimerFrozen = true; }
+
+	void EndGame() { isGameEnded = true; }
+	bool IsGameEnded() { return isGameEnded; }
+
+	int GetItemAchieved() { return itemAchieved; }
+	void SetItemAchieved(int item) { itemAchieved = item; }
 
 	ULONGLONG GetTickCount();
 

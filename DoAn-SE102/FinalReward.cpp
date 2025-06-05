@@ -41,4 +41,5 @@ void CFinalReward::Render() {
 void CFinalReward::Collect() {
 	isCollected = true;
 	vy = -FINAL_REWARD_LEVITATE_SPEED;
+	CGame::GetInstance()->SetItemAchieved(currentItem);
 }

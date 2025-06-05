@@ -5,7 +5,19 @@
 #include "Mario.h"
 #include "GameObjectsManager.h"
 void CPlaySceneUI::Update(DWORD dt) {
-	secondsRemain = CGame::GetInstance()->GetSecondsRemain();
+	if (isEndGameSequenceStart) {
+		if (CGame::GetInstance()->GetTickCount() - endgame_sequence_start > UI_COUNT_TIME_REMAIN_START) {
+			if(timeRemain > 0) timeRemain -= UI_TIME_LEFT_DECREASE_SPEED * dt;
+			if (timeRemain < 0) timeRemain = 0;
+		}
+		//DebugOutTitle(L"%d", secondsRemain - (LONG)timeRemain);
+		CGame::GetInstance()->IncreaseScore(50 * (secondsRemain - (LONG)timeRemain));
+		secondsRemain = (LONG)timeRemain;
+	}
+	else {
+		secondsRemain = CGame::GetInstance()->GetSecondsRemain();
+	}
+	
 }
 
 void CPlaySceneUI::Render() {
@@ -23,7 +35,6 @@ void CPlaySceneUI::Render() {
 		sec /= 10;
 		CSprites::GetInstance()->Get(UI_SPRITE_NUMBER_OFFSET + temp)->DrawOnScreen(x + UI_SPRITE_NUMBER_WIDTH * i + UI_SPRITE_NUMBER_WIDTH * 0.5f, y + UI_SPRITE_NUMBER_HEIGHT * 0.5f);
 	}
-
 	//Coins
 	int coins = CGame::GetInstance()->GetCoin();
 	x = UI_COIN_POSX;
@@ -96,6 +107,31 @@ void CPlaySceneUI::Render() {
 		CSprites::GetInstance()->Get(UI_BLACK_OVERLAY)->DrawOnScreen(tempX, tempY, darkness);
 		tempX += 16;
 	}
+
+	//End game text
+	if (isEndGameSequenceStart) {
+		CSprites::GetInstance()->Get(UI_END_GAME_TEXT1)->DrawOnScreen(CGame::GetInstance()->GetBackBufferWidth() * 0.5f, UI_TEXT1_POSY);
+		if (CGame::GetInstance()->GetTickCount() - endgame_sequence_start > UI_BETWEEN_LINES_TIME) {
+			CSprites::GetInstance()->Get(UI_END_GAME_TEXT2)->DrawOnScreen(CGame::GetInstance()->GetBackBufferWidth() * 0.5f, UI_TEXT2_POSY);
+			int frameId = -1;
+			switch (CGame::GetInstance()->GetItemAchieved()) {
+			case 1:
+				frameId = UI_FRAME_FLOWER;
+				break;
+			case 2:
+				frameId = UI_FRAME_STAR;
+				break;
+			case 3:
+				frameId = UI_FRAME_MUSHROOM;
+				break;
+			default:
+				frameId = UI_FRAME_EMPTY;
+				break;
+			}
+			CAnimations::GetInstance()->GetAsInstance(frameId)->RenderOnScreen(CGame::GetInstance()->GetBackBufferWidth() * 0.5f + UI_FLOAT_FRAME_OFFSET_X, UI_FLOAT_FRAME_OFFSET_Y);
+			CAnimations::GetInstance()->Get(frameId)->RenderOnScreen(CGame::GetInstance()->GetBackBufferWidth() * 0.5f + UI_FRAME1_OFFSET_X, CGame::GetInstance()->GetBackBufferHeight() + UI_FRAME1_OFFSET_Y, UI_FLICKERING_TIME);
+		}
+	}
 }
 
 void CPlaySceneUI::StartFading() {
@@ -106,4 +142,12 @@ void CPlaySceneUI::StartFading() {
 void CPlaySceneUI::StartBrightening() {
 	brighten_start = CGame::GetInstance()->GetTickCount();
 	fade_start = CGame::GetInstance()->GetTickCount() - UI_FADE_TIME - 10;
+}
+
+void CPlaySceneUI::StartEndGameSequence() {
+	if (!isEndGameSequenceStart) {
+		isEndGameSequenceStart = true;
+		endgame_sequence_start = CGame::GetInstance()->GetTickCount();
+		timeRemain = CGame::GetInstance()->GetSecondsRemain();
+	}
 }

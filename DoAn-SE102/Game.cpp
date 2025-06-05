@@ -570,8 +570,15 @@ void CGame::SetMaxTime(LONG t) {
 }
 
 LONG CGame::GetSecondsRemain() {
-	if (maxTime == -1 || GetTickCount() - game_start >= maxTime) return 0;
-	return (maxTime - (GetTickCount() - game_start)) / 1000;
+	if (isTimerFrozen) {
+		if (maxTime == -1 || tickFreeze - game_start >= maxTime) return 0;
+		return (maxTime - (tickFreeze - game_start)) / 1000;
+	}
+	else {
+		if (maxTime == -1 || GetTickCount() - game_start >= maxTime) return 0;
+		return (maxTime - (GetTickCount() - game_start)) / 1000;
+	}
+
 }
 
 void CGame::StartPButton() {

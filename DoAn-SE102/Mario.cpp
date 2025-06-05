@@ -31,12 +31,14 @@ void CMario::Update(DWORD dt) {
 		return;
 	}
 
+	if (CGame::GetInstance()->IsGameEnded() && isGrounded) targetVx = MARIO_WALK_SPEED;
+
 	if (CGame::GetInstance()->GetTickCount() - spin_start > MARIO_SPIN_TIME) {
 		isSpinning = 0; tail->SetEnable(false);
 	}
 
 	if (GetTickCount64() - level_start < level_duration) return;
-	else CGame::GetInstance()->UnFreezeGame();
+	else if(!CGame::GetInstance()->IsGameEnded()) CGame::GetInstance()->UnFreezeGame();
 
 	if (CGame::GetInstance()->IsFrozen()) return;
 
@@ -149,48 +151,7 @@ void CMario::UpdatePMeter(DWORD dt) {
 		//	}
 		//}
 	}
-	//If Mario is not jumping or falling
-	//if (isGrounded) {
-	//	if(CGame::GetInstance()->GetTickCount() - pMeterMax_start > MARIO_PMETER_TIME) isPMeterMax = false;
-	//	if (abs(vx) > MARIO_RUN_SPEED && vx * nx > 0) {
-	//		float ratioVx = (abs(vx) - MARIO_RUN_SPEED) * 1.0f / (MARIO_RUN_MAXSPEED - MARIO_RUN_SPEED);
-	//		float ratioPMeter = pMeter * 1.0f / MARIO_PMETER_MAX;
-	//		if (ratioVx >= ratioPMeter) pMeter = ratioVx * MARIO_PMETER_MAX;
-	//		else {
-	//			if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
-	//				if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
-	//				if (pMeter < 0) pMeter = 0;
-	//			}
-	//		}
-	//	}
-	//	else {
-	//		if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME)) {
-	//			if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
-	//			if (pMeter < 0) pMeter = 0;
-	//		}
-	//	}
-	//	//if (abs(vx) >= MARIO_RUN_SPEED && abs(maxVx) >= MARIO_RUN_SPEED) {
-	//	//	if (pMeter < MARIO_PMETER_MAX) {
-	//	//		pMeter += MARIO_PMETER_INCREASE_SPEED * dt;
-	//	//		if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
-	//	//	}
-	//	//}
-	//	//else {
-	//	//	if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) && !(level != MarioLevel::RACCOON && isPMeterMax)) {
-	//	//		if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
-	//	//		if (pMeter < 0) pMeter = 0;
-	//	//	}
-	//	//}
-
-	//}
-	//else {
-	//	if (!(level == MarioLevel::RACCOON && CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) && !(level != MarioLevel::RACCOON && isPMeterMax)) {
-	//		if (pMeter > 0) pMeter -= MARIO_PMETER_DECREASE_SPEED * dt;
-	//		if (pMeter < 0) pMeter = 0;
-	//		if (!abs(maxVx) >= MARIO_RUN_SPEED || pMeter != MARIO_PMETER_MAX) {
-	//		}
-	//	}
-	//}
+	if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 }
 void CMario::UpdateVelocity(DWORD dt) {
 	vy += ay * dt;
@@ -767,6 +728,7 @@ void CMario::GetAnimationRACCOON() {
 }
 
 void CMario::SetState(MarioState state) {
+	if (CGame::GetInstance()->IsGameEnded()) return;
 	if (this->state == MarioState::DIE) return;
 	if (isHidden) return;
 	switch (state) {
@@ -993,7 +955,14 @@ void CMario::OnCollisionWithPiranhaPlant(LPCOLLISIONEVENT e) {
 }
 void CMario::OnCollisionWithFinalReward(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CFinalReward*>(e->obj)) {
-		dynamic_cast<CFinalReward*>(e->obj)->Collect();
+		if (!dynamic_cast<CFinalReward*>(e->obj)->IsCollected()) {
+			dynamic_cast<CFinalReward*>(e->obj)->Collect();
+			vx = vy = 0; nx = 1; ax = 0; ay = MARIO_GRAVITY;
+			targetVx = 0;
+			state = MarioState::IDLE;
+			CGame::GetInstance()->EndGame();
+			CGame::GetInstance()->FreezeTimer();
+		}
 	}
 }
 

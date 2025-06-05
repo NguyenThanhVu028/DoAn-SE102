@@ -8,6 +8,7 @@
 #include "Sprites.h"
 
 #include "MarioKeyEventHandler.h"
+#include "UIManager.h"
 #include "debug.h"
 
 using namespace std;
@@ -454,12 +455,15 @@ void CPlayScene::Update(DWORD dt)
 		pX = 20; vX = 0;
 	}
 	if (pX > mapLength - 20) {
-		pX = mapLength - 20; vX = 0;
+		if (!CGame::GetInstance()->IsGameEnded()) { pX = mapLength - 20; vX = 0; }
+		else {
+			CUIManager::GetInstance()->StartEndGameSequence();
+		}
 	}
 	if (pY < cY - 32) {
 		pY = cY - 32; vY = 0;
 	}
-	if (pY > cY + CGame::GetInstance()->GetBackBufferHeight()) {
+	if (pY > cY + CGame::GetInstance()->GetBackBufferHeight() && !CGame::GetInstance()->IsGameEnded()) {
 		mario->SetState(MarioState::DIE);
 		CGame::GetInstance()->FreezeGame();
 	}

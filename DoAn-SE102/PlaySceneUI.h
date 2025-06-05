@@ -23,6 +23,21 @@
 #define UI_PMETER_MAX_ANIMATION_FAST_FLICKERING 250
 
 #define UI_FADE_TIME 500
+#define UI_BETWEEN_LINES_TIME 750
+
+#define UI_COUNT_TIME_REMAIN_START 1000
+
+#define UI_TEXT1_POSY 48
+#define UI_TEXT2_POSY 72
+
+#define UI_FLOAT_FRAME_OFFSET_X 62
+#define UI_FLOAT_FRAME_OFFSET_Y 76
+#define UI_FRAME1_OFFSET_X 56
+#define UI_FRAME1_OFFSET_Y -29
+
+#define UI_FLICKERING_TIME 500
+
+#define UI_TIME_LEFT_DECREASE_SPEED 0.1f
 
 //spriteID
 #define UI_SPRITE_BACKGROUND 100001
@@ -37,6 +52,12 @@
 #define UI_SPRITE_PMETER_MAX_HEIGHT 8
 #define UI_ANIMATION_PMETER_MAX 100022
 #define UI_BLACK_OVERLAY 40031
+#define UI_END_GAME_TEXT1 100023
+#define UI_END_GAME_TEXT2 100024
+#define UI_FRAME_EMPTY 100025
+#define UI_FRAME_FLOWER 100026
+#define UI_FRAME_STAR 100027
+#define UI_FRAME_MUSHROOM 100028
 
 class CPlaySceneUI : public UI
 {
@@ -44,11 +65,17 @@ class CPlaySceneUI : public UI
 	ULONGLONG fade_start;
 	ULONGLONG brighten_start;
 
+	bool isEndGameSequenceStart = false;
+	ULONGLONG endgame_sequence_start;
+
 	float darkness = 0.0f;
+
+	float timeRemain = 0;
 public: 
 	void Update(DWORD dt);
 	void Render();
 	void StartFading();
 	void StartBrightening();
+	void StartEndGameSequence();
 };
 

@@ -13,5 +13,6 @@ public:
 	void Render();
 	void StartFading() { ui_Instance->StartFading(); }
 	void StartBrightening() { ui_Instance->StartBrightening(); }
+	void StartEndGameSequence() { if (dynamic_cast<CPlaySceneUI*>(ui_Instance)) dynamic_cast<CPlaySceneUI*>(ui_Instance)->StartEndGameSequence(); }
 };
 
