@@ -1,5 +1,6 @@
 #pragma once
 #include "MovableGameObject.h"
+#define DEFAULT_UNTOUCHABLE_TIME 200
 
 class CEnemy : public CMovableGameObject
 {
@@ -23,7 +24,7 @@ public:
 	virtual int IsBlocking() { return 0; }
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 
-	virtual bool IsUntouchable() { return false; }
+	virtual bool IsUntouchable() { return CGame::GetInstance()->GetTickCount() - untouchable_start < DEFAULT_UNTOUCHABLE_TIME; }
 	virtual bool IsDead() = 0;
 	virtual void SetEnable(bool t) { isEnabled = t; }
 	virtual bool IsEnabled() { return isEnabled; }

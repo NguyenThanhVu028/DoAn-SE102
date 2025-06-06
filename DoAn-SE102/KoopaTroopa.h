@@ -32,6 +32,8 @@ protected:
 	ULONGLONG charging_start;
 
 	bool isHeld;
+
+	int streak;
 public:
 	CKoopaTroopa(float x, float y, int nx) : CEnemy(x, y, nx) {
 		vx = (nx == 1) ? KOOPA_TROOPA_MOVE_SPEED : -KOOPA_TROOPA_MOVE_SPEED;
@@ -43,6 +45,7 @@ public:
 		height = KOOPA_TROOPA_HEIGHT;
 		charging_start = CGame::GetInstance()->GetTickCount();
 		isHeld = false;
+		streak = 1;
 	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -65,7 +68,7 @@ public:
 	bool IsMoving() { return state == KoopaTroopaState::SHELL_MOVING; }
 	bool IsHeld() { return isHeld; }
 	virtual void SetDirection(int nx);
-	bool IsUntouchable();
+	bool IsUntouchable() override;
 	void OnHeld() { isHeld = true; ay = 0; vy = 0; }
 	void ReleaseHeld() { isHeld = false; ay = KOOPA_TROOPA_GRAVITY; }
 };

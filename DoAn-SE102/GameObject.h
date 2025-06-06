@@ -14,7 +14,7 @@ using namespace std;
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 #define BBOX_ALPHA 0.25f		// Bounding box transparency
 
-#define DESPAWN_OFFSET 32		// determine the area outside camera view that objects will despawn 
+#define DESPAWN_OFFSET 32		// determine the area outside camera view that objects will despawn
 
 class CGameObject
 {

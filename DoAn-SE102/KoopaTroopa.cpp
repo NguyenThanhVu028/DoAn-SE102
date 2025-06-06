@@ -125,6 +125,12 @@ void CKoopaTroopa::OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e) {
 			vx = (oX < x) ? KOOPA_TROOPA_DIE_MOVE_SPEED : -KOOPA_TROOPA_DIE_MOVE_SPEED;
 		}
 		if(e->obj != this)dynamic_cast<CEnemy*>(e->obj)->OnCollisionWithShell(e);
+		float oX, oY; e->obj->GetPosition(oX, oY);
+		if(streak < 9)
+			CGameObjectsManager::GetInstance()->GetScoreEffect(oX, oY, 100 * streak);
+		else CGameObjectsManager::GetInstance()->GetScoreEffect(oX, oY, -1);
+		streak++;
+
 	}
 
 }
@@ -140,6 +146,7 @@ void CKoopaTroopa::OnCollisionWithShell(LPCOLLISIONEVENT e) {
 }
 
 void CKoopaTroopa::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
+	untouchable_start = CGame::GetInstance()->GetTickCount();
 	SetState(KoopaTroopaState::SHELL_IDLE);
 	SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
 	float oX, oY;
@@ -154,6 +161,7 @@ bool CKoopaTroopa::IsDead() {
 }
 
 void CKoopaTroopa::SetState(KoopaTroopaState state) {
+	streak = 1;
 	height = KOOPA_TROOPA_SHELL_HEIGHT;
 	this->state = state;
 	if(state != KoopaTroopaState::OUTSIDE) untouchable_start = CGame::GetInstance()->GetTickCount();

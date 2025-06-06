@@ -84,4 +84,5 @@ void CPiranhaPlant::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
 	e->obj->GetPosition(oX, oY);
 	CGameObjectsManager::GetInstance()->GetWhackEffect((x + oX) * 0.5f, (y + oY) * 0.5f);
 	CGameObjectsManager::GetInstance()->GetSmokeEffect(x, y);
+	CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 100);
 }

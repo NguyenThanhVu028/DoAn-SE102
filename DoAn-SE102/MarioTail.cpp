@@ -29,6 +29,10 @@ void CMarioTail::ProcessHitObjects() {
 	for (auto i : hitObjects) {
 		if (dynamic_cast<CEnemy*>(i->obj)) {
 			dynamic_cast<CEnemy*>(i->obj)->OnCollisionWithMarioTail(i);
+			//if (!(dynamic_cast<CEnemy*>(i->obj)->IsUntouchable())) {
+			//	float oX, oY; i->obj->GetPosition(oX, oY);
+			//	CGameObjectsManager::GetInstance()->GetScoreEffect(oX, oY, 100);
+			//}
 		}
 		else i->obj->OnCollisionWith(i);
 	}

@@ -89,12 +89,12 @@ void CMario::Update(DWORD dt) {
 	//DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f maxVx: %f maxVy: %f", vx, vy, ax, ay, targetVx, maxVy);
 }
 void CMario::CheckHeadCollision(DWORD dt) {
-	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f;
+	head->x = x; head->y = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f - height + head->height * 0.5f + 0.1f;
 	head->vx = vx; head->vy = vy;
 	head->ProcessCollision(dt);
-	//if (head->isBlocked) {
-	//	vy = 0; ay = MARIO_GRAVITY;
-	//}
+	if (head->isBlocked) {
+		vy = 0; ay = MARIO_GRAVITY;
+	}
 }
 void CMario::CheckTailCollision(DWORD dt) {
 	ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
@@ -105,7 +105,7 @@ void CMario::CheckTailCollision(DWORD dt) {
 		tail->SetEnable(false);
 		if (temp == 0 || temp == 4) {
 			tempX += (isSpinning == 1) ? -MARIO_TAIL_POSITION_OFFSET_X : MARIO_TAIL_POSITION_OFFSET_X;
-			tail->SetEnable(true);
+			//tail->SetEnable(true);
 		}
 		if (temp == 2) {
 			tempX += (isSpinning == 1) ? MARIO_TAIL_POSITION_OFFSET_X : -MARIO_TAIL_POSITION_OFFSET_X;
@@ -154,42 +154,35 @@ void CMario::UpdatePMeter(DWORD dt) {
 	if (pMeter > MARIO_PMETER_MAX) pMeter = MARIO_PMETER_MAX;
 }
 void CMario::UpdateVelocity(DWORD dt) {
-	vy += ay * dt;
-	//if (pushForce != 0) {
-	//	if (abs(vx) < abs(pushForce) || vx * pushForce <= 0) vx = pushForce;
-	//}
-	//else {
-	//	if(realVx != vx) vx = realVx;	
-		if (targetVx != 0) {
-			//Choose suitable acceleration based on Mario's current speed
-			if (abs(vx) <= MARIO_RUN_SPEED) ax = nx * MARIO_WALK_ACCEL_X;
-			else ax = nx * MARIO_RUN_ACCEL_X;
-			float prevVx = vx;
-			vx += ax * dt;
+	vy += ay * dt;	
+	if (targetVx != 0) {
+		//Choose suitable acceleration based on Mario's current speed
+		if (abs(vx) <= MARIO_RUN_SPEED) ax = nx * MARIO_WALK_ACCEL_X;
+		else ax = nx * MARIO_RUN_ACCEL_X;
+		float prevVx = vx;
+		vx += ax * dt;
 
-			if (targetVx * prevVx > 0) {
-					if (abs(vx) > abs(targetVx)) {
-						if (abs(prevVx) < abs(targetVx)) vx = targetVx;
-						else {
-							vx = prevVx + -1 * nx * MARIO_DECEL_X * 2 * dt;
-							if (abs(vx) < abs(targetVx)) vx = targetVx;
-						}
+		if (targetVx * prevVx > 0) {
+				if (abs(vx) > abs(targetVx)) {
+					if (abs(prevVx) < abs(targetVx)) vx = targetVx;
+					else {
+						vx = prevVx + -1 * nx * MARIO_DECEL_X * 2 * dt;
+						if (abs(vx) < abs(targetVx)) vx = targetVx;
 					}
-			}
-			else {
-				vx = prevVx + nx * MARIO_BRAKE_DECEL * dt;
-			}
+				}
 		}
 		else {
-			if (vx > 0) ax = -MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
-			else if (vx < 0) ax = MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
-			else ax = 0;
-			float prevVx = vx;
-			vx += ax * dt;
-			if (prevVx == 0 || prevVx * vx < 0) vx = 0;
+			vx = prevVx + nx * MARIO_BRAKE_DECEL * dt;
 		}
-	//	realVx = vx;
-	//}
+	}
+	else {
+		if (vx > 0) ax = -MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
+		else if (vx < 0) ax = MARIO_DECEL_X * ((isGrounded) ? 1.0f : 0);
+		else ax = 0;
+		float prevVx = vx;
+		vx += ax * dt;
+		if (prevVx == 0 || prevVx * vx < 0) vx = 0;
+	}
 	if (vy < maxVy) vy = maxVy;
 	if (maxFallSpeed != -1 && vy > maxFallSpeed) vy = maxFallSpeed;
 }
@@ -866,8 +859,9 @@ void CMario::OnNoCollision(DWORD dt) {
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (e->ny != 0 && e->obj->IsBlocking()) {
 		//DebugOutTitle(L"tick: %d", CGame::GetInstance()->GetTickCount());
-		vy = 0; ay = MARIO_GRAVITY;
+		
 		if (e->ny < 0) {
+			vy = 0; ay = MARIO_GRAVITY;
 			//isGrounded = true;
 			float ml, mt, mr, mb;
 			float objl, objt, objr, objb;
@@ -875,6 +869,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e) {
 			e->obj->GetBoundingBox(objl, objt, objr, objb);
 			if (!(mr < objl || ml > objr)) {
 				isGrounded = true;
+				streak = 1;
 			}
 		}
 	}
@@ -914,6 +909,11 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	if (e->ny < 0) {
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		e->obj->OnCollisionWith(e);
+		float oX, oY; e->obj->GetPosition(oX, oY);
+		if (streak < 9)
+			CGameObjectsManager::GetInstance()->GetScoreEffect(oX, oY, 100 * streak);
+		else CGameObjectsManager::GetInstance()->GetScoreEffect(oX, oY, -1);
+		streak++;
 	}
 	else {
 		if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
@@ -930,10 +930,15 @@ void CMario::OnCollisionWidthPowerUpItem(LPCOLLISIONEVENT e) {
 	CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 1000);
 }
 void CMario::OnCollisionWidthKoopaTroopa(LPCOLLISIONEVENT e) {
-	if ((dynamic_cast<CKoopaTroopa*>(e->obj)->IsDead())) return;
+	if ((dynamic_cast<CKoopaTroopa*>(e->obj)->IsDead()) || (dynamic_cast<CKoopaTroopa*>(e->obj)->IsUntouchable())) return;
 	if (e->ny < 0) {
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		dynamic_cast<CKoopaTroopa*>(e->obj)->OnCollisionWithMario(e);
+		float oX, oY; e->obj->GetPosition(oX, oY);
+		if (streak < 9)
+			CGameObjectsManager::GetInstance()->GetScoreEffect(oX, oY, 100 * streak);
+		else CGameObjectsManager::GetInstance()->GetScoreEffect(oX, oY, -1);
+		streak++;
 	}
 	else {
 		if (GetTickCount64() - untouchable_start < MARIO_UNTOUCHABLE_TIME) return;
@@ -969,7 +974,7 @@ void CMario::OnCollisionWithFinalReward(LPCOLLISIONEVENT e) {
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - width / 2;
 	bottom = y + MARIO_SMALL_BBOX_HEIGHT * 0.5f;
-	top = bottom - height;
+	top = bottom - height + 0.1f;
 	right = left + width;
 	
 }

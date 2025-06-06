@@ -25,7 +25,7 @@
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
 #define MARIO_WALK_ACCEL_X 0.0002f
-#define MARIO_RUN_ACCEL_X 0.000075f
+#define MARIO_RUN_ACCEL_X 0.000055f
 
 #define MARIO_DECEL_X 0.00015f
 #define MARIO_BRAKE_DECEL MARIO_DECEL_X * 2.5f
@@ -100,6 +100,8 @@ class CMario : public CMovableGameObject
 
 	bool isHidden;
 
+	int streak;
+
 	LPANIMATION aniToRender;
 
 	ULONGLONG untouchable_start;
@@ -125,6 +127,7 @@ public:
 		width = MARIO_BIG_BBOX_WIDTH;
 		height = MARIO_SMALL_BBOX_HEIGHT;
 		isHidden = false;
+		streak = 1;
 
 		//Velocity
 		targetVx = 0;					//Mario target velocity, the game will calculate acceleration based on target velocity and current velocity

@@ -91,7 +91,6 @@ void CGoomba::OnCollisionWithMario(LPCOLLISIONEVENT e) {
 	if (IsDead()) return;
 	if (e->ny < 0) {
 		SetState(GoombaState::FLATTENED);
-		CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 100);
 	}
 }
 void CGoomba::OnCollisionWithShell(LPCOLLISIONEVENT e) {
@@ -107,6 +106,7 @@ void CGoomba::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
 	int nx = (sX < x) ? -1 : 1;
 	SetState(GoombaState::UPSIDE_DOWN, nx);
 	CGameObjectsManager::GetInstance()->GetWhackEffect(x, y);
+	CGameObjectsManager::GetInstance()->GetScoreEffect(x, y, 100);
 }
 
 void CGoomba::OnNoCollision(DWORD dt) {
