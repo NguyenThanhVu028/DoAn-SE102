@@ -22,7 +22,7 @@ public:
 	CRedGoomba(float x, float y, int nx = 1) : CGoomba(x, y, nx) {
 		hasWings = true;
 		isCharging = false;
-		jump_timer = 0;
+		jump_timer = CGame::GetInstance()->GetTickCount() - RED_GOOMBA_CYCLE * 0.5f;
 		untouchable_start = CGame::GetInstance()->GetTickCount();
 	}
 

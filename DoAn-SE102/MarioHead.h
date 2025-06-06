@@ -9,11 +9,14 @@ class CMarioHead : public CMovableGameObject
 	float width, height;
 	std::vector<LPCOLLISIONEVENT> hitBlocks;		//Check if Mario's head hit any thing (only check if e->ny > 0)
 	bool isBlocked;
+
+	CGameObject* enterablePipe;
 public:
 	CMarioHead(float x, float y, float width = 14, float height = 2) : CMovableGameObject(x, y){
 		this->width = width; this->height = height;
 		hitBlocks.clear();
 		isBlocked = false;
+		enterablePipe = NULL;
 	}
 	void SetPosition(float x, float y) {}
 	void Render(){}
@@ -25,5 +28,6 @@ public:
 	void ClearHitBlocks();
 	void ProcessHitBlocks();
 	void ProcessCollision(DWORD dt);
+	CGameObject* GetEnterablePipe() { return enterablePipe; }
 };
 

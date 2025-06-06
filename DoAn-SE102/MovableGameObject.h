@@ -1,5 +1,9 @@
 #pragma once
 #include "GameObject.h"
+
+#define DEFAULT_BOUNCE_SPEED 0.2f
+#define DEFAULT_BOUNCE_MOVE_SPEED 0.045f
+
 class CMovableGameObject : public CGameObject
 {
 protected:
@@ -33,6 +37,13 @@ public:
 	virtual int IsCollidable() { return 0; };
 	virtual void OnNoCollision(DWORD dt) {};
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) {};
+	virtual void OnCollisionWithBouncingBlock(LPCOLLISIONEVENT e) {
+		vy = -DEFAULT_BOUNCE_SPEED;
+		float oX, oY; e->obj->GetPosition(oX, oY);
+		int tempNx = (oX < x) ? 1 : -1;
+		if (vx == 0) vx = tempNx * DEFAULT_BOUNCE_MOVE_SPEED;
+		else vx = tempNx * abs(vx);
+	}
 	virtual int IsBlocking() { return 1; }
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 

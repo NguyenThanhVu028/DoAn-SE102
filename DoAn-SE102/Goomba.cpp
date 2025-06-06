@@ -4,6 +4,9 @@
 #include "debug.h"
 #include "Mario.h"
 #include "RedGoomba.h"
+#include "Brick.h"
+#include "Coin.h"
+#include "QuestionBlock.h"
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - GOOMBA_WIDTH * 0.5f;
@@ -84,6 +87,15 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
 			}
 		}
 
+	}
+	if (dynamic_cast<CBrick*>(e->obj)) {
+		if (dynamic_cast<CBrick*>(e->obj)->IsBouncing()) CMovableGameObject::OnCollisionWithBouncingBlock(e);
+	}
+	if (dynamic_cast<CCoin*>(e->obj)) {
+		if (dynamic_cast<CCoin*>(e->obj)->IsBouncing()) CMovableGameObject::OnCollisionWithBouncingBlock(e);
+	}
+	if (dynamic_cast<CQuestionBlock*>(e->obj)) {
+		if (dynamic_cast<CQuestionBlock*>(e->obj)->IsBouncing()) CMovableGameObject::OnCollisionWithBouncingBlock(e);
 	}
 }
 

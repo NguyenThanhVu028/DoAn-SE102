@@ -1,6 +1,8 @@
 #pragma once
 #include "MultiTilesBlock.h"
 
+#define PIPE_ACTIVE_ZONE_OFFSET 8
+
 #define PIPE_VERTICAL_TL 20101
 #define PIPE_VERTICAL_TR 20102
 #define PIPE_VERTICAL_BL 20103

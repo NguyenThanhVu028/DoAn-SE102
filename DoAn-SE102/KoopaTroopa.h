@@ -5,7 +5,7 @@
 #define KOOPA_TROOPA_SHELL_MOVE_SPEED 0.225f
 #define KOOPA_TROOPA_DIE_JUMP_SPEED 0.2f
 #define KOOPA_TROOPA_DIE_MOVE_SPEED 0.01f
-#define KOOPA_TROOPA_GRAVITY 0.0006f
+#define KOOPA_TROOPA_GRAVITY 0.0007f
 
 #define KOOPA_TROOPA_WIDTH 16
 #define KOOPA_TROOPA_HEIGHT 32
@@ -57,6 +57,7 @@ public:
 	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithBouncingBlock(LPCOLLISIONEVENT e);
 	void OnCollisionWithMarioTail(LPCOLLISIONEVENT e);
 	virtual bool IsDead();
 	virtual void SetEnable(bool t);

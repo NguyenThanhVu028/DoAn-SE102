@@ -1,6 +1,7 @@
 #include "MarioHead.h"
 #include "QuestionBlock.h"
 #include "LevelUpQuestionBlock.h"
+#include "Pipe.h"
 
 void CMarioHead::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - width * 0.5f;
@@ -18,6 +19,9 @@ void CMarioHead::OnCollisionWith(LPCOLLISIONEVENT e) {
 		LPCOLLISIONEVENT newEvent = new CCollisionEvent(0, 0, 0);
 		*newEvent = *e;
 		hitBlocks.push_back(newEvent);
+	}
+	if (dynamic_cast<CPipe*>(e->obj)) {
+		enterablePipe = e->obj;
 	}
 }
 
@@ -51,7 +55,7 @@ void CMarioHead::ProcessHitBlocks() {
 
 void CMarioHead::ProcessCollision(DWORD dt) {
 	ClearHitBlocks();
-	isBlocked = false;
+	isBlocked = false; enterablePipe = NULL;
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 0, 0, 1, 0, -1);
 	ProcessHitBlocks();
 }

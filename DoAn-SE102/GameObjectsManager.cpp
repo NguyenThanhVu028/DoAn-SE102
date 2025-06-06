@@ -146,8 +146,7 @@ LPEFFECT CGameObjectsManager::GetScoreEffect(float x, float y, int value) {
 			i->ReEnable(); return i;
 		}
 	}
-	CScoreEffect* newEffect = new CScoreEffect(x, y);
-	newEffect->SetValue(value);
+	CScoreEffect* newEffect = new CScoreEffect(x, y, value);
 	scoreEffects.push_back(newEffect);
 	//newEffect->ReEnable();
 	return newEffect;

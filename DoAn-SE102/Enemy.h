@@ -21,6 +21,7 @@ public:
 	virtual void OnCollisionWithMario(LPCOLLISIONEVENT e) {}
 	virtual void OnCollisionWithShell(LPCOLLISIONEVENT e) {}
 	virtual void OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {}
+	virtual void OnCollisionWithBouncingBlock(LPCOLLISIONEVENT e) { CMovableGameObject::OnCollisionWithBouncingBlock(e); }
 	virtual int IsBlocking() { return 0; }
 	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 

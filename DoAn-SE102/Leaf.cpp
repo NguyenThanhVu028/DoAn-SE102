@@ -18,7 +18,11 @@ void CLeaf::Render() {
 void CLeaf::Update(DWORD dt) {
 	CGameObjectsManager::GetInstance()->CheckCollisionWith(this, dt, 1, 0, 0);
 	ULONGLONG timer = CGame::GetInstance()->GetTickCount() - checkPoint;
-	if (timer > LEAF_HALF_CYCLE_TIME) {
+	if (vy > 0 && !rised) {
+		rised = true; vy = 0;
+		checkPoint = CGame::GetInstance()->GetTickCount() - LEAF_HALF_CYCLE_TIME;
+	}
+	if (timer > LEAF_HALF_CYCLE_TIME && rised) {
 		nx = -nx;
 		ax = -ax;
 		checkPoint = CGame::GetInstance()->GetTickCount();

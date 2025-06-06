@@ -1,6 +1,8 @@
 #include "KoopaTroopa.h"
 #include "Mario.h"
 #include "QuestionBlock.h"
+#include "Brick.h"
+#include "Coin.h"
 
 void CKoopaTroopa::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
 	left = x - KOOPA_TROOPA_WIDTH * 0.5f;
@@ -64,7 +66,16 @@ void CKoopaTroopa::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<CMario*>(e->src_obj)) {
 		OnCollisionWithMario(e);
 	}
-	else if (dynamic_cast<CEnemy*>(e->obj)) {
+	if (dynamic_cast<CBrick*>(e->obj)) {
+		if (dynamic_cast<CBrick*>(e->obj)->IsBouncing()) OnCollisionWithBouncingBlock(e);
+	}
+	if (dynamic_cast<CCoin*>(e->obj)) {
+		if (dynamic_cast<CCoin*>(e->obj)->IsBouncing()) OnCollisionWithBouncingBlock(e);
+	}
+	if (dynamic_cast<CQuestionBlock*>(e->obj)) {
+		if (dynamic_cast<CQuestionBlock*>(e->obj)->IsBouncing()) OnCollisionWithBouncingBlock(e);
+	}
+	if (dynamic_cast<CEnemy*>(e->obj)) {
 		OnCollisionWithOtherEnemy(e);
 	}
 	else {
@@ -132,7 +143,12 @@ void CKoopaTroopa::OnCollisionWithOtherEnemy(LPCOLLISIONEVENT e) {
 		streak++;
 
 	}
-
+	else {
+		if (dynamic_cast<CKoopaTroopa*>(e->obj)) {
+			float oVx, oVy; dynamic_cast<CKoopaTroopa*>(e->obj)->GetSpeed(oVx, oVy);
+			if (oVx * vx < 0) vx = - vx;
+		}
+	}
 }
 
 void CKoopaTroopa::OnCollisionWithShell(LPCOLLISIONEVENT e) {
@@ -154,6 +170,12 @@ void CKoopaTroopa::OnCollisionWithMarioTail(LPCOLLISIONEVENT e) {
 	vx = (oX < x) ? KOOPA_TROOPA_MOVE_SPEED * 1.5f : -KOOPA_TROOPA_MOVE_SPEED * 1.5f;
 	vy = -KOOPA_TROOPA_DIE_JUMP_SPEED;
 	CGameObjectsManager::GetInstance()->GetWhackEffect(x, y);
+}
+
+void CKoopaTroopa::OnCollisionWithBouncingBlock(LPCOLLISIONEVENT e) {
+	SetState(KoopaTroopaState::SHELL_IDLE);
+	SetShellDirection(KoopaTroopaShellDirection::UPSIDEDOWN);
+	CEnemy::OnCollisionWithBouncingBlock(e);
 }
 
 bool CKoopaTroopa::IsDead() {

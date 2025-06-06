@@ -1,13 +1,5 @@
 #include "Pipe.h"
 
-//int CPipe::GetSpriteIdToDraw(int w, int h) {
-//	if (isVertical) {
-//
-//	}
-//	else {
-//
-//	}
-//}
 void CPipe::LoadSpriteId() {
 	if (isVertical) {
 		spriteIdML = PIPE_VERTICAL_BL;

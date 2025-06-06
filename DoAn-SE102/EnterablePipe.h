@@ -5,7 +5,7 @@
 #include "MarioEnterPipeDecoy.h"
 #include "UIManager.h"
 
-#define ENTER_ZONE 16
+#define ENTER_ZONE 12
 #define ENTER_TIME 1000
 #define TRANSITION_TIME 500
 

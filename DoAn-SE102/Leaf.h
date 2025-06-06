@@ -4,15 +4,16 @@
 #define LEAF_WIDTH 16
 #define LEAF_HEIGHT 16
 
-#define LEAF_RISE_TIME 350
-#define LEAF_HALF_CYCLE_TIME 600
+#define LEAF_RISE_TIME 400
+#define LEAF_HALF_CYCLE_TIME 500
 
-#define LEAF_ACCEL_X 0.00004f
-#define LEAF_ACCEL_Y -0.0001f
+#define LEAF_ACCEL_X 0.00006f
+#define LEAF_ACCEL_Y -0.00025f
 
 #define LEAF_VX 0.06f
-#define LEAF_VY 0.06f
-#define LEAF_INITIAL_VY -0.1f
+#define LEAF_VY 0.09f
+#define LEAF_INITIAL_VY -0.22f
+#define LEAF_INITIAL_AY 0.0005f
 
 //Sprite Id
 #define LEAF_SPRITE_LEFT 70021
@@ -21,6 +22,7 @@
 class CLeaf : public CLevelUpItem
 {
 	ULONGLONG checkPoint;
+	bool rised;
 public:
 	CLeaf(float x, float y) : CLevelUpItem(x, y) { 
 		nx = -1;
@@ -28,7 +30,8 @@ public:
 		vy = LEAF_INITIAL_VY;
 		checkPoint = CGame::GetInstance()->GetTickCount();
 		ax = 0;
-		ay = 0;
+		ay = LEAF_INITIAL_AY;
+		rised = false;
 	}
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();

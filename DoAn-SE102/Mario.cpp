@@ -14,6 +14,10 @@
 #include "FinalReward.h"
 
 void CMario::Update(DWORD dt) {
+	if (CGame::GetInstance()->GetSecondsRemain() <= 0) {
+		SetState(MarioState::DIE);
+		CGame::GetInstance()->FreezeGame();
+	}
 	if (isHidden) return;
 	if (state == MarioState::DIE) {
 		if (CGame::GetInstance()->GetTickCount() - death_start < MARIO_DEATH_TIME * 0.2f) {
@@ -95,6 +99,7 @@ void CMario::CheckHeadCollision(DWORD dt) {
 	if (head->isBlocked) {
 		vy = 0; ay = MARIO_GRAVITY;
 	}
+	if (enterablePipe == NULL && head->GetEnterablePipe() != NULL) enterablePipe = head->GetEnterablePipe();
 }
 void CMario::CheckTailCollision(DWORD dt) {
 	ULONGLONG spinTimer = CGame::GetInstance()->GetTickCount() - spin_start;
@@ -757,7 +762,8 @@ void CMario::SetState(MarioState state) {
 		else {
 			if (level == MarioLevel::RACCOON) {
 				if (CGame::GetInstance()->GetTickCount() - pMeterMax_start < MARIO_PMETER_TIME) {
-					if(vy > -MARIO_FLY_SPEED) vy = -MARIO_FLY_SPEED;
+					vy = -MARIO_FLY_SPEED;
+					if (abs(vx) > MARIO_RUN_SPEED) vx = nx * MARIO_RUN_SPEED;
 					ay = 0;
 					fly_start = CGame::GetInstance()->GetTickCount();
 				}

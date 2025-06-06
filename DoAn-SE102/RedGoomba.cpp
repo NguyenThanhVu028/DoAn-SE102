@@ -2,6 +2,9 @@
 #include "Game.h"
 #include "debug.h"
 #include "Mario.h"
+#include "Brick.h"
+#include "Coin.h"
+#include "QuestionBlock.h"
 
 void CRedGoomba::Render() {
 	if (!isEnabled || isKilled) return;
@@ -93,6 +96,15 @@ void CRedGoomba::OnCollisionWith(LPCOLLISIONEVENT e) {
 	}
 	if (dynamic_cast<CMario*>(e->src_obj)) {
 		OnCollisionWithMario(e);
+	}
+	if (dynamic_cast<CBrick*>(e->obj)) {
+		if (dynamic_cast<CBrick*>(e->obj)->IsBouncing()) CMovableGameObject::OnCollisionWithBouncingBlock(e);
+	}
+	if (dynamic_cast<CCoin*>(e->obj)) {
+		if (dynamic_cast<CCoin*>(e->obj)->IsBouncing()) CMovableGameObject::OnCollisionWithBouncingBlock(e);
+	}
+	if (dynamic_cast<CQuestionBlock*>(e->obj)) {
+		if (dynamic_cast<CQuestionBlock*>(e->obj)->IsBouncing()) CMovableGameObject::OnCollisionWithBouncingBlock(e);
 	}
 }
 

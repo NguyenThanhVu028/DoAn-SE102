@@ -5,19 +5,12 @@ void CNormalPiranhaPlantPipe::Update(DWORD dt) {
 			delete plant;
 			plant = NULL;
 		}
-	//if (plant != NULL) {
-	//	if (plant->IsDeleted()) {
-	//		delete plant;
-	//		plant = NULL;
-	//		return;
-	//	}
-	//}
 
 	float pL, pT, pR, pB;
 	float L, T, R, B;
 	CGameObjectsManager::GetInstance()->GetPlayer()->GetBoundingBox(pL, pT, pR, pB);
 	GetBoundingBox(L, T, R, B);
-	if ((pL > R || pR < L)) {
+	if ((pL > R + PIPE_ACTIVE_ZONE_OFFSET || pR < L - PIPE_ACTIVE_ZONE_OFFSET)) {
 		if (plant != NULL) {
 			plant->SetActive(true);
 		}
