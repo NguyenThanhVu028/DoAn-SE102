@@ -6,7 +6,7 @@
 #define FIREBALL_WIDTH 8
 #define FIREBALL_HEIGHT 8
 
-#define FIREBALL_SPEED 0.1f
+#define FIREBALL_SPEED 0.05f
 
 //Animation Ids
 #define FIREBALL_ANIMATION_LEFT 60011

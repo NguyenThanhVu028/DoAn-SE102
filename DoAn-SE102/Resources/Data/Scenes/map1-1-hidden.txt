@@ -7,6 +7,7 @@ Resources\Data\Entities\pipe.txt
 Resources\Data\UI\playscene_ui.txt
 Resources\Data\Entities\brick.txt
 Resources\Data\Entities\coin.txt
+Resources\Data\Entities\effects.txt
 [PROPERTIES]
 #type:
 #	1 = map length

@@ -526,7 +526,6 @@ void CGame::SwitchScene()
 
 void CGame::InitiateSwitchScene(int scene_id)
 {
-	DebugOutTitle(L"scen id %d", scene_id);
 	next_scene = scene_id;
 }
 

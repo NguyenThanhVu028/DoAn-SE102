@@ -18,6 +18,10 @@ void CPlaySceneUI::Update(DWORD dt) {
 		secondsRemain = CGame::GetInstance()->GetSecondsRemain();
 	}
 	
+	if (secondsRemain <= 0) {
+		dynamic_cast<CMario*>(CGameObjectsManager::GetInstance()->GetPlayer())->SetState(MarioState::DIE);
+		CGame::GetInstance()->FreezeGame();
+	}
 }
 
 void CPlaySceneUI::Render() {
