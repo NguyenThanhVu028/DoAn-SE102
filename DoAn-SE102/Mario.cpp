@@ -14,6 +14,7 @@
 #include "FinalReward.h"
 
 void CMario::Update(DWORD dt) {
+	CGame::GetInstance()->SetMarioLevel(level);
 	if (isHidden) return;
 	if (state == MarioState::DIE) {
 		if (CGame::GetInstance()->GetTickCount() - death_start < MARIO_DEATH_TIME * 0.2f) {
