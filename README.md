@@ -1,7 +1,11 @@
 # Super Mario Bros 3 Clone
-Technical focus: Recreate not only the level but also the game feel, the mechanics, minor details, . . . to match that of the orginal game as much as possible.
-Platform: Powered by a custom C++/DirectX framework, leveraging low-level rendering pipelines to handle sprites, collisions, and animations.
-Current milestone: Due to time constraint, this project only contains the World 1-1 of the game.
+
+**Technical focus:** Recreate not only the level but also the game feel, the mechanics, minor details, . . . to match that of the orginal game as much as possible.
+
+**Platform:** Powered by a custom C++/DirectX framework, leveraging low-level rendering pipelines to handle sprites, collisions, and animations.
+
+**Current milestone:** Due to time constraint, this project only contains the World 1-1 of the game.
+
 ---
 ## Screenshots
 <img width="960" height="906" alt="Screenshot 2026-05-08 225258" src="https://github.com/user-attachments/assets/ede1bee9-d4a4-43c5-9370-548a62ebf35d" />
